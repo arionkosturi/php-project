@@ -1,0 +1,8 @@
+{
+  "launch": {
+    "git.enabled": true,
+    "git.path": "/opt/homebrew/bin/git",
+    "configurations": [],
+    "compounds": []
+  }
+}
