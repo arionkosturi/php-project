@@ -55,7 +55,7 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'login')
   }
   $stm = $pdo->prepare("SELECT * FROM users WHERE EMAIL = ? LIMIT 1");
   $stm->execute([$payload['email']]);
-  $user = $stm->fetch();
+  $user = $stm->fetch(PDO::FETCH_ASSOC);
   if ($user) {
     if (password_verify($payload['password'], $user['password'])) {
       $_SESSION['user'] = ["role" => $user['role'], "email" => $user["email"]];
@@ -82,5 +82,49 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'logout'
     echo json_encode(true);
   } else {
     echo json_encode(false);
+  }
+}
+
+
+// Users
+
+// User Profile
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'profile') and $method === 'GET') {
+  if (!isset($_SESSION['user'])) {
+    die(json_encode(['message' => 'You are not logged in']));
+  }
+  $stm = $pdo->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+  $stm->execute([$_SESSION['user']['email']]);
+  $user = $stm->fetch(PDO::FETCH_ASSOC);
+  if ($user) {
+    unset($user['id']);
+    unset($user['password']);
+    echo json_encode($user);
+  }
+}
+
+// User Bookings
+
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'bookings') and $method === 'GET') {
+  if (!isset($_SESSION['user'])) {
+    die(json_encode(['message' => 'You are not logged in']));
+  }
+  $SQL = "SELECT
+    `ads`.*,
+    `bookings`.*
+    FROM
+    users
+    INNER JOIN bookings ON `users`.`id` = `bookings`.`user_id`
+    INNER JOIN ads ON `ads`.`id` = `bookings`.`ad_id`
+    WHERE
+    `users`.`email` = ?";
+  $stm = $pdo->prepare($SQL);
+  $stm->execute([$_SESSION['user']['email']]);
+  $bookings = $stm->fetch(PDO::FETCH_ASSOC);
+
+  if ($bookings) {
+    echo json_encode($bookings);
+  } else {
+    echo json_encode(['message' => 'You have no bookings']);
   }
 }
