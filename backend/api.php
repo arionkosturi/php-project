@@ -32,16 +32,16 @@ $payload = json_decode(file_get_contents('php://input'), true);
 // Register
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'register') and ($method === 'POST')) {
   $role = $payload['role'];
-  $fullname = $payload['fullname'];
+  $username = $payload['username'];
   $email = $payload['email'];
   $password = $payload['password'];
 
-  if (empty($payload['fullname']) or empty($payload['email']) or empty($payload['password']) or empty($payload['role'])) {
-    die(json_encode(['message' => 'Role, fullname, email and password are required!']));
+  if (empty($payload['username']) or empty($payload['email']) or empty($payload['password']) or empty($payload['role'])) {
+    die(json_encode(['message' => 'Role, username, email and password are required!']));
   }
-  $stm = $pdo->prepare("INSERT INTO users (`fullname`,`email`,`password`,`role`) VALUES (?, ?, ?, ?)");
+  $stm = $pdo->prepare("INSERT INTO users (`username`,`email`,`password`,`role`) VALUES (?, ?, ?, ?)");
 
-  if ($stm->execute([$payload['fullname'], $payload['email'], password_hash($payload['password'], PASSWORD_BCRYPT), $payload['role']])) {
+  if ($stm->execute([$payload['username'], $payload['email'], password_hash($payload['password'], PASSWORD_BCRYPT), $payload['role']])) {
     echo json_encode(['message' => 'User was created successfully']);
   } else {
     json_encode(['message' => 'Something went wrong!']);
@@ -85,7 +85,6 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'logout'
   }
 }
 
-
 // Users
 
 // User Profile
@@ -103,28 +102,113 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'profile
   }
 }
 
-// User Bookings
+// Orders
 
-if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'bookings') and $method === 'GET') {
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'orders') and $method === 'GET') {
   if (!isset($_SESSION['user'])) {
     die(json_encode(['message' => 'You are not logged in']));
   }
-  $SQL = "SELECT
-    `ads`.*,
-    `bookings`.*
-    FROM
-    users
-    INNER JOIN bookings ON `users`.`id` = `bookings`.`user_id`
-    INNER JOIN ads ON `ads`.`id` = `bookings`.`ad_id`
+  $SQL = "SELECT `orders`.*, `order_line`.*, `users`.`email`, `users`.`username`
+  FROM `orders` 
+	INNER JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
+	INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
     WHERE
     `users`.`email` = ?";
   $stm = $pdo->prepare($SQL);
   $stm->execute([$_SESSION['user']['email']]);
-  $bookings = $stm->fetch(PDO::FETCH_ASSOC);
+  $orders = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-  if ($bookings) {
-    echo json_encode($bookings);
+  if ($orders) {
+    echo json_encode($orders);
   } else {
-    echo json_encode(['message' => 'You have no bookings']);
+    echo json_encode(['message' => 'You have no orders']);
   }
+}
+
+// All Products
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'products') and $method === 'GET') {
+
+  $SQL = "SELECT * FROM `products`";
+  $stm = $pdo->prepare($SQL);
+  $stm->execute();
+  $products = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+
+  if ($products) {
+    echo json_encode($products);
+  } else {
+    echo json_encode(['message' => 'You have no products']);
+  }
+}
+
+// Product BY Category
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_category') && $method === 'GET') {
+  if (!isset($_GET['category']) || empty($_GET['category'])) {
+    die(json_encode(['message' => 'Product category is required!']));
+  }
+
+  $stm = $pdo->prepare(
+    "SELECT `products`.*, `categories`.`name` 
+     FROM `products` 
+     INNER JOIN `categories` ON `products`.`category_id` = `categories`.`id` 
+     WHERE `categories`.`name` = ?"
+  );
+  $stm->execute([$_GET['category']]);
+  $products = $stm->fetchAll(PDO::FETCH_ASSOC);
+  if ($products) {
+    echo json_encode($products);
+  } else {
+    echo json_encode(["message" => 'No products with category']);
+  }
+}
+
+// Product BY ID
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_id') && $method === 'GET') {
+  if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die(json_encode(['message' => 'Product ID is required!']));
+  }
+
+  $stm = $pdo->prepare("SELECT * FROM `products` WHERE id = ? LIMIT 1");
+  $stm->execute([$_GET['id']]);
+  $product = $stm->fetch(PDO::FETCH_ASSOC);
+
+  if ($product) {
+    echo json_encode($product);
+  } else {
+    echo json_encode([]);
+  }
+}
+
+// Product Reviews
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'product_reviews') && $method === 'GET') {
+  if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die(json_encode(['message' => 'Product is required!']));
+  }
+
+  $stm = $pdo->prepare("SELECT `reviews`.*, `users`.`username` FROM `reviews` INNER JOIN `users` ON `reviews`.`user_id` = `users`.`id` WHERE `product_id` = ?");
+  $stm->execute([$_GET['id']]);
+  $reviews = [];
+
+  while ($review = $stm->fetch(PDO::FETCH_ASSOC)) {
+    $reviews[] = $review;
+  }
+
+  echo json_encode($reviews);
+}
+
+// Product Search
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search') && $method === 'GET') {
+  if (!isset($_GET['q']) || empty($_GET['q'])) {
+    die(json_encode(['message' => 'Search query is required!']));
+  }
+  $stm = $pdo->prepare("SELECT * FROM `products` WHERE name LIKE :phrase");
+  $q = '%' . $_GET['q'] . '%';
+  $stm->bindValue(':phrase', $q, PDO::PARAM_STR);
+  $stm->execute();
+  $products = [];
+
+  while ($product = $stm->fetch(PDO::FETCH_ASSOC)) {
+    $products[] = $product;
+  }
+  echo json_encode($products);
 }
