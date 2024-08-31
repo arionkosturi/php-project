@@ -296,12 +296,14 @@ export const useDeleteCategory = (id) => {
 
 // User Fetch Single User
 const fetchSingleUser = async (id) => {
-  return await apiClient.get(`/users/${id}`);
+  return await apiClient.get(
+    `api.php?endpoint_name=profile&email=${id?.email}`
+  );
 };
 // User Fetch Single User
 export const useSingleUser = () => {
   const [user, setUser] = useLocalStorage("user");
-  let id = user?._id || "guest";
+  let id = user?.email || "guest";
   return useQuery({
     queryFn: async () => {
       const { data } = await fetchSingleUser(id);

@@ -58,21 +58,21 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'registe
   }
 }
 
-// if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'users') and $method === 'POST') {
-//   // if (!isset($_SESSION['user'])) {
-//   //   die(json_encode(['message' => 'You are not logged in']));
-//   // }
-//   $SQL = "SELECT * FROM `users`";
-//   $stm = $pdo->prepare($SQL);
-//   $stm->execute();
-//   $users = $stm->fetchAll(PDO::FETCH_ASSOC);
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'users') and $method === 'POST') {
+  // if (!isset($_SESSION['user'])) {
+  //   die(json_encode(['message' => 'You are not logged in']));
+  // }
+  $SQL = "SELECT * FROM `users`";
+  $stm = $pdo->prepare($SQL);
+  $stm->execute();
+  $users = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-//   if ($users) {
-//     echo json_encode($users);
-//   } else {
-//     echo json_encode(['message' => 'There are no users']);
-//   }
-// }
+  if ($users) {
+    echo json_encode($users);
+  } else {
+    echo json_encode(['message' => 'There are no users']);
+  }
+}
 
 // Login
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'login') and ($method === 'POST')) {

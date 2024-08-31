@@ -1,11 +1,13 @@
 // @ts-nocheck
 import React from "react";
-import { FaRegNewspaper } from "react-icons/fa";
+import { FaOpencart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { useSingleUser } from "./hooks/useFetch";
+import { useLocalStorage } from "@uidotdev/usehooks";
 export default function Header() {
   const navigate = useNavigate();
+  const [user, setUser] = useLocalStorage("user", {});
   const { data: loggedUser } = useSingleUser();
 
   let handleLogin = () => {
@@ -23,12 +25,12 @@ export default function Header() {
       <div className=" font-semi  text-purple-700 text-xl ">
         <a href="/dashboard/all">
           <span className="text-4xl">
-            <FaRegNewspaper />
+            <FaOpencart />
           </span>
-          <p>News</p>
+          <p>OnlineShop</p>
         </a>
       </div>
-      {!loggedUser?.isAdmin ? (
+      {!user?.role == "admin" ? (
         <Button
           className="flex hover:bg-slate-50 m-4 shadow border py-1 px-2"
           onClick={handleLogin}

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import {
   FaBars,
-  FaRegNewspaper,
+  FaOpencart,
   FaUser,
   FaBookmark,
   FaHeart,
@@ -22,17 +22,17 @@ import {
   useFetchSearchedArticles,
   useSingleUser,
 } from "../components/hooks/useFetch";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 export default function Header({ className }) {
   const [searchTerm, setSearchTerm] = useState();
   const debouncedSearch = useDebounce(searchTerm, 1000);
   const { data: searchR } = useFetchSearchedArticles(debouncedSearch);
-  const { data: loggedUser } = useSingleUser();
+  const [user, setUser] = useLocalStorage("user", null);
   const navigate = useNavigate();
 
   let handleSearch = (e) => {
     e.preventDefault();
-
     setSearchTerm(e.target.value);
   };
 
@@ -49,9 +49,9 @@ export default function Header({ className }) {
           <div className=" font-semi  text-purple-700 text-xl ">
             <a href="/">
               <span className="text-4xl">
-                <FaRegNewspaper />
+                <FaOpencart />
               </span>
-              <p>News</p>
+              <p>OnlineShop</p>
             </a>
           </div>
           <div className="flex -space-x-16 mx-10 xl:ml-40 rounded-full w-3/5 xl:w-full text-purple-700 dark:text-purple-300 group hover:ring ring-purple-300">
@@ -74,14 +74,14 @@ export default function Header({ className }) {
               <div className=" xl:relative top-16 xl:top-0 flex flex-col md:flex-row justify-start md:items-left bg-white lg:shadow-none sm:mt-0 xl:mr-10 py-2 w-full">
                 <div className="xl:relative top-16 xl:top-0 flex flex-col lg:flex-row justify-start md:items-left bg-white   lg:shadow-none sm:mt-0 xl:mr-10 py-2 w-full">
                   <div className="px-3 xl:relative top-16 xl:top-0 flex flex-col lg:flex-row justify-start md:items-left bg-white lg:shadow-none py-2 w-full">
-                    {!loggedUser?.guest && loggedUser ? (
+                    {user ? (
                       <div className="z-10">
                         <NavigationMenu className="">
                           <NavigationMenuList>
                             <NavigationMenuItem>
                               <NavigationMenuTrigger>
                                 <p className="flex text-purple-500 mr-2">
-                                  Pershendetje, {loggedUser.username}
+                                  Pershendetje, {user.email}
                                 </p>
                               </NavigationMenuTrigger>
                               <NavigationMenuContent>
@@ -140,7 +140,7 @@ export default function Header({ className }) {
                     )}
                   </div>
 
-                  {loggedUser?.isAdmin && (
+                  {user?.role == "admin" && (
                     <Button
                       onClick={() => {
                         navigate("/dashboard/all");
@@ -151,11 +151,11 @@ export default function Header({ className }) {
                     </Button>
                   )}
 
-                  {loggedUser?.guest ? (
+                  {!user ? (
                     <Button
                       className="flex bg-purple-600 hover:bg-purple-500 m-2 shadow border py-1 px-2"
                       onClick={() => {
-                        navigate("/userlogin");
+                        navigate("/login");
                       }}
                     >
                       Log in

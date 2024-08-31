@@ -5,11 +5,13 @@ import Header from "../Header";
 import Login from "../../frontend/Login";
 import LeftPanel from "./LeftPanel";
 import { useSingleUser } from "../hooks/useFetch";
+import { useLocalStorage } from "@uidotdev/usehooks";
 function Dashboard() {
   let [currentPage] = useState("0");
+  const [user, setUser] = useLocalStorage("user");
   const { data: loggedUser } = useSingleUser();
   let [isPublished, setIsPublished] = useState();
-  if (!loggedUser?.isAdmin) {
+  if (user?.role !== "admin") {
     return <Login />;
   }
 
