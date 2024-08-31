@@ -313,9 +313,9 @@ export const useSingleUser = () => {
 
 //Mutate User Profile
 const useMutateUser = async (user) => {
-  let { username, password, likedArticles, isAdmin } = user;
+  let { email, password, likedArticles, isAdmin } = user;
   return await apiClient.patch(`/users/${user.id}`, {
-    username,
+    email,
     password,
     likedArticles,
     isAdmin,
@@ -333,14 +333,18 @@ export const useMutateUserProfile = (user) => {
       });
     },
     onSettled: (user) => {
-      // console.log(user.data);
+      console.log(user.data);
     },
   });
 };
 
-// Fetch All Users
-const fetchUsers = async () => {
-  return await apiClient.get(`users/`);
+// Login
+const fetchUsers = async (username, password) => {
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "login",
+    username,
+    password,
+  });
 };
 // Query All Users
 export const useFetchUsers = () => {

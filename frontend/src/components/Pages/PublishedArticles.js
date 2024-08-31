@@ -14,7 +14,7 @@ import Header from "../Header";
 import { useQueryClient } from "@tanstack/react-query";
 import Paginate from "../Paginate";
 import Buttons, { PublishBtn } from "../Buttons";
-import Login from "../../frontend/UserLogin";
+import Login from "../../frontend/Login";
 import LeftPanel from "./LeftPanel";
 
 function PublishedArticles() {

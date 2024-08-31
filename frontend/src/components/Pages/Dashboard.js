@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Articles from "../Pages/Articles";
 import Header from "../Header";
-import Login from "../../frontend/UserLogin";
+import Login from "../../frontend/Login";
 import LeftPanel from "./LeftPanel";
 import { useSingleUser } from "../hooks/useFetch";
 function Dashboard() {

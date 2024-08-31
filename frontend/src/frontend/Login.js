@@ -8,6 +8,7 @@ import { FaRegNewspaper, FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { useFetchUsers } from "../components/hooks/useFetch";
+import axios from "axios";
 export default function UserLogin() {
   const [user, saveUser] = useLocalStorage("user", {});
   const navigate = useNavigate();
@@ -15,23 +16,57 @@ export default function UserLogin() {
   const { data: users } = useFetchUsers();
   const form = useForm({
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
-    onSubmit: async ({ value }) => {
-      const user = users?.filter(
-        (user) =>
-          user.username === value.username && user.password === value.password
-      );
-      if (user.length > 0) {
-        saveUser({ _id: user[0]._id });
-        if (user[0].isAdmin) {
-          navigate("/dashboard/all");
-        } else navigate("/");
-      } else {
-        setAlert(true);
-      }
+    onSubmit: (value) => {
+      const { email, password } = value.value;
+      // const elements = e.target;
+      // const email = elements["email"].value;
+      // const password = elements["password"].value;
+      console.log(value);
+
+      const data = {
+        endpoint_name: "login",
+        email,
+        password,
+      };
+
+      axios
+        .post(`http://localhost/php-project/backend/api.php`, data)
+        .then((resp) => {
+          if ("message" in resp.data) {
+            // setHasErrors(true)
+            // setError(resp.data)
+          } else {
+            saveUser({ ...resp.data, isLoggedIn: true });
+            navigate("/");
+            // setError(null)
+            // setHasErrors(false)
+            // setUser({...resp.data, isLoggedIn: true})
+            // navigator('/profile')
+          }
+        })
+        .catch((err) => console.log(err));
     },
+    // onSubmit: async ({ value }) => {
+    //   console.log(value);
+
+    //   const user = users?.filter(
+    //     (user) =>
+    //       user.email === value.email && user.password === value.password
+    //   );
+    //   console.log(value);
+
+    //   if (user.length > 0) {
+    //     saveUser({ _id: user[0]._id });
+    //     if (user[0].isAdmin) {
+    //       navigate("/dashboard/all");
+    //     } else navigate("/");
+    //   } else {
+    //     setAlert(true);
+    //   }
+    // },
   });
   return (
     <section className="container mx-auto">
@@ -49,7 +84,7 @@ export default function UserLogin() {
           </h1>
 
           <p className="mx-6 mt-4 sm:text-xl/relaxed text-center">
-            Ju lutem vendosni username dhe password per tu loguar
+            Ju lutem vendosni email dhe password per tu loguar
           </p>
 
           {alert && (
@@ -71,13 +106,13 @@ export default function UserLogin() {
           >
             <div className="mt-6 mb-3">
               <form.Field
-                name="username"
+                name="email"
                 validators={{
                   onChange: ({ value }) =>
                     !value
-                      ? "Username is required"
+                      ? "email is required"
                       : value.length < 3
-                        ? "Username must be at least 3 characters"
+                        ? "email must be at least 3 characters"
                         : undefined,
                   onChangeAsyncDebounceMs: 500,
                   onChangeAsync: async ({ value }) => {
@@ -103,11 +138,11 @@ export default function UserLogin() {
                           name={field.name}
                           value={field.state.value}
                           onBlur={field.handleBlur}
-                          placeholder="Username"
+                          placeholder="email"
                           onChange={(e) => field.handleChange(e.target.value)}
                         />
                         <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-                          Username
+                          email
                         </span>
                       </label>
                       <p className="text-sm text-red-600 mt-1">
