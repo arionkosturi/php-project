@@ -6,38 +6,37 @@ import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { FaRegNewspaper, FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 async function RegisterUser(credentials, setAlert, navigate) {
-  return await fetch("http://localhost:3344/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  })
-    .then((data) => {
-      if (data.status === 201) {
+  const { username, email, password } = credentials;
+  const data = {
+    endpoint_name: "register",
+    username,
+    email,
+    password,
+  };
+  return await axios
+    .post("http://localhost/php-project/backend/api.php", data)
+    .then((resp) => {
+      let err = resp.data[0].indexOf("Duplicate");
+      if (err == -1) {
+        navigate("/login");
+      } else {
         setAlert({
-          value: false,
-          message: "",
+          value: true,
+          message: "Perdoruesi nuk mund te krijohet",
+          variant: "destructive",
         });
-        navigate("/userlogin");
-        return data.json();
-      } else if (!credentials.password)
-        throw {
-          message: "Please confirm password",
-        };
-      else
-        throw {
-          message: "Maybe this user exists or there is an error in the server!",
-        };
+      }
     })
     .catch((err) => {
       setAlert({
         value: true,
-        message: err.message,
+        message: "Perdoruesi nuk mund te krijohet",
         variant: "destructive",
       });
+      console.log(err);
     });
 }
 
@@ -50,12 +49,15 @@ export default function Register() {
   const form = useForm({
     defaultValues: {
       username: "",
+      email: "",
       password: "",
     },
 
     onSubmit: async ({ value }) => {
       await RegisterUser(
         {
+          endpoint_name: "register",
+          email: value.email,
           username: value.username,
           password: value.confirmPassword,
         },
@@ -72,7 +74,7 @@ export default function Register() {
           <h1 className="text-3xl text-center font-extrabold sm:text-5xl">
             <div className="flex gap-4 justify-center ">
               <FaRegNewspaper className="" />
-              Mynews
+              OnlineSHOP
             </div>
 
             <strong className="font-extrabold text-center text-red-700 sm:block">
@@ -81,7 +83,7 @@ export default function Register() {
           </h1>
 
           <p className="mx-6 mt-4 sm:text-xl/relaxed text-center">
-            Ju lutem vendosni username dhe password per tu loguar
+            Ju lutem vendosni username, email dhe password per tu loguar
           </p>
 
           {alert.message.length > 0 && (
@@ -99,7 +101,6 @@ export default function Register() {
               e.preventDefault();
               e.stopPropagation();
               form.handleSubmit();
-              console.log(alert);
             }}
           >
             <div className="mt-6 mb-3">
@@ -110,8 +111,8 @@ export default function Register() {
                     !value
                       ? "Username is required"
                       : value.length < 3
-                        ? "Username must be at least 3 characters"
-                        : undefined,
+                      ? "Username must be at least 3 characters"
+                      : undefined,
                   onChangeAsyncDebounceMs: 500,
                   onChangeAsync: async ({ value }) => {
                     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -150,6 +151,54 @@ export default function Register() {
                 }}
               />
             </div>
+            <div className="mt-6 mb-3">
+              <form.Field
+                name="email"
+                validators={{
+                  onChange: ({ value }) =>
+                    !value
+                      ? "Email is required"
+                      : value.length < 3
+                      ? "Email must be at least 3 characters"
+                      : undefined,
+                  onChangeAsyncDebounceMs: 500,
+                  onChangeAsync: async ({ value }) => {
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    return (
+                      value.includes("error") &&
+                      'No "error" allowed in first name'
+                    );
+                  },
+                }}
+                children={(field) => {
+                  return (
+                    <>
+                      <label
+                        className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+                        htmlFor={field.name}
+                      >
+                        <input
+                          autoComplete="off"
+                          className="h-10 p-2 peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          placeholder="Email"
+                          onChange={(e) => field.handleChange(e.target.value)}
+                        />
+                        <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+                          Email
+                        </span>
+                      </label>
+                      <p className="text-sm text-red-600 mt-1">
+                        {field.state.meta.errors}
+                      </p>
+                    </>
+                  );
+                }}
+              />
+            </div>
             <div>
               <form.Field
                 name="password"
@@ -158,8 +207,8 @@ export default function Register() {
                     !value
                       ? "Password is required"
                       : value.length < 5
-                        ? "Password must be at least 5 characters"
-                        : undefined,
+                      ? "Password must be at least 5 characters"
+                      : undefined,
                   onChangeAsyncDebounceMs: 100,
                   onChangeAsync: async ({ value }) => {
                     await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -31,20 +31,30 @@ $payload = json_decode(file_get_contents('php://input'), true);
 // AUTH
 // Register
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'register') and ($method === 'POST')) {
-  $role = $payload['role'];
+  // $role = $payload['role'];
   $username = $payload['username'];
   $email = $payload['email'];
   $password = $payload['password'];
+  try {
+    $stm = $pdo->prepare("INSERT INTO users (`username`,`email`,`password`) VALUES (?, ?, ?)");
+    $user = $stm->execute([$payload['username'], $payload['email'], password_hash($payload['password'], PASSWORD_BCRYPT)]);
+    if (!empty($user)) {
+      echo json_encode(['message' => 'User was created successfully']);
+    } else {
+      http_response_code(400);
+      json_encode(
+        ['error' => 'error']
+      );
+    }
+    if ($e->errorCode() != 23000) {
+      http_response_code(400);
 
-  if (empty($payload['username']) or empty($payload['email']) or empty($payload['password']) or empty($payload['role'])) {
-    die(json_encode(['message' => 'Role, username, email and password are required!']));
-  }
-  $stm = $pdo->prepare("INSERT INTO users (`username`,`email`,`password`,`role`) VALUES (?, ?, ?, ?)");
-
-  if ($stm->execute([$payload['username'], $payload['email'], password_hash($payload['password'], PASSWORD_BCRYPT), $payload['role']])) {
-    echo json_encode(['message' => 'User was created successfully']);
-  } else {
-    json_encode(['message' => 'Something went wrong!']);
+      json_encode('error');
+    }
+  } catch (Exception $error) {
+    echo json_encode([
+      $error->getMessage(),
+    ]);
   }
 }
 
