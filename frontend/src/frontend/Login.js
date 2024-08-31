@@ -12,7 +12,7 @@ import axios from "axios";
 export default function UserLogin() {
   const [user, saveUser] = useLocalStorage("user", {});
   const navigate = useNavigate();
-  const [alert, setAlert] = useState(false);
+  const [alert, setAlert] = useState(false, null);
   const { data: users } = useFetchUsers();
   const form = useForm({
     defaultValues: {
@@ -21,11 +21,6 @@ export default function UserLogin() {
     },
     onSubmit: (value) => {
       const { email, password } = value.value;
-      // const elements = e.target;
-      // const email = elements["email"].value;
-      // const password = elements["password"].value;
-      console.log(value);
-
       const data = {
         endpoint_name: "login",
         email,
@@ -36,37 +31,17 @@ export default function UserLogin() {
         .post(`http://localhost/php-project/backend/api.php`, data)
         .then((resp) => {
           if ("message" in resp.data) {
-            // setHasErrors(true)
+            setAlert(true, {
+              message: resp.data,
+            });
             // setError(resp.data)
           } else {
             saveUser({ ...resp.data, isLoggedIn: true });
             navigate("/");
-            // setError(null)
-            // setHasErrors(false)
-            // setUser({...resp.data, isLoggedIn: true})
-            // navigator('/profile')
           }
         })
         .catch((err) => console.log(err));
     },
-    // onSubmit: async ({ value }) => {
-    //   console.log(value);
-
-    //   const user = users?.filter(
-    //     (user) =>
-    //       user.email === value.email && user.password === value.password
-    //   );
-    //   console.log(value);
-
-    //   if (user.length > 0) {
-    //     saveUser({ _id: user[0]._id });
-    //     if (user[0].isAdmin) {
-    //       navigate("/dashboard/all");
-    //     } else navigate("/");
-    //   } else {
-    //     setAlert(true);
-    //   }
-    // },
   });
   return (
     <section className="container mx-auto">
