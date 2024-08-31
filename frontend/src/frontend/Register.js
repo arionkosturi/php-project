@@ -4,10 +4,9 @@ import { useForm } from "@tanstack/react-form";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
-import { FaRegNewspaper, FaSpinner } from "react-icons/fa";
+import { FaOpencart, FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import axios from "axios";
-
 async function RegisterUser(credentials, setAlert, navigate) {
   const { username, email, password } = credentials;
   const data = {
@@ -73,7 +72,7 @@ export default function Register() {
         <div className="mx-auto max-w-xl ">
           <h1 className="text-3xl text-center font-extrabold sm:text-5xl">
             <div className="flex gap-4 justify-center ">
-              <FaRegNewspaper className="" />
+              <FaOpencart className="" />
               OnlineSHOP
             </div>
 

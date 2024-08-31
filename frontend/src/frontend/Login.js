@@ -4,7 +4,7 @@ import { useForm } from "@tanstack/react-form";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
-import { FaRegNewspaper, FaSpinner } from "react-icons/fa";
+import { FaOpencart, FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { useFetchUsers } from "../components/hooks/useFetch";
@@ -74,8 +74,8 @@ export default function UserLogin() {
         <div className="mx-auto max-w-xl ">
           <h1 className="text-3xl text-center font-extrabold sm:text-5xl">
             <div className="flex gap-4 justify-center ">
-              <FaRegNewspaper className="" />
-              Mynews
+              <FaOpencart className="" />
+              OnlineSHOP
             </div>
 
             <strong className="font-extrabold text-center text-red-700 sm:block">
@@ -112,8 +112,8 @@ export default function UserLogin() {
                     !value
                       ? "email is required"
                       : value.length < 3
-                        ? "email must be at least 3 characters"
-                        : undefined,
+                      ? "email must be at least 3 characters"
+                      : undefined,
                   onChangeAsyncDebounceMs: 500,
                   onChangeAsync: async ({ value }) => {
                     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -161,8 +161,8 @@ export default function UserLogin() {
                     !value
                       ? "Password is required"
                       : value.length < 5
-                        ? "Password must be at least 5 characters"
-                        : undefined,
+                      ? "Password must be at least 5 characters"
+                      : undefined,
                   onChangeAsyncDebounceMs: 100,
                   onChangeAsync: async ({ value }) => {
                     await new Promise((resolve) => setTimeout(resolve, 1000));
