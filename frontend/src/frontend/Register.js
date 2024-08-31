@@ -283,7 +283,7 @@ export default function Register() {
                       <span
                         className="hover:cursor-pointer underline text-blue-700"
                         onClick={() => {
-                          navigate("/userlogin");
+                          navigate("/login");
                         }}
                       >
                         Login
