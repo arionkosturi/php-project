@@ -6,17 +6,17 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "@uidotdev/usehooks";
 
 // Fetch All Articles
-const fetchArticles = async (currentPage, fetchTerm) => {
-  return await apiClient.get(`news/${fetchTerm || ""}?p=${currentPage}`);
+const fetchArticles = async () => {
+  return await apiClient.get(`api.php?endpoint_name=products`);
 };
 // Fetch All Articles
-export const useFetchArticles = (currentPage, fetchTerm) => {
+export const useFetchArticles = () => {
   return useQuery({
     queryFn: async () => {
-      const { data } = await fetchArticles(currentPage, fetchTerm);
+      const { data } = await fetchArticles();
       return data;
     },
-    queryKey: ["articles", { currentPage, fetchTerm }],
+    queryKey: ["articles"],
   });
 };
 

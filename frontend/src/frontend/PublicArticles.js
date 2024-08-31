@@ -4,7 +4,8 @@ import { useFetchArticles } from "../components/hooks/useFetch";
 import Paginate from "./Paginate";
 function PublicArticles() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data: articles } = useFetchArticles(currentPage);
+  const { data: articles } = useFetchArticles();
+
   return (
     <>
       <Paginate
@@ -14,18 +15,20 @@ function PublicArticles() {
       />
       <div className="grid lg:grid-cols-2 2xl:grid-cols-3 container mx-auto">
         {articles?.map((article) => {
+          console.log(article);
+
           return (
             <article
-              key={article._id}
+              key={article.id}
               className="flex bg-white shadow-xl hover:shadow-xl my-3"
             >
               <div className="flex flex-row w-1/2">
-                <a href={`article?id=${article._id}`}>
-                  {article.imgUrl ? (
+                <a href={`article?id=${article.id}`}>
+                  {article.img ? (
                     <img
                       className=" my-2 p-2 h-48"
                       alt="article"
-                      src={article.imgUrl}
+                      src={article.img}
                     />
                   ) : (
                     <img
@@ -47,21 +50,21 @@ function PublicArticles() {
 
               <div className="flex flex-col justify-between w-1/2">
                 <div className="border-gray-900/10 border-s p-2 sm:p-4 sm:border-l-transparent">
-                  <a href={`article?id=${article._id}`}>
+                  <a href={`article?id=${article.id}`}>
                     <h3 className="line-clamp-2 sm:line-clamp-3 font-bold text-gray-900 dark:text-white uppercase">
-                      {article.title}
+                      {article.name}
                     </h3>
                   </a>
 
                   <p className="line-clamp-3 mt-4 dark:text-gray-50">
                     {" "}
-                    {article.description}
+                    {article.price}€
                   </p>
                 </div>
 
                 <div className="sm:flex sm:justify-end sm:items-end">
                   <a
-                    href={`article?id=${article._id}`}
+                    href={`article?id=${article.id}`}
                     className="block bg-purple-500 hover:bg-purple-400 mx-2 px-5 py-3 font-bold text-center text-gray-100 text-xs uppercase transition"
                   >
                     Lexo me shume...

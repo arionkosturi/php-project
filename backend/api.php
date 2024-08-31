@@ -152,7 +152,7 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'orders'
 }
 
 // All Products
-if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'products') and $method === 'GET') {
+if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') and $method === 'GET') {
 
   $SQL = "SELECT * FROM `products`";
   $stm = $pdo->prepare($SQL);
@@ -161,7 +161,9 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'product
 
 
   if ($products) {
+    // foreach ($products as $product) {
     echo json_encode($products);
+    // }
   } else {
     echo json_encode(['message' => 'You have no products']);
   }
