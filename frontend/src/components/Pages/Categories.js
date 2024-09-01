@@ -26,6 +26,7 @@ import {
 } from "../hooks/useFetch";
 import LeftPanel from "./LeftPanel";
 import { useSingleUser } from "../hooks/useFetch";
+import { useLocalStorage } from "@uidotdev/usehooks";
 function FetchCategories() {
   let navigate = useNavigate();
   const { data: categories, isPending, error } = useFetchCategories();
@@ -48,7 +49,7 @@ function FetchCategories() {
             variant={"secondary"}
             category={category}
             onClick={() => {
-              navigate(`/dashboard/category/?id=${category._id}`);
+              navigate(`/dashboard/category/?id=${category.id}`);
             }}
           >
             {" "}
@@ -59,7 +60,7 @@ function FetchCategories() {
             alertTitle={"Po fshin kategorine"}
             alertMessage={`Deshiron ta fshish kategorine: "${category.name}" ?`}
             handleFunction={(e) => {
-              let categoryId = category._id;
+              let categoryId = category.id;
               remove(categoryId);
             }}
             alertTriggerButton={
@@ -79,20 +80,20 @@ function Categories() {
   const [name, setName] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const queryClient = useQueryClient();
-  let { data: loggedUser } = useSingleUser();
+  const [user, setUser] = useLocalStorage("user");
   let handleOpen = () => {
     setOpenSheet(true);
   };
-  if (!loggedUser?.isAdmin) {
+  if (!user?.role == "admin") {
     return <Dashboard />;
   }
   return (
-    loggedUser?.isAdmin && (
+    user?.role == "admin" && (
       <>
         <Header />
         <div className="container mx-auto mb-2">
           <h1 className="text-3xl">
-            Article
+            Product
             <span className="bg-green-500 text-white ml-2 px-2 py-1">
               Categories
             </span>

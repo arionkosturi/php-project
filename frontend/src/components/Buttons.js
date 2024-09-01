@@ -19,7 +19,7 @@ function Buttons({
             <div>
               <CheckHighlighted
                 isHighlighted={
-                  product.isHighlighted === true ? "Featured" : "Feature"
+                  product?.isHighlighted === true ? "Featured" : "Feature"
                 }
                 className={
                   product.isHighlighted === true
@@ -31,7 +31,8 @@ function Buttons({
           }
           alertTitle="Jeni i sigurt?"
           alertMessage={
-            product.isPublished & product.isHighlighted &&
+            product.isPublished &&
+            product.isHighlighted &&
             "Deshiron ta heqesh artikullin highlighted?"
               ? product.isPublished &&
                 (product.isHighlighted === true

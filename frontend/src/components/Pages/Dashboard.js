@@ -9,7 +9,6 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 function Dashboard() {
   let [currentPage] = useState("0");
   const [user, setUser] = useLocalStorage("user");
-  const { data: loggedUser } = useSingleUser();
   let [isPublished, setIsPublished] = useState();
   if (user?.role !== "admin") {
     return <Login />;

@@ -7,9 +7,10 @@ import { useSingleCategory, useMutateCategory } from "../hooks/useFetch";
 import { useNavigate } from "react-router";
 import LeftPanel from "./LeftPanel";
 import { useSingleUser } from "../hooks/useFetch";
+import { useLocalStorage } from "@uidotdev/usehooks";
 function Category() {
   const navigate = useNavigate();
-  const { data: loggedUser } = useSingleUser();
+  const [user, setUser] = useLocalStorage("user");
   const { mutate } = useMutateCategory();
   const { data: category } = useSingleCategory();
   let [categoryName, setCategoryName] = useState();
@@ -17,7 +18,7 @@ function Category() {
 
   let handleSubmit = (e) => {
     e.preventDefault();
-    let id = category._id;
+    let id = category.id;
     mutate(
       {
         id,
@@ -31,7 +32,7 @@ function Category() {
       }
     );
   };
-  if (!loggedUser.isAdmin) {
+  if (!user?.role == "admin") {
     return <Dashboard />;
   }
   return (

@@ -202,7 +202,7 @@ export const useDeleteArticle = (id) => {
 // Fetch All Categoris
 
 const fetchCategories = async () => {
-  return await apiClient.get(`categories/`);
+  return await apiClient.get(`api.php?endpoint_name=categories`);
 };
 // Fetch All Categories
 export const useFetchCategories = () => {
@@ -217,7 +217,7 @@ export const useFetchCategories = () => {
 
 // Fetch Single Category
 const fetchSingleCategory = async (id) => {
-  return await apiClient.get(`/categories/${id}`);
+  return await apiClient.get(`api.php?endpoint_name=category_by_id&id=${id}`);
 };
 // Fetch Single Category
 export const useSingleCategory = () => {
@@ -235,7 +235,13 @@ export const useSingleCategory = () => {
 
 //Add Category
 const addCategory = async (category) => {
-  return await apiClient.post("/categories/", category);
+  const { name, imgUrl } = category;
+  let data = {
+    endpoint_name: "add_category",
+    name,
+    imgUrl,
+  };
+  return await apiClient.post("api.php", data);
 };
 export const useAddCategory = () => {
   const { toast } = useToast();
@@ -280,7 +286,7 @@ export const useMutateCategory = (category) => {
 
 //Delete Category
 const deleteSingleCategory = async (id) => {
-  return await apiClient.delete(`/categories/${id}`);
+  return await apiClient.get(`/api.php?endpoint_name=delete_category&id=${id}`);
 };
 // Delete Category
 export const useDeleteCategory = (id) => {
