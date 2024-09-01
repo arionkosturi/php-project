@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 01, 2024 at 03:55 PM
+-- Generation Time: Sep 01, 2024 at 10:22 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `imgUrl` text NOT NULL
+  `name` varchar(45) DEFAULT NULL,
+  `imgUrl` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -38,14 +38,14 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `imgUrl`) VALUES
-(1, 'Food', ''),
+(1, 'Food', 'https://img2.10bestmedia.com/Images/Photos/406808/The-Fresh-Market_55_660x440.jpg'),
 (2, 'Smartphones', 'https://th.bing.com/th/id/OIP._agMEL9UGb1_5mDjH5n7wQHaEK?rs=1&pid=ImgDetMain'),
-(3, 'Tablets', ''),
-(4, 'PC', ''),
-(5, 'XBOX', ''),
-(6, 'Keyboards', ''),
-(7, 'Chairs', ''),
-(8, 'Headphones', '');
+(3, 'Tablets', 'data:image/jpeg;base64,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'),
+(4, 'PC', 'https://m.media-amazon.com/images/I/81jhBeNlXcL.jpg'),
+(5, 'XBOX', 'https://assets.xboxservices.com/assets/fc/28/fc283911-f016-42d5-8e51-0dfca7ab5ce1.jpg?n=Shop-Consoles_Content-Placement_Hub_294958693_788x444.jpg'),
+(6, 'Keyboards', 'https://media.wired.com/photos/65b0438c22aa647640de5c75/master/pass/Mechanical-Keyboard-Guide-Gear-GettyImages-1313504623.jpg'),
+(7, 'Chairs', 'https://i0.wp.com/www.kidzmotion.co.uk/wp-content/uploads/2023/11/IMG_2917-scaled.jpg?fit=1024%2C683&ssl=1'),
+(8, 'Headphones', 'https://cdn.thewirecutter.com/wp-content/media/2023/07/bluetoothheadphones-2048px-0876.jpg');
 
 -- --------------------------------------------------------
 
@@ -97,15 +97,15 @@ INSERT INTO `order_line` (`id`, `order_id`, `product_id`, `qty`) VALUES
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `details` text NOT NULL,
-  `category_id` int(11) NOT NULL,
+  `details` text DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `cost` int(11) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
   `img` varchar(300) DEFAULT 'noimage.png',
-  `isHighlighted` tinyint(1) NOT NULL DEFAULT 0,
-  `stock` int(11) NOT NULL DEFAULT 0,
+  `isHighlighted` tinyint(1) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `isPublished` tinyint(1) NOT NULL
+  `isPublished` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -114,7 +114,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `details`, `category_id`, `cost`, `price`, `img`, `isHighlighted`, `stock`, `created_at`, `isPublished`) VALUES
 (4, 'OPPO Reno12 5G', 'New Unlocked Android Phone!', 2, 350, 470, 'https://opsg-img-cdn-gl.heytapimg.com/epb/202406/26/IzcVfAu2kdJjoeYS.png', 1, 0, '2024-09-01 13:51:43', 1),
-(5, 'Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow', '', 2, 300, 430, 'https://m.media-amazon.com/images/I/61bFypVJVyL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(5, 'Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow', '', 2, 300, 430, 'https://m.media-amazon.com/images/I/61bFypVJVyL._AC_SL1500_.jpg', 1, 0, '2024-09-01 13:51:43', 0),
 (6, 'SAMSUNG Galaxy A15 5G, 128GB, US Version', '', 2, 100, 199, 'https://m.media-amazon.com/images/I/41vU1u8DZXL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (7, 'Moto G Play 2023 3-Day Battery Unlocked Made for US 3/32GB 16MP Camera Navy Blue', '', 2, 60, 99, 'https://m.media-amazon.com/images/I/61K1Fz5LxvL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (8, 'OnePlus 12R, 8GB RAM+128GB, Dual-Sim, 50MP Camera, 80W Fast Charging', '', 2, 380, 449, 'https://m.media-amazon.com/images/I/71xMs88FYbL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
@@ -139,7 +139,8 @@ INSERT INTO `products` (`id`, `name`, `details`, `category_id`, `cost`, `price`,
 (27, 'JLab JBuds Lux ANC Wireless Headphones', '', 8, 30, 49, 'https://m.media-amazon.com/images/I/41UPaI9VqUL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (28, 'JBL Tune 510BT', '', 8, 15, 29, 'https://m.media-amazon.com/images/I/51EUjPMn6UL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (29, 'Soundcore Anker Life Q20 Hybrid Active Noise Cancelling', '', 8, 28, 49, 'https://m.media-amazon.com/images/I/61O7S27O+jL._AC_SL1468_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
-(30, 'Sony WH-1000XM5 The Best Wireless Noise Canceling Headphones with Auto Noise Canceling Optimizer', '', 8, 280, 329, 'https://m.media-amazon.com/images/I/61vJtKbAssL._AC_SL1500_.jpg', 1, 0, '2024-09-01 13:51:43', 1);
+(30, 'Sony WH-1000XM5 The Best Wireless Noise Canceling Headphones with Auto Noise Canceling Optimizer', '', 8, 280, 329, 'https://m.media-amazon.com/images/I/61vJtKbAssL._AC_SL1500_.jpg', 1, 0, '2024-09-01 13:51:43', 1),
+(38, 'arion test', 'arion test', NULL, 100, 150, 'arion test', NULL, NULL, '2024-09-01 22:15:02', NULL);
 
 -- --------------------------------------------------------
 
@@ -295,7 +296,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -313,7 +314,7 @@ ALTER TABLE `order_line`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `reklama`
