@@ -13,8 +13,8 @@ function Category() {
   const [user, setUser] = useLocalStorage("user");
   const { mutate } = useMutateCategory();
   const { data: category } = useSingleCategory();
-  let [categoryName, setCategoryName] = useState();
-  let [categoryImg, setCategoryImg] = useState();
+  let [categoryName, setCategoryName] = useState(category?.name);
+  let [categoryImg, setCategoryImg] = useState(category?.imgUrl);
 
   let handleSubmit = (e) => {
     e.preventDefault();

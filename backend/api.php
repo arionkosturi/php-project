@@ -169,6 +169,27 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
     echo json_encode(['message' => 'You have no products']);
   }
 }
+// Create Category
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_category') and ($method === 'POST')) {
+  $name = $payload['name'];
+  $imgUrl = $payload['imgUrl'];
+  try {
+    $stm = $pdo->prepare("INSERT INTO `categories` (`name`,`imgUrl`) VALUES (?, ?)");
+    $user = $stm->execute([$payload['name'], $payload['imgUrl']]);
+    if (!empty($user)) {
+      echo json_encode(['message' => 'Category was created successfully']);
+    } else {
+      http_response_code(400);
+      json_encode(
+        ['error' => 'error']
+      );
+    }
+  } catch (Exception $error) {
+    echo json_encode([
+      $error->getMessage(),
+    ]);
+  }
+}
 // All Categories
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'categories') and $method === 'GET') {
   $SQL = "SELECT * FROM `categories`";
@@ -201,6 +222,19 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'category_by_i
     echo json_encode([]);
   }
 }
+// Update Category
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_category') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'Category ID is required!']));
+  }
+  $name = $payload['name'];
+  $imgUrl = $payload['imgUrl'];
+  $id = $payload['id'];
+  $stm = $pdo->prepare("UPDATE `categories` SET `name` = ?, `imgUrl` = ? WHERE `categories`.`id` = ? LIMIT 1");
+  $stm->execute([$name, $imgUrl, $id]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
+
 // Delete Category
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_category') && $method === 'GET') {
   if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -211,27 +245,7 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_catego
   $stm->execute([$_GET['id']]);
   echo json_encode(["success" => "deleted successfully"]);
 }
-// Create Category
-if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_category') and ($method === 'POST')) {
-  $name = $payload['name'];
-  $imgUrl = $payload['imgUrl'];
-  try {
-    $stm = $pdo->prepare("INSERT INTO `categories` (`name`,`imgUrl`) VALUES (?, ?)");
-    $user = $stm->execute([$payload['name'], $payload['imgUrl']]);
-    if (!empty($user)) {
-      echo json_encode(['message' => 'Category was created successfully']);
-    } else {
-      http_response_code(400);
-      json_encode(
-        ['error' => 'error']
-      );
-    }
-  } catch (Exception $error) {
-    echo json_encode([
-      $error->getMessage(),
-    ]);
-  }
-}
+
 
 // Product BY Category
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_category') && $method === 'GET') {

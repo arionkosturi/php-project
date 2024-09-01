@@ -260,10 +260,13 @@ export const useAddCategory = () => {
 
 //Mutate Category
 const useMutateSingleCategory = async (category) => {
-  let { name, imgUrl } = category;
-  return await apiClient.patch(`/categories/${category.id}`, {
+  let { name, imgUrl, id } = category;
+  return await apiClient.post(`api.php`, {
+    _method: "PATCH",
+    endpoint_name: "update_category",
     name,
     imgUrl,
+    id,
   });
 };
 // Mutate Category
