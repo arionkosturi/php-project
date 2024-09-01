@@ -6,7 +6,7 @@ import CheckPublished from "../CheckPublished";
 import CheckHighlighted from "../CheckHighlited";
 import { useNavigate } from "react-router-dom";
 import {
-  useFetchArticles,
+  useFetchProducts,
   useFetchSearchAllArticles,
   useMutateArticle,
   useDeleteArticle,
@@ -15,7 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Paginate from "../Paginate";
 import Buttons, { PublishBtn } from "../Buttons";
 
-function Articles() {
+function Products() {
   const queryClient = useQueryClient();
 
   const [searchTerm, setSearchTerm] = useState();
@@ -30,14 +30,14 @@ function Articles() {
   const { mutate } = useMutateArticle();
   const { mutate: remove } = useDeleteArticle();
   let fetchTerm = "all";
-  const { data: articles } = useFetchArticles(currentPage, fetchTerm);
+  const { data: products } = useFetchProducts(currentPage, fetchTerm);
   const navigate = useNavigate();
   return (
     <>
       <Paginate
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        articles={articles}
+        products={products}
       />
       <div className="flex mb-2   rounded-full w-3/5 mx-auto text-purple-700 dark:text-purple-300 group hover:ring ring-purple-300">
         <input
@@ -77,13 +77,13 @@ function Articles() {
           searchR &&
           searchR?.map((article) => {
             let handleViewArticle = () => {
-              navigate(`../dashboard/article?id=${article._id}`);
+              navigate(`../dashboard/article?id=${article.id}`);
             };
             let handleEdit = () => {
-              navigate(`../dashboard/edit?id=${article._id}`);
+              navigate(`../dashboard/edit?id=${article.id}`);
             };
             let handlePublish = () => {
-              let articleId = article._id;
+              let articleId = article.id;
               mutate(
                 {
                   articleId,
@@ -92,7 +92,7 @@ function Articles() {
                 {
                   onSuccess: () => {
                     queryClient.invalidateQueries({
-                      queryKey: ["articles"],
+                      queryKey: ["products"],
                     });
                     queryClient.invalidateQueries({
                       queryKey: ["searched articles"],
@@ -102,7 +102,7 @@ function Articles() {
               );
             };
             let handleHighlighted = () => {
-              let articleId = article._id;
+              let articleId = article.id;
               mutate(
                 {
                   articleId,
@@ -111,7 +111,7 @@ function Articles() {
                 {
                   onSuccess: () => {
                     queryClient.invalidateQueries({
-                      queryKey: ["articles"],
+                      queryKey: ["products"],
                     });
                     queryClient.invalidateQueries({
                       queryKey: ["searched articles"],
@@ -121,15 +121,15 @@ function Articles() {
               );
             };
             let handleDelete = () => {
-              let articleId = article._id;
+              let articleId = article.id;
               remove(articleId);
             };
-            let contentStriped = article.content.replace(/<[^>]*>/g, "");
+            // let contentStriped = article.content?.replace(/<[^>]*>/g, "");
             // console.log(contentStriped);
             return (
               <div
                 className="flex flex-col xl:flex-row container justify-between mx-auto  border border-purple-400 my-1 "
-                key={article._id}
+                key={article.id}
               >
                 <Toaster />
                 <div className="flex flex-col md:flex-row p-2 justify-between">
@@ -147,11 +147,11 @@ function Articles() {
                       ""
                     )}
 
-                    {article.imgUrl ? (
+                    {article.img ? (
                       <img
                         className="w-full p-2 h-48"
                         alt="article"
-                        src={article.imgUrl}
+                        src={article.img}
                       />
                     ) : (
                       <img
@@ -169,13 +169,13 @@ function Articles() {
                       onClick={handleViewArticle}
                       className="cursor-pointer font-bold mx-4 my-2 line-clamp-2 text-purple-400"
                     >
-                      {article.title}
+                      {article.name}
                     </h1>
                     <p className="text-sm mx-4 my-2 text-slate-400 line-clamp-2 ">
                       {article.description}
                     </p>
                     <div className="text-sm mx-4 my-2 text-slate-400 line-clamp-4 ">
-                      {contentStriped}
+                      Test
                     </div>
 
                     <p className="flex justify-end text-sm mx-4 text-slate-400 ">
@@ -212,55 +212,55 @@ function Articles() {
             );
           })}
       </div>
-      {articles?.map((article) => {
+      {products?.map((product) => {
         let handleViewArticle = () => {
-          navigate(`../dashboard/article?id=${article._id}`);
+          navigate(`../dashboard/article?id=${product.id}`);
         };
         let handleEdit = () => {
-          navigate(`../dashboard/edit?id=${article._id}`);
+          navigate(`../dashboard/edit?id=${product.id}`);
         };
         let handlePublish = () => {
-          let articleId = article._id;
+          let productId = product.id;
           mutate(
             {
-              articleId,
-              isPublished: !article.isPublished,
+              productId,
+              isPublished: !product.isPublished,
             },
             {
               onSuccess: async () => {
                 return await queryClient.invalidateQueries({
-                  queryKey: ["articles"],
+                  queryKey: ["products"],
                 });
               },
             }
           );
         };
         let handleHighlighted = () => {
-          let articleId = article._id;
+          let productId = product.id;
           mutate(
             {
-              articleId,
-              isHighlighted: !article.isHighlighted,
+              productId,
+              isHighlighted: !product.isHighlighted,
             },
             {
               onSuccess: async () => {
                 return await queryClient.invalidateQueries({
-                  queryKey: ["articles"],
+                  queryKey: ["products"],
                 });
               },
             }
           );
         };
         let handleDelete = () => {
-          let articleId = article._id;
-          remove(articleId);
+          let productId = product.id;
+          remove(productId);
         };
-        let contentStriped = article.content.replace(/<[^>]*>/g, "");
+        // let contentStriped = article.content.replace(/<[^>]*>/g, "");
         // console.log(contentStriped);
         return (
           <div
             className="flex flex-col xl:flex-row container justify-between mx-auto  border border-purple-400 my-1 "
-            key={article._id}
+            key={product.id}
           >
             <Toaster />
             <div className="flex flex-col md:flex-row p-2 justify-between">
@@ -268,7 +268,7 @@ function Articles() {
                 onClick={handleViewArticle}
                 className="relative cursor-pointer overflow-hidden w-96 h-48 bg-white border"
               >
-                {article.isPublished & article.isHighlighted ? (
+                {product.isPublished & product.isHighlighted ? (
                   <div className="absolute left-6 top-0 h-16 w-16">
                     <div className="absolute shadow-md transform -rotate-45 bg-green-400 text-center text-white font-semibold py-1 right-[-35px] top-[32px] w-[170px]">
                       Highlighted
@@ -278,11 +278,11 @@ function Articles() {
                   ""
                 )}
 
-                {article.imgUrl ? (
+                {product.img ? (
                   <img
                     className="w-full p-2 h-48"
                     alt="article"
-                    src={article.imgUrl}
+                    src={product.img}
                   />
                 ) : (
                   <img
@@ -299,34 +299,26 @@ function Articles() {
                   onClick={handleViewArticle}
                   className="cursor-pointer font-bold mx-4 my-2 line-clamp-2 text-purple-400"
                 >
-                  {article.title}
+                  {product.name}
                 </h1>
                 <p className="text-sm mx-4 my-2 text-slate-400 line-clamp-2 ">
-                  {article.description}
+                  {/* {article.description} */}
                 </p>
                 <div className="text-sm mx-4 my-2 text-slate-400 line-clamp-4 ">
-                  {contentStriped}
+                  {/* {contentStriped} */}
                 </div>
-
-                <p className="flex justify-end text-sm mx-4 text-slate-400 ">
-                  {new Date(article.createdAt).toLocaleDateString(undefined, {
-                    day: "numeric",
-                    year: "numeric",
-                    month: "long",
-                  })}
-                </p>
               </div>
             </div>
             {/* Buttons */}
             <div className="flex xl:flex-col">
               <PublishBtn
                 handlePublish={handlePublish}
-                article={article}
+                product={product}
                 CheckPublished={CheckPublished}
               />
 
               <Buttons
-                article={article}
+                product={product}
                 CheckPublished={CheckPublished}
                 handlePublish={handlePublish}
                 handleHighlighted={handleHighlighted}
@@ -342,4 +334,4 @@ function Articles() {
   );
 }
 
-export default Articles;
+export default Products;

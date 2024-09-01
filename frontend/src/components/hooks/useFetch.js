@@ -5,18 +5,21 @@ import { useToast } from "../ui/use-toast";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "@uidotdev/usehooks";
 
-// Fetch All Articles
-const fetchArticles = async () => {
-  return await apiClient.get(`api.php?endpoint_name=products`);
+// Fetch All Products
+const fetchProducts = async (pageNumber) => {
+  return await apiClient.get(
+    `api.php?endpoint_name=products&pageNumber=${pageNumber}`
+  );
 };
 // Fetch All Articles
-export const useFetchArticles = () => {
+export const useFetchProducts = (pageNumber) => {
   return useQuery({
     queryFn: async () => {
-      const { data } = await fetchArticles();
+      const { data } = await fetchProducts(pageNumber);
+
       return data;
     },
-    queryKey: ["articles"],
+    queryKey: ["products", pageNumber],
   });
 };
 
@@ -166,7 +169,7 @@ export const useMutateArticle = (article) => {
         queryKey: ["single article"],
       });
       queryClient.invalidateQueries({
-        queryKey: ["articles"],
+        queryKey: ["products"],
       });
       queryClient.invalidateQueries({
         queryKey: ["searched articles"],

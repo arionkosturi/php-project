@@ -8,7 +8,7 @@ import {
   PaginationPrevious,
 } from "../components/ui/pagination";
 
-function Paginate({ currentPage, setCurrentPage, articles }) {
+function Paginate({ pageNumber, setPageNumber, products }) {
   return (
     <>
       <Pagination className="">
@@ -17,8 +17,7 @@ function Paginate({ currentPage, setCurrentPage, articles }) {
             <PaginationPrevious
               className="text-purple-800 hover:text-purple-500"
               onClick={() => {
-                if (currentPage > 0)
-                  setCurrentPage((prevPage) => +prevPage - 1);
+                if (pageNumber > 0) setPageNumber((prevPage) => +prevPage - 1);
               }}
             />
           </PaginationItem>
@@ -27,8 +26,8 @@ function Paginate({ currentPage, setCurrentPage, articles }) {
             <PaginationNext
               className="text-purple-800 hover:text-purple-500"
               onClick={() => {
-                if (articles.length < 8) return;
-                setCurrentPage((prevPage) => +prevPage + 1);
+                if (products.length < 9) return;
+                setPageNumber((prevPage) => +prevPage + 1);
               }}
             />
           </PaginationItem>

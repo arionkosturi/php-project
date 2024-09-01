@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState } from "react";
-import Articles from "../Pages/Articles";
+import Products from "../Pages/Products";
 import Header from "../Header";
 import Login from "../../frontend/Login";
 import LeftPanel from "./LeftPanel";
@@ -21,13 +21,13 @@ function Dashboard() {
       <div className="container mx-auto">
         <h1 className="text-3xl">
           <span className="bg-yellow-400 text-white mr-2 px-2 py-1">All</span>
-          Articles
+          Products
         </h1>
       </div>
       <div className="flex flex-col md:flex-row mx-2 sm:container sm:mx-auto">
         <LeftPanel />
         <div className="max-w-full flex flex-col">
-          <Articles
+          <Products
             isPublished={isPublished}
             setIsPublished={setIsPublished}
             currentPage={currentPage}

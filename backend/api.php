@@ -153,8 +153,12 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'orders'
 
 // All Products
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') and $method === 'GET') {
+  $pageNumber = $_GET['pageNumber'];
+  $SQL = "SELECT `products`.*, `categories`.`name` as `category_name`
+  FROM `products` 
+	LEFT JOIN `categories` ON `products`.`category_id` = `categories`.`id`
+  ORDER BY `products`.`created_at` ASC LIMIT $pageNumber, 9";
 
-  $SQL = "SELECT * FROM `products`";
   $stm = $pdo->prepare($SQL);
   $stm->execute();
   $products = $stm->fetchAll(PDO::FETCH_ASSOC);

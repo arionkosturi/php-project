@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "./Header";
 import { useParams } from "react-router";
-import { useFetchArticles } from "../components/hooks/useFetch";
+import { useFetchProducts } from "../components/hooks/useFetch";
 function PublicCategory() {
   let { category } = useParams();
   let currentPage = 0;
   let fetchTerm = `/category/${category}`;
-  const { data: articles } = useFetchArticles(currentPage, fetchTerm);
+  const { data: articles } = useFetchProducts(currentPage, fetchTerm);
   return (
     <>
       <Header />

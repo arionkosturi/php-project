@@ -5,7 +5,7 @@ import CheckPublished from "../CheckPublished";
 import CheckHighlighted from "../CheckHighlited";
 import { useNavigate } from "react-router-dom";
 import {
-  useFetchArticles,
+  useFetchProducts,
   useSingleUser,
   useMutateArticle,
   useDeleteArticle,
@@ -23,7 +23,7 @@ function PublishedArticles() {
   const [currentPage, setCurrentPage] = useState(0);
   const { mutate } = useMutateArticle();
   const { mutate: remove } = useDeleteArticle();
-  const { data } = useFetchArticles(currentPage);
+  const { data } = useFetchProducts(currentPage);
   const navigate = useNavigate();
 
   if (!loggedUser?.isAdmin) {
