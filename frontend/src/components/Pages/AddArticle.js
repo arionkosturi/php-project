@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
-import { useSingleUser } from "../hooks/useFetch";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 function AddArticle({ className }) {
-  const { data: loggedUser } = useSingleUser();
-  if (!loggedUser.isAdmin) {
+  const [user, setUser] = useLocalStorage("user");
+  if (!user?.role == "admin") {
     return <Dashboard />;
   }
   return (

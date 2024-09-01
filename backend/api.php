@@ -147,7 +147,30 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'orders'
     echo json_encode(['message' => 'You have no orders']);
   }
 }
-
+// Create Product
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_product') and ($method === 'POST')) {
+  $name = $payload['name'];
+  $details = $payload['details'];
+  $cost = $payload['cost'];
+  $price = $payload['price'];
+  $img = $payload['img'];
+  try {
+    $stm = $pdo->prepare("INSERT INTO `products` (`name`,`details`, `cost`, `price`,`img`) VALUES (?, ?, ?, ?, ?)");
+    $user = $stm->execute([$name, $details, $cost, $price, $img]);
+    if (!empty($user)) {
+      echo json_encode(['message' => 'Product was created successfully']);
+    } else {
+      http_response_code(400);
+      json_encode(
+        ['error' => 'error']
+      );
+    }
+  } catch (Exception $error) {
+    echo json_encode([
+      $error->getMessage(),
+    ]);
+  }
+}
 // All Products
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') and $method === 'GET') {
   $pageNumber = $_GET['pageNumber'];
@@ -254,7 +277,7 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_c
   }
 
   $stm = $pdo->prepare(
-    "SELECT `products`.*, `categories`.`name` 
+    "SELECT `products`.*, `categories`.`name` as `category_name`
      FROM `products` 
      INNER JOIN `categories` ON `products`.`category_id` = `categories`.`id` 
      WHERE `categories`.`name` = ?"
@@ -307,7 +330,14 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search') && $
   if (!isset($_GET['q']) || empty($_GET['q'])) {
     die(json_encode(['message' => 'Search query is required!']));
   }
-  $stm = $pdo->prepare("SELECT * FROM `products` WHERE name LIKE :phrase");
+  $stm = $pdo->prepare("SELECT
+    `products`.*,
+    `categories`.`name` AS `category_name`
+FROM
+    `products`
+LEFT JOIN `categories` ON `products`.`category_id` = `categories`.`id`
+WHERE
+    `products`.`name` LIKE :phrase");
   $q = '%' . $_GET['q'] . '%';
   $stm->bindValue(':phrase', $q, PDO::PARAM_STR);
   $stm->execute();

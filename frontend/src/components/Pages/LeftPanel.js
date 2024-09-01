@@ -19,7 +19,7 @@ function LeftPanel() {
             className="hover:bg-slate-100 p-2 text-center sm:text-left"
             to="/dashboard/new"
           >
-            New Article
+            New Product
           </Link>
           <NavLink
             to="/dashboard/all"
@@ -29,7 +29,7 @@ function LeftPanel() {
                 : "bg-slate-200 text-purple-500  hover:bg-slate-100 p-2 text-center sm:text-left";
             }}
           >
-            All Articles
+            All Products
           </NavLink>
 
           <NavLink

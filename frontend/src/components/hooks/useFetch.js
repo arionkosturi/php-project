@@ -11,7 +11,7 @@ const fetchProducts = async (pageNumber) => {
     `api.php?endpoint_name=products&pageNumber=${pageNumber}`
   );
 };
-// Fetch All Articles
+// Fetch All Products
 export const useFetchProducts = (pageNumber) => {
   return useQuery({
     queryFn: async () => {
@@ -20,6 +20,23 @@ export const useFetchProducts = (pageNumber) => {
       return data;
     },
     queryKey: ["products", pageNumber],
+  });
+};
+// Fetch Products By Category
+const fetchProductsByCategory = async (category) => {
+  return await apiClient.get(
+    `api.php?endpoint_name=products_by_category&category=${category}`
+  );
+};
+// Fetch Products By Category
+export const useFetchProductsByCategory = (category) => {
+  return useQuery({
+    queryFn: async () => {
+      const { data } = await fetchProductsByCategory(category);
+
+      return data;
+    },
+    queryKey: ["products", category],
   });
 };
 
@@ -75,7 +92,9 @@ export const useSingleArticle = () => {
 const fetchSearchedArticles = async (q) => {
   let query = q.queryKey[1]?.q;
   if (query === undefined) return;
-  return await apiClient.get(`news/search/${q.queryKey[1].q}`);
+  return await apiClient.get(
+    `api.php?endpoint_name=search&q=${q.queryKey[1].q}`
+  );
 };
 
 // Fetch Searched Articles
@@ -84,7 +103,6 @@ export const useFetchSearchedArticles = (q) => {
     queryFn: async (q) => {
       if (!q) return;
       const { data } = await fetchSearchedArticles(q);
-      // console.log(q);
       return data;
     },
     queryKey: ["searched articles", { q }],
@@ -94,7 +112,9 @@ export const useFetchSearchedArticles = (q) => {
 const fetchSearchAllArticles = async (q) => {
   let query = q.queryKey[1].q;
   if (query.length >= 3) {
-    return await apiClient.get(`news/searchall/${q.queryKey[1].q}`);
+    return await apiClient.get(
+      `api.php?endpoint_name=search&q=${q.queryKey[1].q}`
+    );
   }
 };
 
@@ -110,21 +130,30 @@ export const useFetchSearchAllArticles = (q) => {
 };
 
 //Add Article
-const addArticle = async (article) => {
-  return await apiClient.post("/news/", article);
+const addProduct = async (product) => {
+  const { name, details, cost, price, img } = product;
+
+  return await apiClient.post("api.php", {
+    endpoint_name: "add_product",
+    name,
+    details,
+    cost,
+    price,
+    img,
+  });
 };
-export const useAddArticle = () => {
+export const useAddProduct = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: addArticle,
-    mutationKey: ["single article"],
+    mutationFn: addProduct,
+    mutationKey: ["single product"],
     onSuccess: () => {
       toast({
         variant: "success",
         title: "Success",
-        description: "Artikulli u krijua me sukses!",
+        description: "Produkti u krijua me sukses!",
       });
       setTimeout(() => {
         navigate("/dashboard/all");

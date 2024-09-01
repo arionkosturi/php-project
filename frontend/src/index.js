@@ -9,7 +9,7 @@ import Categories from "./components/Pages/Categories";
 import Category from "./components/Pages/Category";
 import PublicCategory from "./frontend/Category";
 import NotFoundPage from "./components/Pages/NotFoundPage";
-import ArticleForm from "./components/ArticleForm";
+import ArticleForm from "./components/ProductForm";
 import EditArticle from "./components/Pages/EditArticle";
 import Dashboard from "./components/Pages/Dashboard";
 import Users from "./components/Pages/Users";

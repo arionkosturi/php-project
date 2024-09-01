@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import Header from "./Header";
 import JoditEditor from "jodit-react";
 import { Toaster } from "./ui/toaster";
-import { useAddArticle, useFetchCategories } from "./hooks/useFetch";
+import { useAddProduct, useFetchCategories } from "./hooks/useFetch";
 import { Button } from "./ui/button";
 import { useSingleUser } from "./hooks/useFetch";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
-function ArticleForm() {
-  const { data: loggedUser } = useSingleUser();
+function ProductForm() {
+  const [user, setUser] = useLocalStorage("user");
   const editor = useRef(null);
   const [editorContent, setEditorContent] = useState("");
   const config = useMemo(
@@ -20,27 +21,26 @@ function ArticleForm() {
     []
   );
   const { data: categories } = useFetchCategories();
-  const { mutate, status } = useAddArticle();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const { mutate, status } = useAddProduct();
+  const [productName, setProductName] = useState("");
+  const [details, setDetails] = useState("");
   const [category, setCategory] = useState("");
-  const [author, setAuthor] = useState("");
-  const [sourceUrl, setSource] = useState("");
-  const [imgUrl, setImgUrl] = useState();
+  const [cost, setCost] = useState("");
+  const [price, setPrice] = useState("");
+  const [img, setImg] = useState();
   let handleSubmit = (e) => {
     e.preventDefault();
     mutate({
-      title,
-      description,
-      content: editorContent,
-      author,
-      sourceUrl,
+      name: productName,
+      details,
+      cost,
+      price,
       category,
-      imgUrl,
+      img,
     });
   };
 
-  if (!loggedUser?.isAdmin) {
+  if (!user?.role == "admin") {
     return <Header />;
   }
   return (
@@ -49,66 +49,56 @@ function ArticleForm() {
       <Header />
 
       <h1 className="text-3xl text-center text-green-600">
-        Creating New Article
+        Creating New Product
       </h1>
-      <label htmlFor="title">Title</label>
+      <label htmlFor="name">Name</label>
       <input
         type="text"
-        id="title"
-        placeholder="Enter Title"
-        name="title"
+        id="name"
+        placeholder="Enter Product Name"
+        name="productName"
         className="border p-2"
-        value={title}
+        value={productName}
         onChange={(e) => {
-          setTitle(e.target.value);
+          setProductName(e.target.value);
         }}
       />
-      <label htmlFor="description">Description</label>
+      <label htmlFor="details">Details</label>
       <textarea
         type="text"
-        id="description"
-        placeholder="Enter Description"
-        name="description"
+        id="details"
+        placeholder="Enter Details"
+        name="details"
         className="border p-2"
         rows="4"
-        value={description}
+        value={details}
         onChange={(e) => {
-          setDescription(e.target.value);
+          setDetails(e.target.value);
         }}
       />
-      <label htmlFor="content">Content:</label>
-      {/* <CustomEditor contentValue={content} setContentValue={setContent} /> */}
-      <JoditEditor
-        autoFocus
-        config={config}
-        ref={editor}
-        value={editorContent}
-        onChange={(newContent) => setEditorContent(newContent)}
-        // onBlur={editorContentSave}
-      />
-      <label htmlFor="author">Author:</label>
+      <label htmlFor="cost">Cost:</label>
       <input
-        type="text"
-        id="author"
-        placeholder="Enter Author"
-        name="author"
+        type="number"
+        id="cost"
+        placeholder="Enter Cost"
+        name="cost"
         className="border p-2"
-        value={author}
+        value={cost}
         onChange={(e) => {
-          setAuthor(e.target.value);
+          setCost(e.target.value);
         }}
       />
-      <label htmlFor="source">Source:</label>
-      <textarea
+      <label htmlFor="price">Price:</label>
+      <input
         // @ts-ignore
         type="text"
-        id="source"
-        placeholder="Enter Source"
-        name="source"
+        id="price"
+        placeholder="Enter Price"
+        name="price"
         className="border p-2"
-        value={sourceUrl}
+        value={price}
         onChange={(e) => {
-          setSource(e.target.value);
+          setPrice(e.target.value);
         }}
       />
 
@@ -129,21 +119,21 @@ function ArticleForm() {
           );
         })}
       </select>
-      <label htmlFor="imgUrl">Image URL</label>
+      <label htmlFor="img">Image URL</label>
       <textarea
         type="text"
-        id="imgUrl"
+        id="img"
         placeholder="Enter Img Source"
-        name="imgUrl"
+        name="img"
         className="border"
-        value={imgUrl}
+        value={img}
         onChange={(e) => {
-          setImgUrl(e.target.value);
+          setImg(e.target.value);
         }}
       />
       <div className="flex border border-red-300">
         <span className="p-6">Image Preview:</span>
-        <img className="w-1/3 my-6" alt="preview" src={imgUrl} />
+        <img className="w-1/3 my-6" alt="preview" src={img} />
       </div>
       <div className="mx-auto container">
         <form className="mt-4 mb-10 text-center">
@@ -163,4 +153,4 @@ function ArticleForm() {
     </div>
   );
 }
-export default ArticleForm;
+export default ProductForm;

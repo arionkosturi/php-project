@@ -13,7 +13,7 @@ function Home() {
   return (
     <div className="container mx-auto">
       <Header />
-      <HighlitedSection />
+      {/* <HighlitedSection /> */}
       <Reklama />
       <PublicArticles currentPage={currentPage} />
       <Categories />
