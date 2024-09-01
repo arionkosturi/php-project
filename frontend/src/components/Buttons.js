@@ -7,22 +7,22 @@ function Buttons({
   CheckHighlighted,
   handleEdit,
   handleDelete,
-  article,
+  product,
 }) {
   return (
     <div className="flex flex-row xl:flex-col gap-2 align-bottom justify-items-end">
       {/* Featured Article Button */}
-      {article.isPublished && (
+      {product.isPublished && (
         <Alert
           handleFunction={handleHighlighted}
           alertTriggerButton={
             <div>
               <CheckHighlighted
                 isHighlighted={
-                  article.isHighlighted === true ? "Featured" : "Feature"
+                  product.isHighlighted === true ? "Featured" : "Feature"
                 }
                 className={
-                  article.isHighlighted === true
+                  product.isHighlighted === true
                     ? "border flex w-24 md:w-32 h-9 mt-2 px-2 bg-green-400 hover:bg-green-500 sm:flex justify-center gap-2"
                     : "border flex  w-24 md:w-32 h-9 mt-2 px-2 bg-amber-400 hover:bg-amber-500 sm:flex justify-center gap-2"
                 }
@@ -31,24 +31,24 @@ function Buttons({
           }
           alertTitle="Jeni i sigurt?"
           alertMessage={
-            article.isPublished & article.isHighlighted &&
+            product.isPublished & product.isHighlighted &&
             "Deshiron ta heqesh artikullin highlighted?"
-              ? article.isPublished &&
-                (article.isHighlighted === true
+              ? product.isPublished &&
+                (product.isHighlighted === true
                   ? "Deshiron ta heqesh artikullin nga Highlighted?"
                   : "Artikulli nuk eshte i publikuar dhe nuk do te shfaqet ne highlighted!")
               : "Deshiron ta besh artikullin Highlighted?"
           }
         />
       )}
-      {!article.isPublished && (
+      {!product.isPublished && (
         <div>
           <CheckHighlighted
             isHighlighted={
-              article.isHighlighted === true ? "Featured" : "Feature"
+              product.isHighlighted === true ? "Featured" : "Feature"
             }
             className={
-              article.isHighlighted === true
+              product.isHighlighted === true
                 ? "border opacity-50 w-20 md:w-32 h-9 mt-2 px-2 bg-green-500 hover:bg-green-500 flex justify-center gap-2"
                 : "border opacity-50 w-20 md:w-32 h-9 mt-2 px-2 bg-amber-500 hover:bg-amber-500 flex justify-center gap-2"
             }
@@ -80,7 +80,7 @@ function Buttons({
   );
 }
 
-export const PublishBtn = ({ handlePublish, article, CheckPublished }) => {
+export const PublishBtn = ({ handlePublish, product, CheckPublished }) => {
   return (
     <Alert
       handleFunction={handlePublish}
@@ -88,10 +88,10 @@ export const PublishBtn = ({ handlePublish, article, CheckPublished }) => {
         <div>
           <CheckPublished
             isPublished={
-              article.isPublished === true ? "Published" : "Archived"
+              product.isPublished === true ? "Published" : "Archived"
             }
             className={
-              article.isPublished === true
+              product.isPublished === true
                 ? "border w-20 md:w-32 h-9 mt-2 px-2 bg-green-400 hover:bg-green-500 flex justify-center gap-2"
                 : "border w-20 md:w-32 h-9 mt-2 px-2 bg-red-400 hover:bg-red-500 flex justify-center gap-2"
             }
@@ -100,7 +100,7 @@ export const PublishBtn = ({ handlePublish, article, CheckPublished }) => {
       }
       alertTitle="Jeni i sigurt?"
       alertMessage={
-        article.isPublished === true
+        product.isPublished === true
           ? "Deshiron ta arkivosh artikullin?"
           : "Deshiron ta Publikosh artikullin?"
       }

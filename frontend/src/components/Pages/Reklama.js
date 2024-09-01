@@ -46,8 +46,9 @@ import {
 } from "../ui/table";
 import LeftPanel from "./LeftPanel";
 import useDebounce from "../../frontend/useDebounce";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
-function FetchReklama({ loggedUser, searchTerm }) {
+function FetchReklama({ searchTerm }) {
   const { data: reklama, isPending, error } = useFetchReklama();
   const { mutate: remove } = useDeleteReklama();
   const { mutate } = useMutateReklama();
@@ -714,7 +715,7 @@ function AddNewReklama() {
   );
 }
 function Reklama() {
-  let { data: loggedUser } = useSingleUser();
+  const [user, setUser] = useLocalStorage("user");
   const [searchTerm, setSearchTerm] = useState();
   const [title, setTitle] = useState();
   const [imgUrl, setImgUrl] = useState();
@@ -724,12 +725,12 @@ function Reklama() {
     setSearchTerm(e.target.value);
   };
 
-  if (!loggedUser?.isAdmin) {
+  if (!user?.role == "admin") {
     return <Dashboard />;
   }
 
   return (
-    loggedUser?.isAdmin && (
+    user?.role == "admin" && (
       <>
         <Header />
         <div className="container mx-auto mb-2">
@@ -771,10 +772,7 @@ function Reklama() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <FetchReklama
-                    loggedUser={loggedUser}
-                    searchTerm={searchTerm}
-                  />
+                  <FetchReklama user={user} searchTerm={searchTerm} />
                 </TableBody>
               </Table>
               <AddNewReklama />

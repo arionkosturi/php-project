@@ -75,19 +75,19 @@ function Products() {
         )}
         {searchTerm?.length >= 3 &&
           searchR &&
-          searchR?.map((article) => {
+          searchR?.map((product) => {
             let handleViewArticle = () => {
-              navigate(`../dashboard/article?id=${article.id}`);
+              navigate(`../dashboard/product?id=${product.id}`);
             };
             let handleEdit = () => {
-              navigate(`../dashboard/edit?id=${article.id}`);
+              navigate(`../dashboard/edit?id=${product.id}`);
             };
             let handlePublish = () => {
-              let articleId = article.id;
+              let productId = product.id;
               mutate(
                 {
-                  articleId,
-                  isPublished: !article.isPublished,
+                  productId,
+                  isPublished: !product.isPublished,
                 },
                 {
                   onSuccess: () => {
@@ -102,11 +102,11 @@ function Products() {
               );
             };
             let handleHighlighted = () => {
-              let articleId = article.id;
+              let productId = product.id;
               mutate(
                 {
-                  articleId,
-                  isHighlighted: !article.isHighlighted,
+                  productId,
+                  isHighlighted: !product.isHighlighted,
                 },
                 {
                   onSuccess: () => {
@@ -121,15 +121,15 @@ function Products() {
               );
             };
             let handleDelete = () => {
-              let articleId = article.id;
-              remove(articleId);
+              let productId = product.id;
+              remove(productId);
             };
             // let contentStriped = article.content?.replace(/<[^>]*>/g, "");
             // console.log(contentStriped);
             return (
               <div
                 className="flex flex-col xl:flex-row container justify-between mx-auto  border border-purple-400 my-1 "
-                key={article.id}
+                key={product.id}
               >
                 <Toaster />
                 <div className="flex flex-col md:flex-row p-2 justify-between">
@@ -137,7 +137,7 @@ function Products() {
                     onClick={handleViewArticle}
                     className="relative cursor-pointer overflow-hidden w-96 h-48 bg-white border"
                   >
-                    {article.isPublished & article.isHighlighted ? (
+                    {product.isPublished & product.isHighlighted ? (
                       <div className="absolute left-6 top-0 h-16 w-16">
                         <div className="absolute shadow-md transform -rotate-45 bg-green-400 text-center text-white font-semibold py-1 right-[-35px] top-[32px] w-[170px]">
                           Highlighted
@@ -147,11 +147,11 @@ function Products() {
                       ""
                     )}
 
-                    {article.img ? (
+                    {product.img ? (
                       <img
                         className="w-full p-2 h-48"
                         alt="article"
-                        src={article.img}
+                        src={product.img}
                       />
                     ) : (
                       <img
@@ -169,17 +169,17 @@ function Products() {
                       onClick={handleViewArticle}
                       className="cursor-pointer font-bold mx-4 my-2 line-clamp-2 text-purple-400"
                     >
-                      {article.name}
+                      {product.name}
                     </h1>
                     <p className="text-sm mx-4 my-2 text-slate-400 line-clamp-2 ">
-                      {article.description}
+                      {product.description}
                     </p>
                     <div className="text-sm mx-4 my-2 text-slate-400 line-clamp-4 ">
                       Test
                     </div>
 
                     <p className="flex justify-end text-sm mx-4 text-slate-400 ">
-                      {new Date(article.createdAt).toLocaleDateString(
+                      {new Date(product.createdAt).toLocaleDateString(
                         undefined,
                         {
                           day: "numeric",
@@ -194,12 +194,12 @@ function Products() {
                 <div className="flex xl:flex-col">
                   <PublishBtn
                     handlePublish={handlePublish}
-                    article={article}
+                    product={product}
                     CheckPublished={CheckPublished}
                   />
 
                   <Buttons
-                    article={article}
+                    product={product}
                     CheckPublished={CheckPublished}
                     handlePublish={handlePublish}
                     handleHighlighted={handleHighlighted}

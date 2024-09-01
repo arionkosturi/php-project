@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2024 at 11:07 PM
+-- Generation Time: Sep 01, 2024 at 03:55 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -29,16 +29,23 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
-  `name` varchar(45) NOT NULL
+  `name` varchar(45) NOT NULL,
+  `imgUrl` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`) VALUES
-(1, 'Food'),
-(2, 'Smartphones');
+INSERT INTO `categories` (`id`, `name`, `imgUrl`) VALUES
+(1, 'Food', ''),
+(2, 'Smartphones', 'https://th.bing.com/th/id/OIP._agMEL9UGb1_5mDjH5n7wQHaEK?rs=1&pid=ImgDetMain'),
+(3, 'Tablets', ''),
+(4, 'PC', ''),
+(5, 'XBOX', ''),
+(6, 'Keyboards', ''),
+(7, 'Chairs', ''),
+(8, 'Headphones', '');
 
 -- --------------------------------------------------------
 
@@ -90,23 +97,76 @@ INSERT INTO `order_line` (`id`, `order_id`, `product_id`, `qty`) VALUES
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `details` text NOT NULL,
   `category_id` int(11) NOT NULL,
   `cost` int(11) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
-  `img` varchar(300) DEFAULT 'noimage.png'
+  `img` varchar(300) DEFAULT 'noimage.png',
+  `isHighlighted` tinyint(1) NOT NULL DEFAULT 0,
+  `stock` int(11) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `isPublished` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `category_id`, `cost`, `price`, `img`) VALUES
-(4, 'OPPO Reno12 5G', 1, 350, 470, 'https://opsg-img-cdn-gl.heytapimg.com/epb/202406/26/IzcVfAu2kdJjoeYS.png'),
-(5, 'Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow', 2, 300, 430, 'https://m.media-amazon.com/images/I/61bFypVJVyL._AC_SL1500_.jpg'),
-(6, 'SAMSUNG Galaxy A15 5G, 128GB, US Version', 2, 100, 199, 'https://m.media-amazon.com/images/I/41vU1u8DZXL._AC_SL1000_.jpg'),
-(7, 'Moto G Play 2023 3-Day Battery Unlocked Made for US 3/32GB 16MP Camera Navy Blue', 2, 60, 99, 'https://m.media-amazon.com/images/I/61K1Fz5LxvL._AC_SL1500_.jpg'),
-(8, 'OnePlus 12R, 8GB RAM+128GB, Dual-Sim, 50MP Camera, 80W Fast Charging', 2, 380, 449, 'https://m.media-amazon.com/images/I/71xMs88FYbL._AC_SL1500_.jpg'),
-(9, 'SAMSUNG Galaxy S24 Ultra 512GB', 2, 900, 1100, 'https://m.media-amazon.com/images/I/71WcjsOVOmL._AC_SL1500_.jpg');
+INSERT INTO `products` (`id`, `name`, `details`, `category_id`, `cost`, `price`, `img`, `isHighlighted`, `stock`, `created_at`, `isPublished`) VALUES
+(4, 'OPPO Reno12 5G', 'New Unlocked Android Phone!', 2, 350, 470, 'https://opsg-img-cdn-gl.heytapimg.com/epb/202406/26/IzcVfAu2kdJjoeYS.png', 1, 0, '2024-09-01 13:51:43', 1),
+(5, 'Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow', '', 2, 300, 430, 'https://m.media-amazon.com/images/I/61bFypVJVyL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(6, 'SAMSUNG Galaxy A15 5G, 128GB, US Version', '', 2, 100, 199, 'https://m.media-amazon.com/images/I/41vU1u8DZXL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(7, 'Moto G Play 2023 3-Day Battery Unlocked Made for US 3/32GB 16MP Camera Navy Blue', '', 2, 60, 99, 'https://m.media-amazon.com/images/I/61K1Fz5LxvL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(8, 'OnePlus 12R, 8GB RAM+128GB, Dual-Sim, 50MP Camera, 80W Fast Charging', '', 2, 380, 449, 'https://m.media-amazon.com/images/I/71xMs88FYbL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(9, 'SAMSUNG Galaxy S24 Ultra 512GB', '', 2, 900, 1100, 'https://m.media-amazon.com/images/I/71WcjsOVOmL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(10, 'Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi', '', 3, 300, 390, 'https://m.media-amazon.com/images/I/61NGnpjoRDL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(11, 'SAMSUNG Galaxy Tab S6 Lite (2024) 10.4\" 64GB WiFi', '', 3, 100, 199, 'https://m.media-amazon.com/images/I/61QfSvAihfL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(12, 'SAMSUNG Galaxy Tab A9+ Tablet 11” 64GB', '', 3, 130, 179, 'https://m.media-amazon.com/images/I/61d46oYQgdL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(13, 'PXN V99 Force Feedback Gaming Steering Wheel Xbox PC,270/900 Degree Racing Wheel with 3-Pedals and Shifter Bundle for PC,PS4, Xbox One, Xbox Series X/S', '', 5, 180, 229, 'https://m.media-amazon.com/images/I/71QoGSGgEzL._SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(14, 'Xbox Series S 512GB SSD Console - Includes Xbox Wireless Controller', '', 5, 200, 299, 'https://m.media-amazon.com/images/I/61QKAlzPSfL._SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(15, 'Xbox Series X 1TB SSD Console', '', 5, 380, 439, 'https://m.media-amazon.com/images/I/51ojzJk77qL._SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(16, 'Thermaltake LCGS Quartz i460T R4 Gaming Desktop (Intel Core™ i5-13400F, ToughRam DDR4 3600Mhz 16GB RGB Memory, NVIDIA GeForce® RTX 4060 Ti, 1TB NVMe M.2, Windows 11) S2QT-B66R-46T-LCS', '', 4, 800, 899, 'https://m.media-amazon.com/images/I/81JtHUVy7+L._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(17, 'Skytech Gaming Shadow Gaming PC Desktop – AMD Ryzen 7 5700X 3.4 GHz, NVIDIA RTX 4060, 1TB NVME SSD, 16GB DDR4 RAM 3200, 600W Gold PSU, 11AC Wi-Fi, Windows', '', 4, 880, 999, 'https://m.media-amazon.com/images/I/614+Y-V33GL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(18, 'Womier S-K80 75% Keyboard with Color Multimedia Display Mechanical Gaming Keyboard, Hot Swappable Keyboard, Gasket Mount RGB Custom', '', 6, 40, 69, 'https://m.media-amazon.com/images/I/71duf0rTDqL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(19, 'Womier 60% Percent Keyboard, WK61 Mechanical RGB Wired Gaming Keyboard, Hot-Swappable Keyboard with Blue Sea PBT', '', 6, 20, 36, 'https://m.media-amazon.com/images/I/71mO+FpdiyL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(20, 'Logitech G915 TKL Tenkeyless Lightspeed Wireless RGB Mechanical Gaming Keyboard', '', 6, 90, 119, 'https://m.media-amazon.com/images/I/61ZWM3EWg5L._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(21, 'ASUS ROG Azoth 75% Wireless DIY Custom Gaming Keyboard, OLED Display', '', 6, 210, 249, 'https://m.media-amazon.com/images/I/51tjkM3lkhL._AC_SL1080_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(22, 'GTPLAYER Gaming Chair, Computer Chair with Footrest and Lumbar Support', '', 7, 130, 180, 'https://m.media-amazon.com/images/I/71PyDU2N2QL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(23, 'Dowinx Gaming Chair Fabric with Pocket Spring Cushion', '', 7, 130, 190, 'https://m.media-amazon.com/images/I/61t2bYdHrYL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(24, 'GTRACING Gaming Chair with Footrest Speakers Video Game Chair Bluetooth Music', '', 7, 100, 129, 'https://m.media-amazon.com/images/I/71y9SgG-XaS._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(25, 'AutoFull Gaming Chair PC Chair with Ergonomics Lumbar Support, Racing Style PU Leather High Back Adjustable Swivel Task Chair with Footrest', '', 7, 199, 249, 'https://m.media-amazon.com/images/I/41DCsiTx+lL.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(26, 'The Crew Furniture Classic Video Rocker Floor Gaming Chair', '', 7, 20, 39, 'https://m.media-amazon.com/images/I/61xg0aPxgWL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(27, 'JLab JBuds Lux ANC Wireless Headphones', '', 8, 30, 49, 'https://m.media-amazon.com/images/I/41UPaI9VqUL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(28, 'JBL Tune 510BT', '', 8, 15, 29, 'https://m.media-amazon.com/images/I/51EUjPMn6UL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(29, 'Soundcore Anker Life Q20 Hybrid Active Noise Cancelling', '', 8, 28, 49, 'https://m.media-amazon.com/images/I/61O7S27O+jL._AC_SL1468_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(30, 'Sony WH-1000XM5 The Best Wireless Noise Canceling Headphones with Auto Noise Canceling Optimizer', '', 8, 280, 329, 'https://m.media-amazon.com/images/I/61vJtKbAssL._AC_SL1500_.jpg', 1, 0, '2024-09-01 13:51:43', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reklama`
+--
+
+CREATE TABLE `reklama` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `imgUrl` text NOT NULL,
+  `partner` varchar(255) NOT NULL,
+  `target` varchar(255) NOT NULL,
+  `starts_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `ends_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `isPublished` tinyint(1) NOT NULL,
+  `buttonMessage` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `reklama`
+--
+
+INSERT INTO `reklama` (`id`, `title`, `imgUrl`, `partner`, `target`, `starts_at`, `ends_at`, `isPublished`, `buttonMessage`, `created_at`) VALUES
+(1, 'Reklame Test', 'https://th.bing.com/th/id/OIP.B0wvP9Eyn3lJd8QENUQH3AHaFR?w=229&h=180&c=7&r=0&o=5&pid=1.7', 'Reklame Test', 'Reklame Test', '2024-09-01 00:00:00', '2024-09-04 00:00:00', 1, 'Reklame Test', '2024-09-01 15:29:32'),
+(2, 'Reklame Test', 'https://th.bing.com/th/id/OIP.O3LiPodZtWoE0R71RNBqzAHaHo?rs=1&pid=ImgDetMain', 'Reklame Test', 'Reklame Test', '2024-09-01 00:00:00', '2024-09-02 00:00:00', 1, 'Reklame Test', '2024-09-01 15:29:32');
 
 -- --------------------------------------------------------
 
@@ -207,6 +267,12 @@ ALTER TABLE `products`
   ADD KEY `fk_product_category_id` (`category_id`);
 
 --
+-- Indexes for table `reklama`
+--
+ALTER TABLE `reklama`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
@@ -229,7 +295,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -247,7 +313,13 @@ ALTER TABLE `order_line`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `reklama`
+--
+ALTER TABLE `reklama`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `reviews`

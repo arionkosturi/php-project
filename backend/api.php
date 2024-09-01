@@ -244,3 +244,20 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search') && $
   }
   echo json_encode($products);
 }
+
+// Reklama
+if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'reklama') and $method === 'GET') {
+  $SQL = "SELECT * FROM `reklama`;";
+  $stm = $pdo->prepare($SQL);
+  $stm->execute();
+  $reklama = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+
+  if ($reklama) {
+    // foreach ($products as $product) {
+    echo json_encode($reklama);
+    // }
+  } else {
+    echo json_encode(['message' => 'You have no ads']);
+  }
+}

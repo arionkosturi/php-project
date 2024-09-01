@@ -424,7 +424,7 @@ export const useFetchSearchedUsers = (q) => {
 
 // Fetch All Reklama
 const fetchReklama = async () => {
-  return await apiClient.get(`/reklama`);
+  return await apiClient.get(`/api.php?endpoint_name=reklama`);
 };
 // Query All Reklama
 export const useFetchReklama = () => {

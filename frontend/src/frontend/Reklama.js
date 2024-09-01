@@ -23,9 +23,19 @@ function Reklama() {
         <CarouselContent>
           {reklamaData &&
             reklamaData?.map((reklama) => {
-              let today = new Date();
-              let startsAt = new Date(reklama.startsAt);
-              let endsAt = new Date(reklama.endsAt);
+              let today = new Date()
+                .toISOString(reklama.startsAt)
+                .slice(0, 19)
+                .replace("T", " ");
+              let startsAt = new Date()
+                .toISOString(reklama.startsAt)
+                .slice(0, 19)
+                .replace("T", " ");
+              let endsAt = new Date()
+                .toISOString(reklama.endsAt)
+                .slice(0, 19)
+                .replace("T", " ");
+
               if (reklama.isPublished && startsAt <= today && today <= endsAt) {
                 return (
                   <CarouselItem key={reklama._id}>
@@ -42,7 +52,7 @@ function Reklama() {
                         />
                       </div>
                       <div className="block w-1/5 bg-red-500 hover:bg-red-400 mx-2 px-5 py-3 font-bold text-center text-gray-100 text-xs uppercase transition hover:scale-110">
-                        {reklama.buttonMessage.length > 1
+                        {reklama.buttonMessage?.length > 1
                           ? reklama.buttonMessage
                           : "Shop Now!"}
                       </div>
