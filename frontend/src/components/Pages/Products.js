@@ -172,7 +172,7 @@ function Products() {
                       {product.name}
                     </h1>
                     <p className="text-sm mx-4 my-2 text-slate-400 line-clamp-2 ">
-                      {product.description}
+                      {product.details}
                     </p>
                     <div className="text-sm mx-4 my-2 text-slate-400 line-clamp-4 ">
                       Test
@@ -301,11 +301,27 @@ function Products() {
                 >
                   {product.name}
                 </h1>
-                <p className="text-sm mx-4 my-2 text-slate-400 line-clamp-2 ">
-                  {/* {article.description} */}
+                <p className="text-sm mx-4 my-2 text-slate-600">
+                  {product.details}
                 </p>
-                <div className="text-sm mx-4 my-2 text-slate-400 line-clamp-4 ">
-                  {/* {contentStriped} */}
+                <div className="text-sm mx-4 my-2 text-slate-700">
+                  <div className="flex gap-2 items-center">
+                    <p className="text-sm my-2 text-black">
+                      Cost: {product.cost} EURO
+                    </p>
+                    <p className="text-lg my-2 text-black">
+                      PRICE: {product.price} EURO
+                    </p>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <p className="text-sm  my-2 text-green-500">
+                      Profit: {product.price - product.cost} EURO
+                    </p>
+                    <p className="text-sm  my-2 text-green-600">
+                      Margin:{" "}
+                      {Math.round((product.price / product.cost - 1) * 100)} %
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

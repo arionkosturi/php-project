@@ -10,7 +10,7 @@ import { useToast } from "../ui/use-toast";
 import { Toaster } from "../ui/toaster";
 import { useFetchCategories } from "../hooks/useFetch";
 const api = axios.create({
-  baseURL: "http://localhost:3344/news/",
+  baseURL: "http://localhost/php-project/backend/api.php?",
 });
 
 function EditArticle() {
