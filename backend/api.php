@@ -153,10 +153,12 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_pro
   $details = $payload['details'];
   $cost = $payload['cost'];
   $price = $payload['price'];
+  $category = $payload['category'];
+
   $img = $payload['img'];
   try {
-    $stm = $pdo->prepare("INSERT INTO `products` (`name`,`details`, `cost`, `price`,`img`) VALUES (?, ?, ?, ?, ?)");
-    $user = $stm->execute([$name, $details, $cost, $price, $img]);
+    $stm = $pdo->prepare("INSERT INTO `products` (`name`,`details`,`category`,`cost`, `price`,`img`) VALUES (?, ?, ?, ?, ?, ?)");
+    $user = $stm->execute([$name, $details, $category, $cost, $price, $img]);
     if (!empty($user)) {
       echo json_encode(['message' => 'Product was created successfully']);
     } else {
@@ -176,8 +178,8 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
   $pageNumber = $_GET['pageNumber'];
   $SQL = "SELECT `products`.*, `categories`.`name` as `category_name`
   FROM `products` 
-	LEFT JOIN `categories` ON `products`.`category_id` = `categories`.`id`
-  ORDER BY `products`.`created_at` ASC LIMIT $pageNumber, 9";
+	LEFT JOIN `categories` ON `products`.`category` = `categories`.`id`
+  ORDER BY `products`.`created_at` DESC LIMIT $pageNumber, 9";
 
   $stm = $pdo->prepare($SQL);
   $stm->execute();
@@ -279,7 +281,7 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_c
   $stm = $pdo->prepare(
     "SELECT `products`.*, `categories`.`name` as `category_name`
      FROM `products` 
-     INNER JOIN `categories` ON `products`.`category_id` = `categories`.`id` 
+     INNER JOIN `categories` ON `products`.`category` = `categories`.`id` 
      WHERE `categories`.`name` = ?"
   );
   $stm->execute([$_GET['category']]);
@@ -335,7 +337,7 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search') && $
     `categories`.`name` AS `category_name`
 FROM
     `products`
-LEFT JOIN `categories` ON `products`.`category_id` = `categories`.`id`
+LEFT JOIN `categories` ON `products`.`category` = `categories`.`id`
 WHERE
     `products`.`name` LIKE :phrase");
   $q = '%' . $_GET['q'] . '%';

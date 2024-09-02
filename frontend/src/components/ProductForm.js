@@ -111,10 +111,14 @@ function ProductForm() {
         }}
       >
         <option value="">Select a category</option>
-        {categories?.map((category, index) => {
+        {categories?.map((category) => {
           return (
-            <option key={index} defaultValue={category.name}>
-              {category.name}
+            <option
+              key={category.id}
+              defaultValue={category.id}
+              value={category.id}
+            >
+              {category.id} - {category.name}
             </option>
           );
         })}

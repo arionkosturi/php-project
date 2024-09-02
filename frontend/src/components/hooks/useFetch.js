@@ -129,9 +129,9 @@ export const useFetchSearchAllArticles = (q) => {
   });
 };
 
-//Add Article
+//Add Product
 const addProduct = async (product) => {
-  const { name, details, cost, price, img } = product;
+  const { name, details, cost, price, img, category } = product;
 
   return await apiClient.post("api.php", {
     endpoint_name: "add_product",
@@ -139,6 +139,7 @@ const addProduct = async (product) => {
     details,
     cost,
     price,
+    category,
     img,
   });
 };
