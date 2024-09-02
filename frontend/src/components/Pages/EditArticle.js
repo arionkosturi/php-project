@@ -10,7 +10,7 @@ import { useToast } from "../ui/use-toast";
 import { Toaster } from "../ui/toaster";
 import { useFetchCategories } from "../hooks/useFetch";
 const api = axios.create({
-  baseURL: "http://localhost/php-project/backend/api.php?",
+  baseURL: "http://localhost/php-project/backend/",
 });
 
 function EditArticle() {
@@ -32,18 +32,19 @@ function EditArticle() {
     e.preventDefault();
 
     axios
-      .patch(
-        `http://localhost:3344/news/${id}`,
+      .post(
+        `http://localhost/php-project/backend/api.php`,
 
         {
-          title,
-          description,
-          content,
-          author,
-          sourceUrl,
+          endpoint_name: "update_product",
+          name,
+          details,
+          cost,
+          price,
+          img,
           category,
-          imgUrl,
           isPublished,
+          id,
         }
       )
       .then(function (response) {})
@@ -61,26 +62,26 @@ function EditArticle() {
     }, 3000);
   };
 
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState();
-  const [imgUrl, setImgUrl] = useState();
-  const [content, setContent] = useState();
-  const [author, setAuthor] = useState();
-  const [sourceUrl, setSource] = useState();
+  const [name, setName] = useState();
+  const [details, setDetails] = useState();
+  const [img, setImg] = useState();
+  const [cost, setCost] = useState();
+  const [price, setPrice] = useState();
   const [category, setCategory] = useState();
   const [isPublished, setIsPublished] = useState(false);
+  const [sourceUrl, setSource] = useState();
   const [queryParameter] = useSearchParams();
   let id = queryParameter.get("id");
 
   React.useEffect(() => {
-    api.get(`${id}`).then((res) => {
-      setTitle(res.data.title);
-      setDescription(res.data.description);
-      setContent(res.data.content);
+    api.get(`api.php?endpoint_name=products_by_id&id=${id}`).then((res) => {
+      setName(res.data.name);
+      setDetails(res.data.details);
+      setCost(res.data.cost);
+      setPrice(res.data.price);
       setCategory(res.data.category);
-      setAuthor(res.data.author);
+      setImg(res.data.img);
       setSource(res.data.sourceUrl);
-      setImgUrl(res.data.imgUrl);
       setIsPublished(res.data.isPublished);
     });
 
@@ -91,50 +92,60 @@ function EditArticle() {
     <div className="flex flex-col container gap-1 mx-auto">
       <Toaster />
       <Header className="text-white" />
-      <h1 className="text-3xl text-purple-600">Edit Article:</h1>
-      <label htmlFor="title" className="text-xl">
-        Title:
+      <h1 className="text-3xl text-purple-600">Edit Product:</h1>
+      <label htmlFor="name" className="text-xl">
+        Product Name:
       </label>
       <input
         type="text"
-        id="title"
-        placeholder="Enter Title"
-        name="title"
+        id="name"
+        placeholder="Enter Product Name"
+        name="name"
         className="border p-2"
-        value={title}
+        value={name}
         onChange={(e) => {
-          setTitle(e.target.value);
+          setName(e.target.value);
         }}
       />
-      <label htmlFor="description">Description</label>
+      <label htmlFor="details">Details</label>
       <textarea
         type="text"
-        id="description"
+        id="details"
         placeholder="Enter Description"
-        name="description"
+        name="details"
         className="border p-2"
         rows="4"
-        value={description}
+        value={details}
         onChange={(e) => {
-          setDescription(e.target.value);
+          setDetails(e.target.value);
         }}
       />
-      <label htmlFor="content">Content:</label>
-      <CustomEditor contentValue={content} setContentValue={setContent} />
-      <label htmlFor="author">Author:</label>
+      <label htmlFor="cost">Cost:</label>
       <input
-        type="text"
-        id="author"
-        placeholder="Enter Author"
-        name="author p-2"
+        type="number"
+        id="cost"
+        placeholder="Enter Cost"
+        name="cost"
         className="border"
-        value={author}
+        value={cost}
         onChange={(e) => {
-          setAuthor(e.target.value);
+          setCost(e.target.value);
         }}
       />
-      <label htmlFor="source">Source</label>
+      <label htmlFor="price">Price:</label>
       <input
+        type="number"
+        id="price"
+        placeholder="Enter Price"
+        name="price"
+        className="border"
+        value={price}
+        onChange={(e) => {
+          setPrice(e.target.value);
+        }}
+      />
+      {/* <label htmlFor="category">Category</label> */}
+      {/* <input
         type="text"
         id="source"
         placeholder="Enter Source"
@@ -144,7 +155,7 @@ function EditArticle() {
         onChange={(e) => {
           setSource(e.target.value);
         }}
-      />
+      /> */}
       <label htmlFor="category">Category:</label>
 
       <select
@@ -165,25 +176,21 @@ function EditArticle() {
           );
         })}
       </select>
-      <label htmlFor="title">Img Source</label>
-      <textarea
+      <label htmlFor="img">Img Source</label>
+      <input
         type="text"
-        id="imgUrl"
+        id="img"
         placeholder="Enter Img Source"
-        name="imgUrl"
+        name="img"
         className="border p-1"
-        value={imgUrl}
+        value={img}
         onChange={(e) => {
-          setImgUrl(e.target.value);
+          setImg(e.target.value);
         }}
       />
       <div className="flex border border-red-300">
         <span className="p-6">Image Preview:</span>
-        <img
-          className="w-1/3 my-6"
-          src={imgUrl}
-          alt="preview for article image"
-        />
+        <img className="w-1/3 my-6" src={img} alt="preview for article image" />
       </div>
       <div className="mx-auto container ">
         <form>

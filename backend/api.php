@@ -310,6 +310,37 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_i
   }
 }
 
+// Update Product
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_product') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'Product ID is required!']));
+  }
+  $name = $payload['name'];
+  $details = $payload['details'];
+  $category = $payload['category'];
+  $cost = $payload['cost'];
+  $price = $payload['price'];
+  $img = $payload['img'];
+  $isHighlighted = $payload['isHighlighted'];
+  $stock = $payload['stock'];
+  $isPublished = $payload['isPublished'];
+  $id = $payload['id'];
+  $stm = $pdo->prepare("UPDATE `products` 
+  SET 
+  `name`= ?,
+  `details` = ?,
+  `category` = ?,
+  `cost` = ?,
+  `price` = ?,
+  `img` = ?,
+  `isHighlighted` = ?,
+  `stock` = ?,
+  `isPublished` = ? 
+  WHERE `products`.`id` = ? LIMIT 1");
+  $stm->execute([$name, $details, $category, $cost, $price,  $img, $isHighlighted, $stock, $isPublished, $id]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
+
 // Product Reviews
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'product_reviews') && $method === 'GET') {
   if (!isset($_GET['id']) || empty($_GET['id'])) {
