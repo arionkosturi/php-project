@@ -162,41 +162,43 @@ export const useAddProduct = () => {
     },
   });
 };
-//Mutate Article
-const mutateSingleArticle = async (id) => {
+//Mutate Product
+const mutateSingleProduct = async (id) => {
   let {
-    title,
-    isPublished,
+    name,
+    details,
     isHighlighted,
     category,
-    description,
-    author,
-    content,
-    sourceUrl,
-    imgUrl,
+    isPublished,
+    cost,
+    price,
+    img,
+    stock,
   } = id;
-  return await apiClient.patch(`/news/${id.articleId}`, {
-    title,
-    category,
-    description,
-    content,
-    author,
-    sourceUrl,
-    imgUrl,
-    isPublished,
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_product",
+    name,
+    details,
     isHighlighted,
+    category,
+    isPublished,
+    cost,
+    price,
+    img,
+    stock,
+    id: id.articleId,
   });
 };
-// Mutate Article
-export const useMutateArticle = (article) => {
+// Mutate Product
+export const useMutateProduct = (product) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["single article"],
-    mutationFn: mutateSingleArticle,
+    mutationKey: ["single product"],
+    mutationFn: mutateSingleProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["single article"],
+        queryKey: ["single product"],
       });
       queryClient.invalidateQueries({
         queryKey: ["products"],

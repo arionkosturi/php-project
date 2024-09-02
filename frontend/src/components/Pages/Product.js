@@ -4,7 +4,7 @@ import Header from "../Header";
 import Login from "../../frontend/Login";
 import {
   useProductCategory,
-  useMutateArticle,
+  useMutateProduct,
   useSingleArticle,
   useFetchCategories,
   useSingleUser,
@@ -44,7 +44,7 @@ function Product() {
   let [isEditingDescription, setIsEditingDescription] = useState(false);
   let [isEditingContent, setIsEditingContent] = useState(false);
   let [isEditingSource, setIsEditingSource] = useState(false);
-  const { mutate } = useMutateArticle();
+  const { mutate } = useMutateProduct();
   const { data: product, isLoading, error } = useSingleArticle();
   const [user, setUser] = useLocalStorage("user");
   let categId = product?.category;
@@ -78,7 +78,7 @@ function Product() {
     let productId = product.id;
     mutate({
       productId,
-      title: e.target.value,
+      name: e.target.value,
     });
   };
   let editCategory = (e) => {
@@ -92,7 +92,7 @@ function Product() {
     let productId = product.id;
     mutate({
       productId,
-      imgUrl: e.target.value,
+      img: e.target.value,
     });
   };
   let editDescription = (e) => {
@@ -393,7 +393,7 @@ function Product() {
                       Editing Description. You can click outside the field.
                       Autosave is enabled!
                     </Badge>
-                    <textarea
+                    <input
                       autoFocus
                       type="text"
                       id="description"
@@ -401,7 +401,7 @@ function Product() {
                       name="description"
                       className="w-full block mt-4 text-xl font-semibold text-gray-800"
                       rows="4"
-                      value={product.details}
+                      defaultValue={product.details}
                       onChange={editDescription}
                       onBlur={() => {
                         setIsEditingDescription(false);

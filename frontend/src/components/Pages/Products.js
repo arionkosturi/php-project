@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useFetchProducts,
   useFetchSearchAllArticles,
-  useMutateArticle,
+  useMutateProduct,
   useDeleteArticle,
 } from "../hooks/useFetch";
 import { useQueryClient } from "@tanstack/react-query";
@@ -27,7 +27,7 @@ function Products() {
     setSearchTerm(e.target.value);
   };
   const [currentPage, setCurrentPage] = useState(0);
-  const { mutate } = useMutateArticle();
+  const { mutate } = useMutateProduct();
   const { mutate: remove } = useDeleteArticle();
   let fetchTerm = "all";
   const { data: products } = useFetchProducts(currentPage, fetchTerm);

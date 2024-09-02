@@ -9,7 +9,7 @@ import {
   useMutateUserProfile,
   useSingleArticle,
   useFetchSearchedArticles,
-  useMutateArticle,
+  useMutateProduct,
 } from "../components/hooks/useFetch";
 import {
   FaInfoCircle,
@@ -29,7 +29,7 @@ import Alert from "../components/Alert";
 import { useSessionStorage, useLocalStorage } from "@uidotdev/usehooks";
 
 function PublicArticle() {
-  const { mutate } = useMutateArticle();
+  const { mutate } = useMutateProduct();
   const { mutate: addTo } = useMutateUserProfile();
   const { data: loggedUser } = useSingleUser();
   let [njoftimIsOpen, setNjoftimIsOpen] = useSessionStorage(

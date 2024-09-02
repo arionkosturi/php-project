@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useFetchProducts,
   useSingleUser,
-  useMutateArticle,
+  useMutateProduct,
   useDeleteArticle,
 } from "../hooks/useFetch";
 import Header from "../Header";
@@ -22,7 +22,7 @@ function PublishedProducts() {
   const queryClient = useQueryClient();
   const [user, setUser] = useLocalStorage("user");
   const [currentPage, setCurrentPage] = useState(0);
-  const { mutate } = useMutateArticle();
+  const { mutate } = useMutateProduct();
   const { mutate: remove } = useDeleteArticle();
   const { data } = useFetchProducts(currentPage);
   const navigate = useNavigate();
