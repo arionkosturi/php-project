@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useFetchProducts } from "../components/hooks/useFetch";
 import Paginate from "./Paginate";
-function PublicArticles() {
+function PublicProducts() {
   const [pageNumber, setPageNumber] = useState(0);
   const { data: products } = useFetchProducts(pageNumber);
 
@@ -21,7 +21,7 @@ function PublicArticles() {
               className="flex bg-white shadow-xl hover:shadow-xl my-3"
             >
               <div className="flex flex-row w-1/2">
-                <a href={`article?id=${product.id}`}>
+                <a href={`product?id=${product.id}`}>
                   {product.img ? (
                     <img
                       className=" my-2 p-2 h-48"
@@ -48,7 +48,7 @@ function PublicArticles() {
 
               <div className="flex flex-col justify-between w-1/2">
                 <div className="border-gray-900/10 border-s p-2 sm:p-4 sm:border-l-transparent">
-                  <a href={`article?id=${product.id}`}>
+                  <a href={`product?id=${product.id}`}>
                     <h3 className="line-clamp-2 sm:line-clamp-3 font-bold text-gray-900 dark:text-white uppercase">
                       {product.name}
                     </h3>
@@ -63,7 +63,7 @@ function PublicArticles() {
 
                 <div className="sm:flex sm:justify-end sm:items-end">
                   <a
-                    href={`article?id=${product.id}`}
+                    href={`product?id=${product.id}`}
                     className="block bg-green-500 hover:bg-green-400 mx-2 px-5 py-3 font-bold text-center text-gray-100 text-xs uppercase transition"
                   >
                     Lexo me shume...
@@ -78,4 +78,4 @@ function PublicArticles() {
   );
 }
 
-export default PublicArticles;
+export default PublicProducts;

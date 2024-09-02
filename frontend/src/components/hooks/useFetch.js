@@ -72,7 +72,7 @@ export const useFetchHighlightedArticle = () => {
 };
 // Fetch Single Article
 const fetchSingleArticle = async (id) => {
-  return await apiClient.get(`/news/${id}`);
+  return await apiClient.get(`api.php?endpoint_name=products_by_id&id=${id}`);
 };
 // Fetch Single Article
 export const useSingleArticle = () => {
@@ -84,7 +84,7 @@ export const useSingleArticle = () => {
       const { data } = await fetchSingleArticle(id);
       return data;
     },
-    queryKey: ["single article", id],
+    queryKey: ["single product", id],
   });
 };
 
@@ -256,6 +256,18 @@ export const useSingleCategory = () => {
 
   return useQuery({
     queryFn: async () => {
+      const { data } = await fetchSingleCategory(id);
+      return data;
+    },
+    queryKey: ["single category", id],
+  });
+};
+// Fetch Product Category
+export const useProductCategory = (categId) => {
+  let id = categId;
+
+  return useQuery({
+    queryFn: async (categId) => {
       const { data } = await fetchSingleCategory(id);
       return data;
     },

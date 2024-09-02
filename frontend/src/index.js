@@ -13,9 +13,9 @@ import ArticleForm from "./components/ProductForm";
 import EditArticle from "./components/Pages/EditArticle";
 import Dashboard from "./components/Pages/Dashboard";
 import Users from "./components/Pages/Users";
-import Article from "./components/Pages/Article";
-import PublicArticle from "./frontend/Article";
-import PublishedArticles from "./components/Pages/PublishedArticles";
+import ProductP from "./components/Pages/Product";
+import Product from "./frontend/Product";
+import PublishedArticles from "./components/Pages/PublishedProducts";
 import Reklama from "./components/Pages/Reklama";
 import Login from "./frontend/Login";
 import Register from "./frontend/Register";
@@ -37,8 +37,8 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
   },
   {
-    path: "/article",
-    element: <PublicArticle />,
+    path: "/product",
+    element: <Product />,
     errorElement: <NotFoundPage />,
   },
   {
@@ -77,8 +77,8 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
   },
   {
-    path: "/dashboard/article",
-    element: <Article />,
+    path: "/dashboard/product",
+    element: <ProductP />,
     errorElement: <NotFoundPage />,
   },
   {

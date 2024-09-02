@@ -214,7 +214,7 @@ function Products() {
       </div>
       {products?.map((product) => {
         let handleViewArticle = () => {
-          navigate(`../dashboard/article?id=${product.id}`);
+          navigate(`../dashboard/product?id=${product.id}`);
         };
         let handleEdit = () => {
           navigate(`../dashboard/edit?id=${product.id}`);

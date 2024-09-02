@@ -16,17 +16,18 @@ import Paginate from "../Paginate";
 import Buttons, { PublishBtn } from "../Buttons";
 import Login from "../../frontend/Login";
 import LeftPanel from "./LeftPanel";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
-function PublishedArticles() {
+function PublishedProducts() {
   const queryClient = useQueryClient();
-  const { data: loggedUser } = useSingleUser();
+  const [user, setUser] = useLocalStorage("user");
   const [currentPage, setCurrentPage] = useState(0);
   const { mutate } = useMutateArticle();
   const { mutate: remove } = useDeleteArticle();
   const { data } = useFetchProducts(currentPage);
   const navigate = useNavigate();
 
-  if (!loggedUser?.isAdmin) {
+  if (!user?.role == "admin") {
     return <Login />;
   }
   return (
@@ -38,7 +39,7 @@ function PublishedArticles() {
           <span className="bg-green-500 text-white mr-2 px-2 py-1">
             Published
           </span>
-          Articles
+          Products
         </h1>
       </div>
       <div className="flex flex-col md:flex-row mx-2 sm:container sm:mx-auto">
@@ -51,13 +52,13 @@ function PublishedArticles() {
           />
           {data?.map((article) => {
             let handleViewArticle = () => {
-              navigate(`../dashboard/article?id=${article._id}`);
+              navigate(`../dashboard/product?id=${article.id}`);
             };
             let handleEdit = () => {
-              navigate(`../dashboard/edit?id=${article._id}`);
+              navigate(`../dashboard/edit?id=${article.id}`);
             };
             let handlePublish = () => {
-              let articleId = article._id;
+              let articleId = article.id;
               mutate(
                 {
                   articleId,
@@ -73,7 +74,7 @@ function PublishedArticles() {
               );
             };
             let handleHighlighted = () => {
-              let articleId = article._id;
+              let articleId = article.id;
               mutate(
                 {
                   articleId,
@@ -89,14 +90,13 @@ function PublishedArticles() {
               );
             };
             let handleDelete = () => {
-              let articleId = article._id;
+              let articleId = article.id;
               remove(articleId);
             };
-            let contentStriped = article.content.replace(/<[^>]*>/g, "");
             return (
               <div
                 className="flex flex-col xl:flex-row container justify-between mx-auto  border border-purple-400 my-1 "
-                key={article._id}
+                key={article.id}
               >
                 <Toaster />
                 <div className="flex flex-col md:flex-row p-2 justify-between">
@@ -104,7 +104,7 @@ function PublishedArticles() {
                     onClick={handleViewArticle}
                     className="relative cursor-pointer overflow-hidden w-96 h-48 bg-white border"
                   >
-                    {article.isPublished & article.isHighlighted ? (
+                    {article?.isHighlighted ? (
                       <div className="absolute left-6 top-0 h-16 w-16">
                         <div className="absolute shadow-md transform -rotate-45 bg-green-400 text-center text-white font-semibold py-1 right-[-35px] top-[32px] w-[170px]">
                           Highlighted
@@ -141,9 +141,7 @@ function PublishedArticles() {
                     <p className="text-sm mx-4 my-2 text-slate-400 line-clamp-2 ">
                       {article.description}
                     </p>
-                    <div className="text-sm mx-4 my-2 text-slate-400 line-clamp-4 ">
-                      {contentStriped}
-                    </div>
+                    <div className="text-sm mx-4 my-2 text-slate-400 line-clamp-4 "></div>
                     <p className="flex justify-end text-sm mx-4 text-slate-400 ">
                       {new Date(article.createdAt).toLocaleDateString(
                         undefined,
@@ -183,4 +181,4 @@ function PublishedArticles() {
   );
 }
 
-export default PublishedArticles;
+export default PublishedProducts;

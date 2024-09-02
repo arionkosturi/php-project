@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Header from "./Header";
 import Categories from "./Categories";
 import Footer from "./Footer";
-import PublicArticles from "./PublicArticles";
+import PublicProducts from "./PublicProducts";
 import HighlitedSection from "./HighlitedSection";
 import Reklama from "./Reklama";
 
@@ -15,7 +15,7 @@ function Home() {
       <Header />
       {/* <HighlitedSection /> */}
       <Reklama />
-      <PublicArticles currentPage={currentPage} />
+      <PublicProducts currentPage={currentPage} />
       <Categories />
       <Footer />
     </div>
