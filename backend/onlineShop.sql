@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 01, 2024 at 10:22 PM
+-- Generation Time: Sep 03, 2024 at 04:03 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -98,21 +98,21 @@ CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `details` text DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
+  `category` int(11) DEFAULT NULL,
   `cost` int(11) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
   `img` varchar(300) DEFAULT 'noimage.png',
-  `isHighlighted` tinyint(1) DEFAULT NULL,
+  `isHighlighted` tinyint(1) DEFAULT 0,
   `stock` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `isPublished` tinyint(1) DEFAULT NULL
+  `isPublished` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `details`, `category_id`, `cost`, `price`, `img`, `isHighlighted`, `stock`, `created_at`, `isPublished`) VALUES
+INSERT INTO `products` (`id`, `name`, `details`, `category`, `cost`, `price`, `img`, `isHighlighted`, `stock`, `created_at`, `isPublished`) VALUES
 (4, 'OPPO Reno12 5G', 'New Unlocked Android Phone!', 2, 350, 470, 'https://opsg-img-cdn-gl.heytapimg.com/epb/202406/26/IzcVfAu2kdJjoeYS.png', 1, 0, '2024-09-01 13:51:43', 1),
 (5, 'Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow', '', 2, 300, 430, 'https://m.media-amazon.com/images/I/61bFypVJVyL._AC_SL1500_.jpg', 1, 0, '2024-09-01 13:51:43', 0),
 (6, 'SAMSUNG Galaxy A15 5G, 128GB, US Version', '', 2, 100, 199, 'https://m.media-amazon.com/images/I/41vU1u8DZXL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
@@ -139,8 +139,14 @@ INSERT INTO `products` (`id`, `name`, `details`, `category_id`, `cost`, `price`,
 (27, 'JLab JBuds Lux ANC Wireless Headphones', '', 8, 30, 49, 'https://m.media-amazon.com/images/I/41UPaI9VqUL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (28, 'JBL Tune 510BT', '', 8, 15, 29, 'https://m.media-amazon.com/images/I/51EUjPMn6UL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (29, 'Soundcore Anker Life Q20 Hybrid Active Noise Cancelling', '', 8, 28, 49, 'https://m.media-amazon.com/images/I/61O7S27O+jL._AC_SL1468_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
-(30, 'Sony WH-1000XM5 The Best Wireless Noise Canceling Headphones with Auto Noise Canceling Optimizer', '', 8, 280, 329, 'https://m.media-amazon.com/images/I/61vJtKbAssL._AC_SL1500_.jpg', 1, 0, '2024-09-01 13:51:43', 1),
-(38, 'arion test', 'arion test', NULL, 100, 150, 'arion test', NULL, NULL, '2024-09-01 22:15:02', NULL);
+(42, '123', '123', NULL, 123, 123, NULL, NULL, NULL, '2024-09-02 13:24:11', NULL),
+(43, 'category.id', 'category.id', NULL, 123, 123, NULL, NULL, NULL, '2024-09-02 13:26:57', NULL),
+(44, '1234', '1234', NULL, 1234, 1234, '1234', NULL, NULL, '2024-09-02 13:30:11', 1),
+(45, 'test', 'test', NULL, 123, 123, NULL, NULL, NULL, '2024-09-02 13:31:05', NULL),
+(46, 'arion', 'test', NULL, 100, 100, NULL, NULL, NULL, '2024-09-02 13:32:30', 1),
+(47, 'test 123', 'test', NULL, 100, 100, 'https://th.bing.com/th/id/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7', NULL, NULL, '2024-09-02 13:47:53', 1),
+(48, 'arion', 'arion', NULL, 100, 150, NULL, NULL, NULL, '2024-09-02 13:49:29', 1),
+(49, 'arion11112e', 'Arion Kosturi', 3, 30, 100, 'https://th.bing.com/th/id/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain', 1, NULL, '2024-09-02 13:51:25', 1);
 
 -- --------------------------------------------------------
 
@@ -265,7 +271,7 @@ ALTER TABLE `order_line`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_product_category_id` (`category_id`);
+  ADD KEY `fk_product_category_id` (`category`);
 
 --
 -- Indexes for table `reklama`
@@ -296,7 +302,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -314,7 +320,7 @@ ALTER TABLE `order_line`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `reklama`
@@ -355,7 +361,7 @@ ALTER TABLE `order_line`
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `fk_product_category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_product_category_id` FOREIGN KEY (`category`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`
