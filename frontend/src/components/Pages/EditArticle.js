@@ -8,7 +8,7 @@ import { FaTrash } from "react-icons/fa";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useToast } from "../ui/use-toast";
 import { Toaster } from "../ui/toaster";
-import { useFetchCategories } from "../hooks/useFetch";
+import { useFetchCategories, useSingleCategory } from "../hooks/useFetch";
 const api = axios.create({
   baseURL: "http://localhost/php-project/backend/",
 });
@@ -20,7 +20,7 @@ function EditArticle() {
   let handleDelete = (e) => {
     e.preventDefault();
     api
-      .delete(`/${id}`)
+      .delete(`api.php?endpoint_name=delete_product&id=${id}`)
       .then((response) => {})
       .catch((err) => {
         console.log(err);
@@ -41,9 +41,9 @@ function EditArticle() {
           details,
           cost,
           price,
+          stock,
           img,
           category,
-          isPublished,
           id,
         }
       )
@@ -67,9 +67,8 @@ function EditArticle() {
   const [img, setImg] = useState();
   const [cost, setCost] = useState();
   const [price, setPrice] = useState();
+  const [stock, setStock] = useState();
   const [category, setCategory] = useState();
-  const [isPublished, setIsPublished] = useState(false);
-  const [sourceUrl, setSource] = useState();
   const [queryParameter] = useSearchParams();
   let id = queryParameter.get("id");
 
@@ -81,8 +80,7 @@ function EditArticle() {
       setPrice(res.data.price);
       setCategory(res.data.category);
       setImg(res.data.img);
-      setSource(res.data.sourceUrl);
-      setIsPublished(res.data.isPublished);
+      setStock(res.data.stock);
     });
 
     return () => {};
@@ -144,20 +142,19 @@ function EditArticle() {
           setPrice(e.target.value);
         }}
       />
-      {/* <label htmlFor="category">Category</label> */}
-      {/* <input
-        type="text"
-        id="source"
-        placeholder="Enter Source"
-        name="source"
-        className="border p-2"
-        value={sourceUrl}
+      <label htmlFor="stock">Stock:</label>
+      <input
+        type="number"
+        id="stock"
+        placeholder="Enter Stock"
+        name="stock"
+        className="border"
+        value={stock}
         onChange={(e) => {
-          setSource(e.target.value);
+          setStock(e.target.value);
         }}
-      /> */}
+      />
       <label htmlFor="category">Category:</label>
-
       <select
         id="category"
         className="p-2"
@@ -165,17 +162,16 @@ function EditArticle() {
           setCategory(e.target.value);
         }}
       >
-        <option value={"Select Category"}>
-          {category || "Select Category"}
-        </option>
-        {categories?.map((category, index) => {
+        <option value="">Select a category: {category}</option>
+        {categories?.map((categ) => {
           return (
-            <option key={index} defaultValue={category.name}>
-              {category.name}
+            <option key={categ.id} defaultValue={categ.id} value={categ.id}>
+              {categ.id} - {categ.name}
             </option>
           );
         })}
       </select>
+
       <label htmlFor="img">Img Source</label>
       <input
         type="text"

@@ -11,7 +11,7 @@ import {
   useMutateProduct,
   useMutateProductPublish,
   useMutateProductHighlighted,
-  useDeleteArticle,
+  useDeleteProduct,
 } from "../hooks/useFetch";
 import { useQueryClient } from "@tanstack/react-query";
 import Paginate from "../Paginate";
@@ -32,7 +32,7 @@ function Products() {
   const { mutate } = useMutateProduct();
   const { mutate: mutatePublish } = useMutateProductPublish();
   const { mutate: mutateHighlight } = useMutateProductHighlighted();
-  const { mutate: remove } = useDeleteArticle();
+  const { mutate: remove } = useDeleteProduct();
   let fetchTerm = "all";
   const { data: products } = useFetchProducts(currentPage, fetchTerm);
   const navigate = useNavigate();

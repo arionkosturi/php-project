@@ -22,7 +22,6 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import HTMLReactParser from "html-react-parser";
-import JoditEditor from "jodit-react";
 import CheckHighlighted from "../CheckHighlited";
 import { Alert as Njoftim, AlertDescription, AlertTitle } from "../ui/alert";
 import { useLocalStorage, useSessionStorage } from "@uidotdev/usehooks";
@@ -31,19 +30,12 @@ function Product() {
   const { data: categories } = useFetchCategories();
   const editor = useRef(null);
   const [editorContent, setEditorContent] = useState("");
-  const config = useMemo(
-    () => ({
-      readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-      height: 500,
-      autofocus: true,
-    }),
-    []
-  );
+
   let [njoftimIsOpen, setNjoftimIsOpen] = useSessionStorage("njoftim", 1);
   let [isEditingTitle, setIsEditingTitle] = useState(false);
   let [isEditingImgUrl, setIsEditingImgUrl] = useState(false);
   let [isEditingCategory, setIsEditingCategory] = useState(false);
-  let [isEditingDescription, setIsEditingDescription] = useState(false);
+  let [isEditingDetails, setIsEditingDetails] = useState(false);
   let [isEditingContent, setIsEditingContent] = useState(false);
   let [isEditingSource, setIsEditingSource] = useState(false);
   const { mutate } = useMutateProduct();
@@ -99,7 +91,7 @@ function Product() {
       img: e.target.value,
     });
   };
-  let editDescription = (e) => {
+  let editDetails = (e) => {
     let id = product.id;
     mutate({
       id,
@@ -351,9 +343,7 @@ function Product() {
                         setIsEditingCategory(false);
                       }}
                     >
-                      <option value={categ.name}>
-                        {categ.name || "Select Category"}
-                      </option>
+                      <option value="">{"Select Category"}</option>
                       {categories?.map((category, index) => {
                         return (
                           <option
@@ -361,7 +351,7 @@ function Product() {
                             defaultValue={category.id}
                             value={category.id}
                           >
-                            {category.name}
+                            {category?.name}
                           </option>
                         );
                       })}
@@ -376,10 +366,10 @@ function Product() {
                     </Badge>
                   </div>
                 )}
-                {!isEditingDescription ? (
+                {!isEditingDetails ? (
                   <p
                     onDoubleClick={() => {
-                      setIsEditingDescription(true);
+                      setIsEditingDetails(true);
                     }}
                     className="cursor-pointer block mt-4 text-xl font-semibold text-gray-800 "
                   >
@@ -391,8 +381,8 @@ function Product() {
                       className="w-full mt-2  justify-center"
                       variant="destructive"
                     >
-                      Editing Description. You can click outside the field.
-                      Autosave is enabled!
+                      Editing Details. You can click outside the field. Autosave
+                      is enabled!
                     </Badge>
                     <input
                       autoFocus
@@ -403,39 +393,12 @@ function Product() {
                       className="w-full block mt-4 text-xl font-semibold text-gray-800"
                       rows="4"
                       defaultValue={product.details}
-                      onChange={editDescription}
+                      onChange={editDetails}
                       onBlur={() => {
-                        setIsEditingDescription(false);
+                        setIsEditingDetails(false);
                       }}
                     />
                   </div>
-                )}
-                {!isEditingContent ? (
-                  <div
-                    onDoubleClick={() => {
-                      setIsEditingContent(true);
-                    }}
-                    className="cursor-pointer block mt-4  text-gray-700 "
-                  >
-                    {HTMLReactParser(`${product.details}`)}
-                  </div>
-                ) : (
-                  <>
-                    <Badge
-                      className="w-full mt-2  justify-center"
-                      variant="destructive"
-                    >
-                      Editing Content. You can click outside the field. Autosave
-                      is enabled!
-                    </Badge>
-                    <JoditEditor
-                      config={config}
-                      ref={editor}
-                      value={product.content}
-                      onChange={(newContent) => setEditorContent(newContent)}
-                      onBlur={editorContentSave}
-                    />
-                  </>
                 )}
 
                 <p className="my-8 text-lg text-gray-500  md:text-md content-2">

@@ -262,32 +262,19 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   $cost = $payload['cost'];
   $price = $payload['price'];
   $img = $payload['img'];
-  $isHighlighted = $payload['isHighlighted'];
   $stock = $payload['stock'];
-  $isPublished = $payload['isPublished'];
   $id = $payload['id'];
-  $stm = $pdo->prepare("UPDATE `products` 
-  SET 
+  $stm = $pdo->prepare("UPDATE `products` SET 
   `name`= COALESCE(?, `name`),
   `details` = COALESCE(?, `details`),
   `category` = COALESCE(?, `category`),
   `cost` = COALESCE(?, `cost`),
   `price` = COALESCE(?, `price`),
   `img` = COALESCE(?, `img`),
-  `isHighlighted` = COALESCE(?, `isHighlighted`),
-  `stock` = COALESCE(?, `stock`),
-  WHERE `products`.`id` = ? LIMIT 1");
+  `stock` = COALESCE(?, `stock`)
+  WHERE `id` = ? LIMIT 1");
 
-
-  $isHighlighted = $payload['isHighlighted'];
-  if ($isHighlighted == false) {
-    $isHighlighted = 0;
-  }
-  if ($isHighlighted == true) {
-    $isHighlighted = 1;
-  }
-
-  $stm->execute([$name, $details, $category, $cost, $price,  $img, $isHighlighted, $stock, $id]);
+  $stm->execute([$name, $details, $category, $cost, $price,  $img, $stock, $id]);
 
   echo json_encode(["success" => "Updated successfully"]);
 }
@@ -346,6 +333,17 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'product_revie
   }
 
   echo json_encode($reviews);
+}
+
+// Delete Product
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_product') && $method === 'DELETE') {
+  if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die(json_encode(['message' => 'Product ID is required!']));
+  }
+
+  $stm = $pdo->prepare("DELETE FROM `products` WHERE `products`.`id` = ? LIMIT 1");
+  $stm->execute([$_GET['id']]);
+  echo json_encode(["success" => "deleted successfully"]);
 }
 
 // Product Search
@@ -438,7 +436,7 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
 }
 
 // Delete Category
-if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_category') && $method === 'GET') {
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_category') && $method === 'DELETE') {
   if (!isset($_GET['id']) || empty($_GET['id'])) {
     die(json_encode(['message' => 'Category ID is required!']));
   }

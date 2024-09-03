@@ -10,7 +10,7 @@ import {
   useMutateProductPublish,
   useMutateProductHighlighted,
   useMutateProduct,
-  useDeleteArticle,
+  useDeleteProduct,
 } from "../hooks/useFetch";
 import Header from "../Header";
 import { useQueryClient } from "@tanstack/react-query";
@@ -27,7 +27,7 @@ function PublishedProducts() {
   const { mutate } = useMutateProduct();
   const { mutate: mutatePublish } = useMutateProductPublish();
   const { mutate: mutateHighlight } = useMutateProductHighlighted();
-  const { mutate: remove } = useDeleteArticle();
+  const { mutate: remove } = useDeleteProduct();
   const { data } = useFetchPublishedProducts(currentPage);
   const navigate = useNavigate();
 

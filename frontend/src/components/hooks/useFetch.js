@@ -290,28 +290,30 @@ export const useMutateProductHighlighted = (product) => {
   });
 };
 
-//Delete Article
-const deleteSingleArticle = async (id) => {
-  return await apiClient.delete(`/news/${id}`);
+//Delete Product
+const deleteSingleProduct = async (id) => {
+  return await apiClient.delete(
+    `api.php?endpoint_name=delete_product&id=${id}`
+  );
 };
-// Delete Article
-export const useDeleteArticle = (id) => {
+// Delete Product
+export const useDeleteProduct = (id) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["single article"],
-    mutationFn: deleteSingleArticle,
+    mutationKey: ["single product"],
+    mutationFn: deleteSingleProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
-      queryClient.invalidateQueries({ queryKey: ["searched articles"] });
-      queryClient.invalidateQueries({ queryKey: ["highlighted articles"] });
-      queryClient.invalidateQueries({ queryKey: ["highlighted article"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["searched products"] });
+      queryClient.invalidateQueries({ queryKey: ["highlighted product"] });
+      queryClient.invalidateQueries({ queryKey: ["published products"] });
     },
   });
 };
 
 // Categories
-// Fetch All Categoris
+// Fetch All Categories
 
 const fetchCategories = async () => {
   return await apiClient.get(`api.php?endpoint_name=categories`);
@@ -413,7 +415,9 @@ export const useMutateCategory = (category) => {
 
 //Delete Category
 const deleteSingleCategory = async (id) => {
-  return await apiClient.get(`/api.php?endpoint_name=delete_category&id=${id}`);
+  return await apiClient.delete(
+    `/api.php?endpoint_name=delete_category&id=${id}`
+  );
 };
 // Delete Category
 export const useDeleteCategory = (id) => {
