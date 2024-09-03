@@ -5,8 +5,10 @@ import CheckPublished from "../CheckPublished";
 import CheckHighlighted from "../CheckHighlited";
 import { useNavigate } from "react-router-dom";
 import {
-  useFetchProducts,
+  useFetchPublishedProducts,
   useSingleUser,
+  useMutateProductPublish,
+  useMutateProductHighlighted,
   useMutateProduct,
   useDeleteArticle,
 } from "../hooks/useFetch";
@@ -23,8 +25,10 @@ function PublishedProducts() {
   const [user, setUser] = useLocalStorage("user");
   const [currentPage, setCurrentPage] = useState(0);
   const { mutate } = useMutateProduct();
+  const { mutate: mutatePublish } = useMutateProductPublish();
+  const { mutate: mutateHighlight } = useMutateProductHighlighted();
   const { mutate: remove } = useDeleteArticle();
-  const { data } = useFetchProducts(currentPage);
+  const { data } = useFetchPublishedProducts(currentPage);
   const navigate = useNavigate();
 
   if (!user?.role == "admin") {
@@ -58,32 +62,32 @@ function PublishedProducts() {
               navigate(`../dashboard/edit?id=${product.id}`);
             };
             let handlePublish = () => {
-              let productId = product.id;
-              mutate(
+              let id = product.id;
+              mutatePublish(
                 {
-                  productId,
+                  id,
                   isPublished: !product.isPublished,
                 },
                 {
                   onSuccess: async () => {
                     return await queryClient.invalidateQueries({
-                      queryKey: ["published articles"],
+                      queryKey: ["published products"],
                     });
                   },
                 }
               );
             };
             let handleHighlighted = () => {
-              let productId = product.id;
-              mutate(
+              let id = product.id;
+              mutateHighlight(
                 {
-                  productId,
+                  id,
                   isHighlighted: !product.isHighlighted,
                 },
                 {
                   onSuccess: async () => {
                     return await queryClient.invalidateQueries({
-                      queryKey: ["published articles"],
+                      queryKey: ["published products"],
                     });
                   },
                 }
@@ -99,12 +103,13 @@ function PublishedProducts() {
                 key={product.id}
               >
                 <Toaster />
+
                 <div className="flex flex-col md:flex-row p-2 justify-between">
                   <div
                     onClick={handleViewArticle}
                     className="relative cursor-pointer overflow-hidden w-96 h-48 bg-white border"
                   >
-                    {product?.isHighlighted ? (
+                    {product?.isPublished & (product?.isHighlighted == 1) ? (
                       <div className="absolute left-6 top-0 h-16 w-16">
                         <div className="absolute shadow-md transform -rotate-45 bg-green-400 text-center text-white font-semibold py-1 right-[-35px] top-[32px] w-[170px]">
                           Highlighted
@@ -158,12 +163,12 @@ function PublishedProducts() {
                 <div className="flex xl:flex-col">
                   <PublishBtn
                     handlePublish={handlePublish}
-                    article={product}
+                    product={product}
                     CheckPublished={CheckPublished}
                   />
 
                   <Buttons
-                    article={product}
+                    product={product}
                     CheckPublished={CheckPublished}
                     handlePublish={handlePublish}
                     handleHighlighted={handleHighlighted}

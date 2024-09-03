@@ -194,81 +194,22 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
     echo json_encode(['message' => 'You have no products']);
   }
 }
-// Create Category
-if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_category') and ($method === 'POST')) {
-  $name = $payload['name'];
-  $imgUrl = $payload['imgUrl'];
-  try {
-    $stm = $pdo->prepare("INSERT INTO `categories` (`name`,`imgUrl`) VALUES (?, ?)");
-    $user = $stm->execute([$payload['name'], $payload['imgUrl']]);
-    if (!empty($user)) {
-      echo json_encode(['message' => 'Category was created successfully']);
-    } else {
-      http_response_code(400);
-      json_encode(
-        ['error' => 'error']
-      );
-    }
-  } catch (Exception $error) {
-    echo json_encode([
-      $error->getMessage(),
-    ]);
-  }
-}
-// All Categories
-if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'categories') and $method === 'GET') {
-  $SQL = "SELECT * FROM `categories`";
-  $stm = $pdo->prepare($SQL);
+
+// Product BY ID
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'published_products') && $method === 'GET') {
+  // if (!isset($_GET['id']) || empty($_GET['id'])) {
+  //   die(json_encode(['message' => 'Product ID is required!']));
+  // }
+
+  $stm = $pdo->prepare("SELECT * FROM `products` WHERE isPublished = 1");
   $stm->execute();
-  $categories = $stm->fetchAll(PDO::FETCH_ASSOC);
+  $product = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-
-  if ($categories) {
-    // foreach ($products as $product) {
-    echo json_encode($categories);
-    // }
-  } else {
-    echo json_encode(['message' => 'You have no categories']);
-  }
-}
-// Category BY ID
-if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'category_by_id') && $method === 'GET') {
-  if (!isset($_GET['id']) || empty($_GET['id'])) {
-    die(json_encode(['message' => 'Category ID is required!']));
-  }
-
-  $stm = $pdo->prepare("SELECT * FROM `categories` WHERE id = ? LIMIT 1");
-  $stm->execute([$_GET['id']]);
-  $category = $stm->fetch(PDO::FETCH_ASSOC);
-
-  if ($category) {
-    echo json_encode($category);
+  if ($product) {
+    echo json_encode($product);
   } else {
     echo json_encode([]);
   }
-}
-// Update Category
-if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_category') && $method === 'POST') {
-  if (!isset($payload['id']) || empty($payload['id'])) {
-    die(json_encode(['message' => 'Category ID is required!']));
-  }
-  $name = $payload['name'];
-  $imgUrl = $payload['imgUrl'];
-  $id = $payload['id'];
-  $stm = $pdo->prepare("UPDATE `categories` SET `name` = COALESCE(?, `name`), `imgUrl` = COALESCE(?, `imgUrl`) WHERE `categories`.`id` = ? LIMIT 1");
-  $stm->execute([$name, $imgUrl, $id]);
-  echo json_encode(["success" => "Updated successfully"]);
-}
-
-// Delete Category
-if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_category') && $method === 'GET') {
-  if (!isset($_GET['id']) || empty($_GET['id'])) {
-    die(json_encode(['message' => 'Category ID is required!']));
-  }
-
-  $stm = $pdo->prepare("DELETE FROM `categories` WHERE `categories`.`id` = ? LIMIT 1");
-  $stm->execute([$_GET['id']]);
-  echo json_encode(["success" => "deleted successfully"]);
 }
 
 
@@ -335,15 +276,8 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   `img` = COALESCE(?, `img`),
   `isHighlighted` = COALESCE(?, `isHighlighted`),
   `stock` = COALESCE(?, `stock`),
-  -- `isPublished` = COALESCE(?, `isPublished`)
   WHERE `products`.`id` = ? LIMIT 1");
-  // $isPublished = $payload['isPublished'];
-  // if ($isPublished == false) {
-  //   $isPublished = 0;
-  // }
-  // if ($isPublished == true) {
-  //   $isPublished = 1;
-  // }
+
 
   $isHighlighted = $payload['isHighlighted'];
   if ($isHighlighted == false) {
@@ -437,7 +371,82 @@ WHERE
   }
   echo json_encode($products);
 }
+// Create Category
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_category') and ($method === 'POST')) {
+  $name = $payload['name'];
+  $imgUrl = $payload['imgUrl'];
+  try {
+    $stm = $pdo->prepare("INSERT INTO `categories` (`name`,`imgUrl`) VALUES (?, ?)");
+    $user = $stm->execute([$payload['name'], $payload['imgUrl']]);
+    if (!empty($user)) {
+      echo json_encode(['message' => 'Category was created successfully']);
+    } else {
+      http_response_code(400);
+      json_encode(
+        ['error' => 'error']
+      );
+    }
+  } catch (Exception $error) {
+    echo json_encode([
+      $error->getMessage(),
+    ]);
+  }
+}
+// All Categories
+if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'categories') and $method === 'GET') {
+  $SQL = "SELECT * FROM `categories`";
+  $stm = $pdo->prepare($SQL);
+  $stm->execute();
+  $categories = $stm->fetchAll(PDO::FETCH_ASSOC);
 
+
+  if ($categories) {
+    // foreach ($products as $product) {
+    echo json_encode($categories);
+    // }
+  } else {
+    echo json_encode(['message' => 'You have no categories']);
+  }
+}
+// Category BY ID
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'category_by_id') && $method === 'GET') {
+  if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die(json_encode(['message' => 'Category ID is required!']));
+  }
+
+  $stm = $pdo->prepare("SELECT * FROM `categories` WHERE id = ? LIMIT 1");
+  $stm->execute([$_GET['id']]);
+  $category = $stm->fetch(PDO::FETCH_ASSOC);
+
+  if ($category) {
+    echo json_encode($category);
+  } else {
+    echo json_encode([]);
+  }
+}
+// Update Category
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_category') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'Category ID is required!']));
+  }
+  $name = $payload['name'];
+  $imgUrl = $payload['imgUrl'];
+  $id = $payload['id'];
+  $stm = $pdo->prepare("UPDATE `categories` SET `name` = COALESCE(?, `name`), `imgUrl` = COALESCE(?, `imgUrl`) WHERE `categories`.`id` = ? LIMIT 1");
+  $stm->execute([$name, $imgUrl, $id]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
+
+// Delete Category
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_category') && $method === 'GET') {
+  if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die(json_encode(['message' => 'Category ID is required!']));
+  }
+
+  $stm = $pdo->prepare("DELETE FROM `categories` WHERE `categories`.`id` = ? LIMIT 1");
+  $stm->execute([$_GET['id']]);
+  echo json_encode(["success" => "deleted successfully"]);
+}
 // Reklama
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'reklama') and $method === 'GET') {
   $SQL = "SELECT * FROM `reklama`;";

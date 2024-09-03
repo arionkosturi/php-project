@@ -86,9 +86,9 @@ export const PublishBtn = ({ handlePublish, product, CheckPublished }) => {
       alertTriggerButton={
         <div>
           <CheckPublished
-            isPublished={product?.isPublished === 1 ? "Published" : "Archived"}
+            isPublished={product?.isPublished == 1 ? "Published" : "Archived"}
             className={
-              product?.isPublished === 1
+              product?.isPublished == 1
                 ? "border w-20 md:w-32 h-9 mt-2 px-2 bg-green-400 hover:bg-green-500 flex justify-center gap-2"
                 : "border w-20 md:w-32 h-9 mt-2 px-2 bg-red-400 hover:bg-red-500 flex justify-center gap-2"
             }

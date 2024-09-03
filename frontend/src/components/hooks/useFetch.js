@@ -22,6 +22,22 @@ export const useFetchProducts = (pageNumber) => {
     queryKey: ["products", pageNumber],
   });
 };
+// Fetch Published Products
+const fetchPublishedProducts = async () => {
+  return await apiClient.get(`api.php?endpoint_name=published_products`);
+};
+// Fetch Published Products
+export const useFetchPublishedProducts = () => {
+  return useQuery({
+    queryFn: async () => {
+      const { data } = await fetchPublishedProducts();
+
+      return data;
+    },
+    queryKey: ["published products"],
+  });
+};
+
 // Fetch Products By Category
 const fetchProductsByCategory = async (category) => {
   return await apiClient.get(
