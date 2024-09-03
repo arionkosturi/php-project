@@ -9,6 +9,8 @@ import {
   useFetchProducts,
   useFetchSearchAllArticles,
   useMutateProduct,
+  useMutateProductPublish,
+  useMutateProductHighlighted,
   useDeleteArticle,
 } from "../hooks/useFetch";
 import { useQueryClient } from "@tanstack/react-query";
@@ -28,6 +30,8 @@ function Products() {
   };
   const [currentPage, setCurrentPage] = useState(0);
   const { mutate } = useMutateProduct();
+  const { mutate: mutatePublish } = useMutateProductPublish();
+  const { mutate: mutateHighlight } = useMutateProductHighlighted();
   const { mutate: remove } = useDeleteArticle();
   let fetchTerm = "all";
   const { data: products } = useFetchProducts(currentPage, fetchTerm);
@@ -83,10 +87,10 @@ function Products() {
               navigate(`../dashboard/edit?id=${product.id}`);
             };
             let handlePublish = () => {
-              let productId = product.id;
-              mutate(
+              let id = product.id;
+              mutatePublish(
                 {
-                  productId,
+                  id,
                   isPublished: !product.isPublished,
                 },
                 {
@@ -102,10 +106,10 @@ function Products() {
               );
             };
             let handleHighlighted = () => {
-              let productId = product.id;
-              mutate(
+              let id = product.id;
+              mutateHighlight(
                 {
-                  productId,
+                  id,
                   isHighlighted: !product.isHighlighted,
                 },
                 {
@@ -137,7 +141,7 @@ function Products() {
                     onClick={handleViewArticle}
                     className="relative cursor-pointer overflow-hidden w-96 h-48 bg-white border"
                   >
-                    {product.isPublished & product.isHighlighted ? (
+                    {product.isPublished && product.isHighlighted ? (
                       <div className="absolute left-6 top-0 h-16 w-16">
                         <div className="absolute shadow-md transform -rotate-45 bg-green-400 text-center text-white font-semibold py-1 right-[-35px] top-[32px] w-[170px]">
                           Highlighted
@@ -220,10 +224,10 @@ function Products() {
           navigate(`../dashboard/edit?id=${product.id}`);
         };
         let handlePublish = () => {
-          let productId = product.id;
-          mutate(
+          let id = product.id;
+          mutatePublish(
             {
-              productId,
+              id,
               isPublished: !product.isPublished,
             },
             {
@@ -236,10 +240,10 @@ function Products() {
           );
         };
         let handleHighlighted = () => {
-          let productId = product.id;
-          mutate(
+          let id = product.id;
+          mutateHighlight(
             {
-              productId,
+              id,
               isHighlighted: !product.isHighlighted,
             },
             {
@@ -252,8 +256,8 @@ function Products() {
           );
         };
         let handleDelete = () => {
-          let productId = product.id;
-          remove(productId);
+          let id = product.id;
+          remove(id);
         };
         // let contentStriped = article.content.replace(/<[^>]*>/g, "");
         // console.log(contentStriped);

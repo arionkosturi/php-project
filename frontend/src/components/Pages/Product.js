@@ -5,6 +5,8 @@ import Login from "../../frontend/Login";
 import {
   useProductCategory,
   useMutateProduct,
+  useMutateProductPublish,
+  useMutateProductHighlighted,
   useSingleArticle,
   useFetchCategories,
   useSingleUser,
@@ -45,6 +47,8 @@ function Product() {
   let [isEditingContent, setIsEditingContent] = useState(false);
   let [isEditingSource, setIsEditingSource] = useState(false);
   const { mutate } = useMutateProduct();
+  const { mutate: mutatePublish } = useMutateProductPublish();
+  const { mutate: mutateHighlight } = useMutateProductHighlighted();
   const { data: product, isLoading, error } = useSingleArticle();
   const [user, setUser] = useLocalStorage("user");
   let categId = product?.category;
@@ -61,64 +65,64 @@ function Product() {
     return <div>Error fetching data.</div>;
   }
   let handlePublish = () => {
-    let productId = product.id;
-    mutate({
-      productId,
+    let id = product.id;
+    mutatePublish({
+      id,
       isPublished: !product.isPublished,
     });
   };
   let handleHighlighted = () => {
-    let productId = product.id;
-    mutate({
-      productId,
+    let id = product.id;
+    mutateHighlight({
+      id,
       isHighlighted: !product.isHighlighted,
     });
   };
   let editTitle = (e) => {
-    let productId = product.id;
+    let id = product.id;
     mutate({
-      productId,
+      id,
       name: e.target.value,
     });
   };
   let editCategory = (e) => {
-    let productId = product.id;
+    let id = product.id;
     mutate({
-      productId,
+      id,
       category: e.target.value,
     });
   };
   let editImgUrl = (e) => {
-    let productId = product.id;
+    let id = product.id;
     mutate({
-      productId,
+      id,
       img: e.target.value,
     });
   };
   let editDescription = (e) => {
-    let productId = product.id;
+    let id = product.id;
     mutate({
-      productId,
-      description: e.target.value,
+      id,
+      details: e.target.value,
     });
   };
   let editSourceUrl = (e) => {
-    let productId = product.id;
+    let id = product.id;
     mutate({
-      productId,
+      id,
       sourceUrl: e.target.value,
     });
   };
 
   let editorContentSave = (e) => {
-    let productId = product.id;
+    let id = product.id;
     if (!editorContent) {
       setIsEditingContent(false);
     }
     if (editorContent.length > 0) {
       mutate(
         {
-          productId,
+          id,
           content: editorContent,
         },
         {
@@ -149,7 +153,7 @@ function Product() {
               <div className="bg-amber-300 flex text-neutral-600   p-4  justify-center items-center  h-16  container mx-auto gap-4 ">
                 <FaInfoCircle className="text-3xl" />
                 <p className="text-md font-semibold">
-                  Ky artikull eshte i arkivuar. Deshiron ta publikosh?
+                  Ky produkt eshte i arkivuar. Deshiron ta publikosh?
                 </p>
                 <Alert
                   handleFunction={handlePublish}
@@ -159,7 +163,7 @@ function Product() {
                     </button>
                   }
                   alertTitle="Jeni i sigurt?"
-                  alertMessage="Deshiron ta Publikosh artikullin?"
+                  alertMessage="Deshiron ta Publikosh produktin?"
                 />
               </div>
             )}
@@ -169,7 +173,7 @@ function Product() {
                 <div className="bg-green-300 flex text-neutral-600 justify-center items-center  h-16  container gap-2">
                   <FaInfoCircle className="text-3xl" />
                   <p className="text-md font-semibold mt-1">
-                    Ky artikull eshte i publikuar.
+                    Ky produkt eshte i publikuar.
                   </p>
                   {/* Archive Product */}
                   <Alert
@@ -180,7 +184,7 @@ function Product() {
                       </button>
                     }
                     alertTitle="Jeni i sigurt?"
-                    alertMessage={`Deshiron ta Arkivosh artikullin?`}
+                    alertMessage={`Deshiron ta Arkivosh produktin?`}
                   />
                   <Alert
                     handleFunction={handleHighlighted}
@@ -188,12 +192,10 @@ function Product() {
                       <div className="">
                         <CheckHighlighted
                           isHighlighted={
-                            product.isHighlighted === true
-                              ? "Featured"
-                              : "Feature"
+                            product.isHighlighted === 1 ? "Featured" : "Feature"
                           }
                           className={
-                            product.isHighlighted === true
+                            product.isHighlighted === 1
                               ? "border shadow w-32 h-9  bg-emerald-400 hover:bg-green-500 flex justify-center gap-2"
                               : "border shadow w-32 h-9   bg-amber-400 hover:bg-amber-500 flex justify-center gap-2"
                           }
@@ -203,9 +205,9 @@ function Product() {
                     }
                     alertTitle="Jeni i sigurt?"
                     alertMessage={
-                      product.isHighlighted === true
-                        ? "Deshiron ta heqesh artikullin nga Highlighted?"
-                        : "Deshiron ta besh artikullin Highlighted?"
+                      product.isHighlighted === 1
+                        ? "Deshiron ta heqesh produktin nga Highlighted?"
+                        : "Deshiron ta besh produktin Highlighted?"
                     }
                   />
                 </div>
@@ -235,42 +237,41 @@ function Product() {
             ) : (
               ""
             )}
-
-            <div className="mt-2 lg:-mx-6">
-              {!isEditingTitle ? (
-                <p
-                  onDoubleClick={() => {
-                    setIsEditingTitle(true);
-                  }}
-                  className="block cursor-pointer mb-4 mx-auto container text-3xl font-semibold text-gray-800 "
+            {!isEditingTitle ? (
+              <p
+                onDoubleClick={() => {
+                  setIsEditingTitle(true);
+                }}
+                className="block cursor-pointer mb-4 mx-auto container text-3xl font-semibold text-gray-800 "
+              >
+                {product.name}
+              </p>
+            ) : (
+              <div>
+                <Badge
+                  className="m-4 flex justify-center"
+                  variant="destructive"
                 >
-                  {product.name}
-                </p>
-              ) : (
-                <div>
-                  <Badge
-                    className="m-4 flex justify-center"
-                    variant="destructive"
-                  >
-                    Editing Name. You can click outside the field. Autosave is
-                    enabled!
-                  </Badge>
+                  Editing Name. You can click outside the field. Autosave is
+                  enabled!
+                </Badge>
 
-                  <textarea
-                    autoFocus
-                    type="text"
-                    id="title"
-                    placeholder="Enter Title"
-                    name="title"
-                    className="block mb-4 mx-auto container text-3xl font-semibold text-gray-800"
-                    value={product.name}
-                    onChange={editTitle}
-                    onBlur={() => {
-                      setIsEditingTitle(false);
-                    }}
-                  ></textarea>
-                </div>
-              )}
+                <textarea
+                  autoFocus
+                  type="text"
+                  id="title"
+                  placeholder="Enter Title"
+                  name="title"
+                  className="block mb-4 mx-auto container text-3xl font-semibold text-gray-800"
+                  value={product.name}
+                  onChange={editTitle}
+                  onBlur={() => {
+                    setIsEditingTitle(false);
+                  }}
+                ></textarea>
+              </div>
+            )}
+            <div className="mt-6 flex align-middle justify-center">
               {!isEditingImgUrl ? (
                 <TooltipProvider>
                   <Tooltip>
@@ -437,8 +438,9 @@ function Product() {
                   </>
                 )}
 
-                <p className="my-8 text-lg text-gray-500  md:text-md content-2"></p>
-                <div className="img2 w-[90%]"></div>
+                <p className="my-8 text-lg text-gray-500  md:text-md content-2">
+                  {product.price} EURO
+                </p>
                 <p className="my-8 text-lg text-gray-500 md:text-md content-3"></p>
                 {!isEditingSource ? (
                   <TooltipProvider>
@@ -492,18 +494,6 @@ function Product() {
                     />
                   </div>
                 )}
-
-                <div className="flex items-center mt-6">
-                  <img
-                    className="object-cover object-center w-10 h-10 rounded-full"
-                    src="https://images.unsplash.com/photo-1531590878845-12627191e687?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
-                    alt=""
-                  />
-                  <div className="mx-4">
-                    <h1 className="text-sm text-gray-700 ">{product.author}</h1>
-                    <p className="text-sm text-gray-500 ">Journalist</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

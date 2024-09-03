@@ -327,17 +327,73 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   $id = $payload['id'];
   $stm = $pdo->prepare("UPDATE `products` 
   SET 
-  `name`= ?,
-  `details` = ?,
-  `category` = ?,
-  `cost` = ?,
-  `price` = ?,
-  `img` = ?,
-  `isHighlighted` = ?,
-  `stock` = ?,
-  `isPublished` = ? 
+  `name`= COALESCE(?, `name`),
+  `details` = COALESCE(?, `details`),
+  `category` = COALESCE(?, `category`),
+  `cost` = COALESCE(?, `cost`),
+  `price` = COALESCE(?, `price`),
+  `img` = COALESCE(?, `img`),
+  `isHighlighted` = COALESCE(?, `isHighlighted`),
+  `stock` = COALESCE(?, `stock`),
+  -- `isPublished` = COALESCE(?, `isPublished`)
   WHERE `products`.`id` = ? LIMIT 1");
-  $stm->execute([$name, $details, $category, $cost, $price,  $img, $isHighlighted, $stock, $isPublished, $id]);
+  // $isPublished = $payload['isPublished'];
+  // if ($isPublished == false) {
+  //   $isPublished = 0;
+  // }
+  // if ($isPublished == true) {
+  //   $isPublished = 1;
+  // }
+
+  $isHighlighted = $payload['isHighlighted'];
+  if ($isHighlighted == false) {
+    $isHighlighted = 0;
+  }
+  if ($isHighlighted == true) {
+    $isHighlighted = 1;
+  }
+
+  $stm->execute([$name, $details, $category, $cost, $price,  $img, $isHighlighted, $stock, $id]);
+
+  echo json_encode(["success" => "Updated successfully"]);
+}
+// Product Update Published
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_published_product') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'Product ID is required!']));
+  }
+  $isPublished = $payload['isPublished'];
+  if ($isPublished) {
+    $isPublished = 1;
+  } else {
+    $isPublished = 0;
+  }
+  $id = $payload['id'];
+  $publish = $pdo->prepare("UPDATE `products` 
+  SET 
+  `isPublished` = ?
+  WHERE `products`.`id` = ? LIMIT 1");
+  $publish->execute([$isPublished, $id]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
+
+// Product Update Highlighted
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_highlighted_product') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'Product ID is required!']));
+  }
+  $isHighlighted = $payload['isHighlighted'];
+  if ($isHighlighted) {
+    $isHighlighted = 1;
+  } else {
+    $isHighlighted = 0;
+  }
+  $id = $payload['id'];
+  $highlight = $pdo->prepare("UPDATE `products` 
+  SET 
+  `isHighlighted` = ?
+  WHERE `products`.`id` = ? LIMIT 1");
+  $highlight->execute([$isHighlighted, $id]);
   echo json_encode(["success" => "Updated successfully"]);
 }
 

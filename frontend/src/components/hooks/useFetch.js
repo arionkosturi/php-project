@@ -163,30 +163,32 @@ export const useAddProduct = () => {
   });
 };
 //Mutate Product
-const mutateSingleProduct = async (id) => {
+const mutateSingleProduct = async (product) => {
   let {
     name,
     details,
-    isHighlighted,
+    // isHighlighted,
     category,
-    isPublished,
+    // isPublished,
     cost,
     price,
     img,
     stock,
-  } = id;
+    id,
+  } = product;
   return await apiClient.post(`api.php`, {
+    _method: "PATCH",
     endpoint_name: "update_product",
     name,
     details,
-    isHighlighted,
+    // isHighlighted,
     category,
-    isPublished,
+    // isPublished,
     cost,
     price,
     img,
     stock,
-    id: id.articleId,
+    id,
   });
 };
 // Mutate Product
@@ -196,6 +198,68 @@ export const useMutateProduct = (product) => {
   return useMutation({
     mutationKey: ["single product"],
     mutationFn: mutateSingleProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["single product"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["searched articles"],
+      });
+    },
+  });
+};
+
+//Mutate Product Published
+const mutateSingleProductPublish = async (product) => {
+  let { isPublished, id } = product;
+  return await apiClient.post(`api.php`, {
+    _method: "PATCH",
+    endpoint_name: "update_published_product",
+    isPublished,
+    id,
+  });
+};
+// Mutate Product Published
+export const useMutateProductPublish = (product) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["single product publish"],
+    mutationFn: mutateSingleProductPublish,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["single product"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["searched articles"],
+      });
+    },
+  });
+};
+
+//Mutate Product Highlightedublished
+const mutateSingleProductHighlight = async (product) => {
+  let { isHighlighted, id } = product;
+  return await apiClient.post(`api.php`, {
+    _method: "PATCH",
+    endpoint_name: "update_highlighted_product",
+    isHighlighted,
+    id,
+  });
+};
+// Mutate Product Highlighted
+export const useMutateProductHighlighted = (product) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["single product highlighted"],
+    mutationFn: mutateSingleProductHighlight,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["single product"],
