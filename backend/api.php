@@ -255,7 +255,7 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   $name = $payload['name'];
   $imgUrl = $payload['imgUrl'];
   $id = $payload['id'];
-  $stm = $pdo->prepare("UPDATE `categories` SET `name` = ?, `imgUrl` = ? WHERE `categories`.`id` = ? LIMIT 1");
+  $stm = $pdo->prepare("UPDATE `categories` SET `name` = COALESCE(?, `name`), `imgUrl` = COALESCE(?, `imgUrl`) WHERE `categories`.`id` = ? LIMIT 1");
   $stm->execute([$name, $imgUrl, $id]);
   echo json_encode(["success" => "Updated successfully"]);
 }
