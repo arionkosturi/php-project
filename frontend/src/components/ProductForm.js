@@ -2,7 +2,6 @@
 import React, { useState, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Header from "./Header";
-import JoditEditor from "jodit-react";
 import { Toaster } from "./ui/toaster";
 import { useAddProduct, useFetchCategories } from "./hooks/useFetch";
 import { Button } from "./ui/button";
@@ -13,13 +12,6 @@ function ProductForm() {
   const [user, setUser] = useLocalStorage("user");
   const editor = useRef(null);
   const [editorContent, setEditorContent] = useState("");
-  const config = useMemo(
-    () => ({
-      readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-      height: 500,
-    }),
-    []
-  );
   const { data: categories } = useFetchCategories();
   const { mutate, status } = useAddProduct();
   const [productName, setProductName] = useState("");

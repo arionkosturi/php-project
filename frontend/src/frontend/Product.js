@@ -1,15 +1,17 @@
 // @ts-nocheck
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Reklama from "./Reklama";
+import { Button, Form, Rate } from "antd";
 import {
-  useSingleUser,
   useProductCategory,
+  useFetchReviews,
   useMutateUserProfile,
   useSingleArticle,
   useFetchSearchedArticles,
   useMutateProduct,
+  useAddReview,
 } from "../components/hooks/useFetch";
 import {
   FaInfoCircle,
@@ -17,6 +19,8 @@ import {
   FaRegBookmark,
   FaRegHeart,
   FaHeart,
+  FaStar,
+  FaStarHalf,
 } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 import {
@@ -27,11 +31,18 @@ import {
 import CheckHighlighted from "../components/CheckHighlited";
 import Alert from "../components/Alert";
 import { useSessionStorage, useLocalStorage } from "@uidotdev/usehooks";
+import TextArea from "antd/es/input/TextArea";
 
 function PublicArticle() {
   const { mutate } = useMutateProduct();
+  const { mutate: addReview } = useAddReview();
+  const [form] = Form.useForm();
+  const [rating, setRating] = useState();
   const { mutate: addTo } = useMutateUserProfile();
-  const { data: loggedUser } = useSingleUser();
+  const [user, setUser] = useLocalStorage("user");
+  if (!user) {
+    setUser(null);
+  }
   let [njoftimIsOpen, setNjoftimIsOpen] = useSessionStorage(
     "njoftim breaking news",
     1
@@ -45,7 +56,8 @@ function PublicArticle() {
   const { data: related } = useFetchSearchedArticles(article?.category);
   let categId = article?.category;
   const { data: categ } = useProductCategory(categId);
-
+  const { data: reviews } = useFetchReviews();
+  const [reviewText, setReviewText] = useState();
   let articlesDate = new Date(article?.createdAt).toLocaleDateString(
     undefined,
     {
@@ -60,6 +72,19 @@ function PublicArticle() {
     month: "long",
   });
 
+  let handleReviewSubmit = () => {
+    let productId = article.id;
+    let userId = user.id;
+    addReview({
+      productId,
+      userId,
+      reviewText,
+      rating,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
   let handlePublish = () => {
     let articleId = article.id;
     mutate({
@@ -75,8 +100,8 @@ function PublicArticle() {
     });
   };
   let handleLiked = (user) => {
-    let id = loggedUser.id;
-    let likedArticles = loggedUser.likedArticles;
+    let id = user.id;
+    let likedArticles = user.likedArticles;
     addTo({
       id,
       likedArticles: [
@@ -86,8 +111,8 @@ function PublicArticle() {
     });
   };
   let handleRemoveLiked = (user) => {
-    let id = loggedUser.id;
-    let likedArticles = loggedUser.likedArticles;
+    let id = user.id;
+    let likedArticles = user.likedArticles;
     addTo({
       id,
       likedArticles: [
@@ -120,11 +145,11 @@ function PublicArticle() {
       <div>
         <Header />
       </div>
-      {loggedUser?.isAdmin && !article.isPublished && (
+      {user?.role == "admin" && !article.isPublished && (
         <div className="bg-amber-300 flex text-neutral-600   p-4  justify-center items-center  h-16  container mx-auto gap-4 ">
           <FaInfoCircle className="text-3xl" />
           <p className="text-md font-semibold">
-            Ky artikull eshte i arkivuar. Deshiron ta publikosh?
+            Ky produkt eshte i arkivuar. Deshiron ta publikosh?
           </p>
           <Alert
             handleFunction={handlePublish}
@@ -138,12 +163,12 @@ function PublicArticle() {
           />
         </div>
       )}
-      {loggedUser?.isAdmin && article.isPublished && (
+      {user?.role == "admin" && article.isPublished && (
         <div className="flex flex-col mx-1">
           <div className="mx-auto  bg-green-300 flex text-neutral-600 justify-center items-center  h-16  container gap-2">
             <FaInfoCircle className="text-3xl" />
             <p className="text-md font-semibold mt-1">
-              Ky artikull eshte i publikuar.
+              Ky produkt eshte i publikuar.
             </p>
             <Alert
               handleFunction={handlePublish}
@@ -220,9 +245,9 @@ function PublicArticle() {
                 <p className="block cursor-pointer mb-4 mx-auto container text-3xl font-semibold text-gray-800 ">
                   {article.title}
                 </p>
-                {!loggedUser?.guest && (
+                {
                   <>
-                    {loggedUser?.likedArticles?.filter(
+                    {user?.likedArticles?.filter(
                       (liked) => liked.id === article.id
                     ).length === 0 ? (
                       <FaRegHeart
@@ -249,7 +274,7 @@ function PublicArticle() {
                       />
                     )}
                   </>
-                )}
+                }
               </div>
               {article.img ? (
                 <img
@@ -284,7 +309,6 @@ function PublicArticle() {
               </div>
             </div>
           </div>
-
           {related?.filter((f) => f._id !== article._id).length > 0 && (
             <div className="bg-gray-100 dark:bg-neutral-700 w-full dark:text-gray-200 mt-10">
               <div className="border-t-8 border-red-600 w-2/12"></div>
@@ -292,7 +316,6 @@ function PublicArticle() {
               <div className="border-red-600 border-b-8 w-2/12"></div>
             </div>
           )}
-
           {/* Related section */}
           <div className="p-2 grid md:grid-cols-2 gap-2">
             {related
@@ -320,7 +343,84 @@ function PublicArticle() {
                 );
               })}
           </div>
-          <Reklama />
+          <span className="font-bold px-2 py-1 bg-green-600 text-white">
+            Reviews:
+          </span>
+          {user?.role ? (
+            <Form
+              onFinish={handleReviewSubmit}
+              form={form}
+              className="flex flex-col gap-2 mt-2"
+            >
+              <Form.Item label="Rate this product">
+                <Rate
+                  name="rating"
+                  onChange={(value) => {
+                    setRating(value);
+                  }}
+                />
+              </Form.Item>
+              <TextArea
+                name={"textA"}
+                initialValue={""}
+                required
+                onChange={(e) => {
+                  setReviewText(e.target.value);
+                }}
+                rows={4}
+              />
+
+              <Button htmlType="submit" type="primary">
+                Add Review
+              </Button>
+            </Form>
+          ) : (
+            <div>
+              <p className="p-4 text-center font-semibold">
+                <a href="Login" className="text-blue-500 underline">
+                  Login
+                </a>{" "}
+                to leave a review
+              </p>
+              <p className="font-semibold">Reviews:</p>
+            </div>
+          )}
+          {reviews &&
+            reviews[0]
+              ?.filter((f) => f.user_id == user?.id)
+              .map((review) => {
+                return (
+                  <div className="border p-2 mt-4 bg-slate-100">
+                    <div className="mt-2 text-lg">
+                      <p className="flex items-center gap-2 text-yellow-500">
+                        <Rate defaultValue={review.rating} />
+                      </p>
+                      <p className="text-slate-800">
+                        By: {review.username} (me)
+                      </p>
+
+                      <p className="text-slate-600">{review.content}</p>
+                    </div>
+                  </div>
+                );
+              })}
+          {reviews &&
+            reviews[0]
+              ?.filter((f) => f.user_id !== user?.id)
+              .map((review) => {
+                return (
+                  <div className="border p-2">
+                    <div className="mt-2 text-lg">
+                      <p className="text-slate-800">By: {review.username}</p>
+                      {[]}
+                      <p className="flex items-center gap-2 text-yellow-500">
+                        <Rate defaultValue={review.rating} disabled />
+                      </p>
+                      <p className="text-slate-600">{review.content}</p>
+                    </div>
+                  </div>
+                );
+              })}
         </section>
       </div>
       <Footer />

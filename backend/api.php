@@ -81,7 +81,7 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'login')
   $user = $stm->fetch(PDO::FETCH_ASSOC);
   if ($user) {
     if (password_verify($payload['password'], $user['password'])) {
-      $_SESSION['user'] = ["role" => $user['role'], "email" => $user["email"]];
+      $_SESSION['user'] = ["id" => $user['id'], "role" => $user['role'], "email" => $user["email"]];
       echo json_encode(
         $_SESSION['user']
       );
@@ -318,17 +318,34 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   echo json_encode(["success" => "Updated successfully"]);
 }
 
+// Create Reviews
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_review') and ($method === 'POST')) {
+  $product_id = $payload['productId'];
+  $user_id = $payload['userId'];
+  $content = $payload['reviewText'];
+  $rating = $payload['rating'];
+  try {
+    $stm = $pdo->prepare("INSERT INTO `reviews` (`product_id`,`user_id`,`content`,`rating`) VALUES (?, ?, ?, ?)");
+    $user = $stm->execute([$product_id, $user_id, $content, $rating]);
+
+    echo json_encode(['message' => 'Review was created successfully']);
+  } catch (Exception $error) {
+    echo json_encode([
+      $error->getMessage(),
+    ]);
+  }
+}
 // Product Reviews
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'product_reviews') && $method === 'GET') {
   if (!isset($_GET['id']) || empty($_GET['id'])) {
     die(json_encode(['message' => 'Product is required!']));
   }
 
-  $stm = $pdo->prepare("SELECT `reviews`.*, `users`.`username` FROM `reviews` INNER JOIN `users` ON `reviews`.`user_id` = `users`.`id` WHERE `product_id` = ?");
+  $stm = $pdo->prepare("SELECT `reviews`.*, `users`.`username` FROM `reviews` INNER JOIN `users` ON `reviews`.`user_id` = `users`.`id` WHERE `product_id` = ? ORDER BY `id` DESC");
   $stm->execute([$_GET['id']]);
   $reviews = [];
 
-  while ($review = $stm->fetch(PDO::FETCH_ASSOC)) {
+  while ($review = $stm->fetchAll(PDO::FETCH_ASSOC)) {
     $reviews[] = $review;
   }
 

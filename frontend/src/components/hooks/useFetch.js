@@ -104,6 +104,50 @@ export const useSingleArticle = () => {
   });
 };
 
+//Add Reviews
+const addReview = async (rev) => {
+  const { productId, userId, reviewText, rating } = rev;
+
+  return await apiClient.post("api.php", {
+    endpoint_name: "add_review",
+    productId,
+    userId,
+    reviewText,
+    rating,
+  });
+};
+//Add Reviews
+export const useAddReview = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addReview,
+    mutationKey: ["add review"],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["product reviews"],
+      });
+    },
+  });
+};
+
+// Fetch Product Reviews
+const fetchProductReviews = async (id) => {
+  return await apiClient.get(`api.php?endpoint_name=product_reviews&id=${id}`);
+};
+// Fetch Product Reviews
+export const useFetchReviews = () => {
+  const [queryParameter] = useSearchParams();
+  let id = queryParameter.get("id");
+
+  return useQuery({
+    queryFn: async () => {
+      const { data } = await fetchProductReviews(id);
+      return data;
+    },
+    queryKey: ["product reviews", id],
+  });
+};
+
 // Fetch Searched Articles
 const fetchSearchedArticles = async (q) => {
   let query = q.queryKey[1]?.q;
