@@ -129,7 +129,26 @@ export const useAddReview = () => {
     },
   });
 };
+//Delete Review
+const deleteReview = async (id) => {
+  return await apiClient.delete(
+    `api.php?endpoint_name=delete_review&id=${id.id}`
+  );
+};
+// Delete Review
+export const useDeleteReview = (id) => {
+  const queryClient = useQueryClient();
 
+  return useMutation({
+    mutationKey: ["delete review"],
+    mutationFn: deleteReview,
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ["product reviews"] });
+      console.log(id);
+    },
+    onSettled: (id) => {},
+  });
+};
 // Fetch Product Reviews
 const fetchProductReviews = async (id) => {
   return await apiClient.get(`api.php?endpoint_name=product_reviews&id=${id}`);
@@ -471,8 +490,6 @@ export const useDeleteCategory = (id) => {
     mutationKey: ["single category"],
     mutationFn: deleteSingleCategory,
     onSuccess: () => {
-      console.log("applyed");
-
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
   });

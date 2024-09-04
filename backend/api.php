@@ -351,7 +351,16 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'product_revie
 
   echo json_encode($reviews);
 }
+// Delete Review
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_review') && $method === 'DELETE') {
+  if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die(json_encode(['message' => 'Review ID is required!']));
+  }
 
+  $stm = $pdo->prepare("DELETE FROM `reviews` WHERE `reviews`.`id` = ? LIMIT 1");
+  $stm->execute([$_GET['id']]);
+  echo json_encode(["success" => "deleted successfully"]);
+}
 // Delete Product
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_product') && $method === 'DELETE') {
   if (!isset($_GET['id']) || empty($_GET['id'])) {

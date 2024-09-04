@@ -12,6 +12,7 @@ import {
   useFetchSearchedArticles,
   useMutateProduct,
   useAddReview,
+  useDeleteReview,
 } from "../components/hooks/useFetch";
 import {
   FaInfoCircle,
@@ -21,6 +22,9 @@ import {
   FaHeart,
   FaStar,
   FaStarHalf,
+  FaTrashAlt,
+  FaTrash,
+  FaRegTrashAlt,
 } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 import {
@@ -32,10 +36,11 @@ import CheckHighlighted from "../components/CheckHighlited";
 import Alert from "../components/Alert";
 import { useSessionStorage, useLocalStorage } from "@uidotdev/usehooks";
 import TextArea from "antd/es/input/TextArea";
-
+import axios from "axios";
 function PublicArticle() {
   const { mutate } = useMutateProduct();
   const { mutate: addReview } = useAddReview();
+  const { mutate: delReview } = useDeleteReview();
   const [form] = Form.useForm();
   const [rating, setRating] = useState();
   const { mutate: addTo } = useMutateUserProfile();
@@ -85,6 +90,7 @@ function PublicArticle() {
       window.location.reload();
     }, 1000);
   };
+
   let handlePublish = () => {
     let articleId = article.id;
     mutate({
@@ -291,6 +297,7 @@ function PublicArticle() {
                   }
                 />
               )}
+
               <div className="mt-8  lg:mt-0 lg:mx-6 ">
                 <a href={`/category/${categ?.name}`}>
                   <p className="cursor-pointer text-lg mt-2 p-2 text-purple-700 font-bold uppercase">
@@ -390,11 +397,23 @@ function PublicArticle() {
               ?.filter((f) => f.user_id == user?.id)
               .map((review) => {
                 return (
-                  <div className="border p-2 mt-4 bg-slate-100">
+                  <div
+                    className="border p-2 mt-4 bg-slate-100"
+                    key={review?.id}
+                  >
                     <div className="mt-2 text-lg">
-                      <p className="flex items-center gap-2 text-yellow-500">
-                        <Rate defaultValue={review.rating} />
-                      </p>
+                      <div className="flex justify-between">
+                        <p className="flex items-center gap-2 text-yellow-500">
+                          <Rate defaultValue={review.rating} />
+                        </p>
+                        <FaRegTrashAlt
+                          className="hover:text-red-600 text-red-400 text-xl"
+                          onClick={() => {
+                            let id = review.id;
+                            delReview(review);
+                          }}
+                        />
+                      </div>
                       <p className="text-slate-800">
                         By: {review.username} (me)
                       </p>
