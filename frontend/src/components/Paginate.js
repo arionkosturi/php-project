@@ -8,7 +8,7 @@ import {
   PaginationPrevious,
 } from "./ui/pagination";
 
-function Paginate({ currentPage, setCurrentPage, isPreviousData, articles }) {
+function Paginate({ pageNumber, setPageNumber, isPreviousData, products }) {
   return (
     <>
       <Pagination className="">
@@ -17,8 +17,7 @@ function Paginate({ currentPage, setCurrentPage, isPreviousData, articles }) {
             <PaginationPrevious
               className="text-purple-800 hover:text-purple-500"
               onClick={() => {
-                if (currentPage > 0)
-                  setCurrentPage((prevPage) => +prevPage - 1);
+                if (pageNumber > 0) setPageNumber((prevPage) => +prevPage - 1);
               }}
             />
           </PaginationItem>
@@ -28,8 +27,8 @@ function Paginate({ currentPage, setCurrentPage, isPreviousData, articles }) {
               className="text-purple-800 hover:text-purple-500"
               onClick={() => {
                 console.log("click");
-                if (articles.length < 8) return;
-                setCurrentPage((prevPage) => +prevPage + 1);
+                if (products.length < 8) return;
+                setPageNumber((prevPage) => +prevPage + 1);
               }}
             />
           </PaginationItem>

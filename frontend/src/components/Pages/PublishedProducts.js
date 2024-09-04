@@ -23,12 +23,12 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 function PublishedProducts() {
   const queryClient = useQueryClient();
   const [user, setUser] = useLocalStorage("user");
-  const [currentPage, setCurrentPage] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
   const { mutate } = useMutateProduct();
   const { mutate: mutatePublish } = useMutateProductPublish();
   const { mutate: mutateHighlight } = useMutateProductHighlighted();
   const { mutate: remove } = useDeleteProduct();
-  const { data } = useFetchPublishedProducts(currentPage);
+  const { data } = useFetchPublishedProducts(pageNumber);
   const navigate = useNavigate();
 
   if (!user?.role == "admin") {
@@ -50,9 +50,9 @@ function PublishedProducts() {
         <LeftPanel />
         <div>
           <Paginate
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            articles={data}
+            setPageNumber={setPageNumber}
+            pageNumber={pageNumber}
+            products={data}
           />
           {data?.map((product) => {
             let handleViewArticle = () => {

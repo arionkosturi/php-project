@@ -28,19 +28,19 @@ function Products() {
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
-  const [currentPage, setCurrentPage] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0);
   const { mutate } = useMutateProduct();
   const { mutate: mutatePublish } = useMutateProductPublish();
   const { mutate: mutateHighlight } = useMutateProductHighlighted();
   const { mutate: remove } = useDeleteProduct();
   let fetchTerm = "all";
-  const { data: products } = useFetchProducts(currentPage, fetchTerm);
+  const { data: products } = useFetchProducts(pageNumber, fetchTerm);
   const navigate = useNavigate();
   return (
     <>
       <Paginate
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
         products={products}
       />
       <div className="flex mb-2   rounded-full w-3/5 mx-auto text-purple-700 dark:text-purple-300 group hover:ring ring-purple-300">
