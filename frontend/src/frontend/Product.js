@@ -25,6 +25,7 @@ import {
   FaTrashAlt,
   FaTrash,
   FaRegTrashAlt,
+  FaCartPlus,
 } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 import {
@@ -37,6 +38,9 @@ import Alert from "../components/Alert";
 import { useSessionStorage, useLocalStorage } from "@uidotdev/usehooks";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
+import { useToast } from "../components/ui/use-toast";
+import { Toaster } from "../components/ui/toaster";
+
 function PublicArticle() {
   const { mutate } = useMutateProduct();
   const { mutate: addReview } = useAddReview();
@@ -45,6 +49,8 @@ function PublicArticle() {
   const [rating, setRating] = useState();
   const { mutate: addTo } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
+  const [cart, setCart] = useLocalStorage("cart", []);
+  const { toast } = useToast();
   if (!user) {
     setUser(null);
   }
@@ -77,6 +83,14 @@ function PublicArticle() {
     month: "long",
   });
 
+  let addToCart = (e) => {
+    setCart([...cart, article]);
+    toast({
+      variant: "success",
+      title: "Success",
+      description: "Produkti u shtua ne shporte!",
+    });
+  };
   let handleReviewSubmit = () => {
     let productId = article.id;
     let userId = user.id;
@@ -149,6 +163,8 @@ function PublicArticle() {
   return (
     <div>
       <div>
+        <Toaster />
+
         <Header />
       </div>
       {user?.role == "admin" && !article.isPublished && (
@@ -312,7 +328,15 @@ function PublicArticle() {
                   {article.details}
                 </p>
                 <p className="my-8 text-lg text-gray-500 md:text-md content-3"></p>
-                <p>{article.price} EURO</p>
+              </div>
+              <div className="flex gap-4 items-center">
+                <p className="text-5xl bg-yellow-300 text-red-600 px-4 py-1">
+                  {article.price} €
+                </p>
+                <FaCartPlus
+                  onClick={addToCart}
+                  className="text-3xl text-purple-600 hover:text-purple-500 hover:scale-110"
+                />
               </div>
             </div>
           </div>
@@ -324,7 +348,7 @@ function PublicArticle() {
             </div>
           )}
           {/* Related section */}
-          <div className="p-2 grid md:grid-cols-2 gap-2">
+          <div className="p-2 grid md:grid-cols-2 gap-2 mb-6">
             {related
               ?.filter((f) => f._id !== article._id)
               .slice(0, 10)
@@ -350,9 +374,11 @@ function PublicArticle() {
                 );
               })}
           </div>
-          <span className="font-bold px-2 py-1 bg-green-600 text-white">
+          <hr />
+          <span className="font-bold px-2 py-1 bg-green-600 text-white ">
             Reviews:
           </span>
+
           {user?.role ? (
             <Form
               onFinish={handleReviewSubmit}
@@ -362,6 +388,7 @@ function PublicArticle() {
               <Form.Item label="Rate this product">
                 <Rate
                   name="rating"
+                  defaultValue="4"
                   onChange={(value) => {
                     setRating(value);
                   }}
