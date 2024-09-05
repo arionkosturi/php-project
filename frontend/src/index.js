@@ -22,6 +22,7 @@ import Register from "./frontend/Register";
 import Profile from "./frontend/Profile";
 import Saved from "./frontend/Saved";
 import Liked from "./frontend/Liked";
+import Cart from "./frontend/Cart";
 
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -39,6 +40,11 @@ const router = createBrowserRouter([
   {
     path: "/product",
     element: <Product />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/cart",
+    element: <Cart />,
     errorElement: <NotFoundPage />,
   },
   {

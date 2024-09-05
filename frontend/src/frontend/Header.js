@@ -6,6 +6,8 @@ import {
   FaUser,
   FaBookmark,
   FaHeart,
+  FaCarAlt,
+  FaShoppingCart,
 } from "react-icons/fa";
 import {
   NavigationMenu,
@@ -23,12 +25,12 @@ import {
   useSingleUser,
 } from "../components/hooks/useFetch";
 import { useLocalStorage } from "@uidotdev/usehooks";
-
 export default function Header({ className }) {
   const [searchTerm, setSearchTerm] = useState();
   const debouncedSearch = useDebounce(searchTerm, 1000);
   const { data: searchR } = useFetchSearchedArticles(debouncedSearch);
   const [user, setUser] = useLocalStorage("user", null);
+  const [cart, setCart] = useLocalStorage("cart");
   const navigate = useNavigate();
 
   let handleSearch = (e) => {
@@ -161,14 +163,26 @@ export default function Header({ className }) {
                       Log in
                     </Button>
                   ) : (
-                    <>
+                    <div className="flex flex-col lg:flex-row items-center">
+                      <Button
+                        onClick={() => {
+                          navigate("/cart");
+                        }}
+                        className="flex w-[300px] md:w-[200px] bg-white hover:bg-slate-100"
+                      >
+                        <FaShoppingCart className="text-purple-500 mr-2" />
+                        <span className="text-purple-600">
+                          {" "}
+                          Cart ({cart?.length})
+                        </span>
+                      </Button>
                       <Button
                         className="flex bg-purple-600 hover:bg-purple-500 mx-2 shadow border px-2 my-2"
                         onClick={handleLogout}
                       >
                         Logout
                       </Button>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>

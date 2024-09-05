@@ -129,6 +129,27 @@ export const useAddReview = () => {
     },
   });
 };
+// Update Review
+const updateReview = async ({ id, rating }) => {
+  // let { id, rating, reviewText } = review;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_review",
+    id,
+    rating,
+  });
+};
+// Update Review
+export const useUpdateReview = (id) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["update review"],
+    mutationFn: updateReview,
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ["product reviews"] });
+    },
+  });
+};
 //Delete Review
 const deleteReview = async (id) => {
   return await apiClient.delete(

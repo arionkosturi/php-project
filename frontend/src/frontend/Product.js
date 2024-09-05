@@ -12,6 +12,7 @@ import {
   useFetchSearchedArticles,
   useMutateProduct,
   useAddReview,
+  useUpdateReview,
   useDeleteReview,
 } from "../components/hooks/useFetch";
 import {
@@ -22,8 +23,7 @@ import {
   FaHeart,
   FaStar,
   FaStarHalf,
-  FaTrashAlt,
-  FaTrash,
+  FaPencilAlt,
   FaRegTrashAlt,
   FaCartPlus,
 } from "react-icons/fa";
@@ -45,11 +45,14 @@ function PublicArticle() {
   const { mutate } = useMutateProduct();
   const { mutate: addReview } = useAddReview();
   const { mutate: delReview } = useDeleteReview();
+  const { mutate: updateReview } = useUpdateReview();
+  // const [isEditingReview, setIsEditingReview] = useState(false);
   const [form] = Form.useForm();
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(4);
   const { mutate: addTo } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
+  const [qty, setQty] = useState(1);
   const { toast } = useToast();
   if (!user) {
     setUser(null);
@@ -84,7 +87,19 @@ function PublicArticle() {
   });
 
   let addToCart = (e) => {
-    setCart([...cart, article]);
+    console.log(article);
+
+    if (cart?.filter((p) => p.id == article?.id).length > 0) {
+      setCart([
+        ...cart.map((item) => {
+          return item.id == article.id
+            ? { ...item, qty: item.qty + parseInt(qty) }
+            : article;
+        }),
+      ]);
+    } else {
+      setCart([...cart, { ...article, qty: parseInt(qty) }]);
+    }
     toast({
       variant: "success",
       title: "Success",
@@ -431,15 +446,34 @@ function PublicArticle() {
                     <div className="mt-2 text-lg">
                       <div className="flex justify-between">
                         <p className="flex items-center gap-2 text-yellow-500">
-                          <Rate defaultValue={review.rating} />
+                          <Rate
+                            defaultValue={review.rating}
+                            disabled
+                            // onChange={(value) => {
+                            //   let id = review.id;
+                            //   setRating(value);
+                            //   updateReview({
+                            //     id,
+                            //     rating,
+                            //   });
+                            // }}
+                          />
                         </p>
-                        <FaRegTrashAlt
-                          className="hover:text-red-600 text-red-400 text-xl"
-                          onClick={() => {
-                            let id = review.id;
-                            delReview(review);
-                          }}
-                        />
+                        <div className="flex gap-2">
+                          {/* <FaPencilAlt
+                            className="hover:text-blue-600 text-blue-400 text-xl"
+                            onClick={() => {
+                             setIsEditingReview(true);
+                            }}
+                          /> */}
+                          <FaRegTrashAlt
+                            className="hover:text-red-600 text-red-400 text-xl"
+                            onClick={() => {
+                              let id = review.id;
+                              delReview(review);
+                            }}
+                          />
+                        </div>
                       </div>
                       <p className="text-slate-800">
                         By: {review.username} (me)

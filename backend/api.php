@@ -335,7 +335,7 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_rev
     ]);
   }
 }
-// Product Reviews
+// Read Reviews
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'product_reviews') && $method === 'GET') {
   if (!isset($_GET['id']) || empty($_GET['id'])) {
     die(json_encode(['message' => 'Product is required!']));
@@ -351,6 +351,25 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'product_revie
 
   echo json_encode($reviews);
 }
+// Update Reviews
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_review') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'Review ID is required!']));
+  }
+  // $content = $payload['reviewText'];
+  $rating = $payload['rating'];
+
+  $id = $payload['id'];
+  $stm = $pdo->prepare("UPDATE `reviews` SET 
+  -- `content`= COALESCE(?, `content`),
+  `rating` = ?
+  WHERE `id` = ? LIMIT 1");
+
+  $stm->execute([$rating, $id]);
+
+  echo json_encode(["success" => "Updated successfully"]);
+}
+
 // Delete Review
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_review') && $method === 'DELETE') {
   if (!isset($_GET['id']) || empty($_GET['id'])) {
