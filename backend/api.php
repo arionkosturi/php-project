@@ -125,26 +125,31 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'profile
   }
 }
 
-// Orders
+// Orders by id
 
-if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'orders') and $method === 'GET') {
-  if (!isset($_SESSION['user'])) {
-    die(json_encode(['message' => 'You are not logged in']));
-  }
-  $SQL = "SELECT `orders`.*, `order_line`.*, `users`.`email`, `users`.`username`
-  FROM `orders` 
-	INNER JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
-	INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
+if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and $method === 'GET') {
+  // if (!isset($_SESSION['user'])) {
+  //   die(json_encode(['message' => 'You are not logged in']));
+  // }
+  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`,  `order_line`.`qty`, `products`.*
+FROM `orders` 
+	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
+	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id`
+    
+INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
     WHERE
-    `users`.`email` = ?";
+    `users`.`id` = ?";
   $stm = $pdo->prepare($SQL);
-  $stm->execute([$_SESSION['user']['email']]);
-  $orders = $stm->fetchAll(PDO::FETCH_ASSOC);
+  $id = $_GET['id'];
+  $stm->execute([$_GET['id']]);
 
+  $orders = $stm->fetchAll(PDO::FETCH_ASSOC);
   if ($orders) {
     echo json_encode($orders);
   } else {
-    echo json_encode(['message' => 'You have no orders']);
+    echo json_encode([
+      'message' => 'You have no orders'
+    ]);
   }
 }
 

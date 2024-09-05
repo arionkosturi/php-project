@@ -547,10 +547,26 @@ export const useCreateOrder = (cart) => {
     },
     onSettled: (data) => {
       let cart = data;
-      console.log(JSON.parse(data.config.data));
+      // console.log(JSON.parse(data.config.data));
     },
   });
 };
+
+// Fetch Orders By User
+const fetchOrdersByUser = async (id) => {
+  return await apiClient.get(`api.php?endpoint_name=orders&id=${id}`);
+};
+// Fetch Orders By User
+export const useFetchOrdersByUser = (id) => {
+  return useQuery({
+    queryFn: async () => {
+      const { data } = await fetchOrdersByUser(id);
+      return data;
+    },
+    queryKey: ["orders", id],
+  });
+};
+
 // User Fetch Single User
 const fetchSingleUser = async (id) => {
   return await apiClient.get(
