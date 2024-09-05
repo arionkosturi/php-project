@@ -101,6 +101,12 @@ const Orders = (props) => {
       key: "price",
       render: (dataIndex) => <a>{dataIndex} €</a>,
     },
+    {
+      title: "Total",
+      dataIndex: "totali",
+      key: "total",
+      render: (dataIndex) => <a>{dataIndex} €</a>,
+    },
   ];
 
   if (!user) {
@@ -149,7 +155,9 @@ const Orders = (props) => {
               Total Items <strong>({cart.length})</strong>
             </h2>
             <br></br>
-            <Table columns={columns} dataSource={data} pagination={false} />
+            {data?.length > 0 && (
+              <Table columns={columns} dataSource={data} pagination={false} />
+            )}
             {cart.length > 0 ? (
               <Divider orientation="right">
                 <p>Billing</p>
