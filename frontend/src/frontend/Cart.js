@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
+import { CgSmileSad } from "react-icons/cg";
 import {
   useMutateUserProfile,
   useCreateOrder,
@@ -42,12 +43,19 @@ const Cart = (props) => {
     e.preventDefault();
     let orderId = uuidv4();
     let userId = user.id;
-    createOrder({
-      orderId,
-      userId,
-      totali,
-      cart,
-    });
+    createOrder(
+      {
+        orderId,
+        userId,
+        totali,
+        cart,
+      },
+      {
+        onSuccess: () => {
+          setCart([]);
+        },
+      }
+    );
   };
   const handleDecQty = (e) => {
     const index = e.target.getAttribute("index");
@@ -69,14 +77,6 @@ const Cart = (props) => {
     ]);
   };
 
-  const handleDelete = (e) => {
-    const index = e.target.getAttribute("index");
-
-    if (window.confirm("Are you sure?")) {
-      setCart([...cart.filter((movie, key) => key != index)]);
-      alert("Item was deleted.");
-    }
-  };
   let url = `product?id=${cart?.id}`;
   const columns = [
     {
@@ -132,17 +132,19 @@ const Cart = (props) => {
           <Content className="site-layout-background">
             <Row justify="end">
               <Col>
-                <Button
-                  type="default"
-                  onClick={() => {
-                    setCart([]);
-                  }}
-                  danger
-                >
-                  <DeleteOutlined />
-                  &nbsp;
-                  <span>Delete Cart</span>
-                </Button>
+                {cart.length > 0 && (
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      setCart([]);
+                    }}
+                    danger
+                  >
+                    <DeleteOutlined />
+                    &nbsp;
+                    <span>Delete Cart</span>
+                  </Button>
+                )}
               </Col>
             </Row>
             <h2>
@@ -150,49 +152,76 @@ const Cart = (props) => {
             </h2>
             <br></br>
             <Table columns={columns} dataSource={cart} pagination={false} />
-            <Divider orientation="right">
-              <p>Billing</p>
-            </Divider>
-            <Row justify="end">
-              <Col>
-                <Statistic
-                  title="Total (tax incl)."
-                  value={`$ ${Math.round(
-                    total.reduce((total, num) => total + num)
-                  ).toFixed(2)}`}
-                  precision={2}
-                />
-                <Button
-                  style={{ marginTop: 16 }}
-                  type="primary"
-                  onClick={handleOrder}
-                >
-                  Pay now <CreditCardOutlined />
-                </Button>
-              </Col>
-            </Row>
-            <Row justify="start" className="items-center ml-4">
-              <Col md={12}>
-                <Divider orientation="left">Returns</Divider>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
+            {cart.length > 0 ? (
+              <Divider orientation="right">
+                <p>Billing</p>
+              </Divider>
+            ) : (
+              <>
+                <p className="text-center mt-6 text-xl text-slate-600">
+                  Your cart is empty
                 </p>
-              </Col>
-              <Col md={12}>
-                <Divider orientation="left">Warranty Info:</Divider>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
-                </p>
-              </Col>
-            </Row>
+
+                <div className="flex gap-2 p-2 items-center mt-6 mx-2 justify-evenly">
+                  <a
+                    href="/"
+                    className="text-blue-600 underline hover:underline"
+                  >
+                    Find products
+                  </a>
+                  <a
+                    href="/orders"
+                    className="text-blue-600 underline hover:underline"
+                  >
+                    See your orders
+                  </a>
+                </div>
+              </>
+            )}
+            {cart.length > 0 && (
+              <Row justify="end">
+                <Col>
+                  <Statistic
+                    title="Total (tax incl)."
+                    value={`$ ${Math.round(
+                      total.reduce((total, num) => total + num)
+                    ).toFixed(2)}`}
+                    precision={2}
+                  />
+                  <Button
+                    style={{ marginTop: 16 }}
+                    type="primary"
+                    onClick={handleOrder}
+                  >
+                    Pay now <CreditCardOutlined />
+                  </Button>
+                </Col>
+              </Row>
+            )}
+            {cart.length > 0 && (
+              <Row justify="start" className="items-center ml-4">
+                <Col md={12}>
+                  <Divider orientation="left">Returns</Divider>
+                  <p>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book.
+                  </p>
+                </Col>
+                <Col md={12}>
+                  <Divider orientation="left">Warranty Info:</Divider>
+                  <p>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book.
+                  </p>
+                </Col>
+              </Row>
+            )}
             <br></br>
           </Content>
         </Layout>

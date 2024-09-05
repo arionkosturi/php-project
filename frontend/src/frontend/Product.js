@@ -46,7 +46,7 @@ function PublicArticle() {
   const { mutate: addReview } = useAddReview();
   const { mutate: delReview } = useDeleteReview();
   const [form] = Form.useForm();
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(4);
   const { mutate: addTo } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
@@ -118,7 +118,7 @@ function PublicArticle() {
     });
     setTimeout(() => {
       window.location.reload();
-    }, 1000);
+    }, 2000);
   };
 
   let handlePublish = () => {
@@ -405,6 +405,7 @@ function PublicArticle() {
                 <Rate
                   name="rating"
                   defaultValue="4"
+                  allowClear={false}
                   onChange={(value) => {
                     setRating(value);
                   }}
