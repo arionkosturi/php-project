@@ -1,32 +1,54 @@
 // @ts-nocheck
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
-import { useMutateUserProfile } from "../components/hooks/useFetch";
+import {
+  useMutateUserProfile,
+  useCreateOrder,
+} from "../components/hooks/useFetch";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { Table } from "antd";
+import {
+  Layout,
+  Breadcrumb,
+  Row,
+  Col,
+  Table,
+  Space,
+  Divider,
+  Statistic,
+  Button,
+} from "antd";
+import { CreditCardOutlined, DeleteOutlined } from "@ant-design/icons";
+import { v4 as uuidv4 } from "uuid";
 import Column from "antd/es/table/Column";
-function Cart() {
+import Footer from "./Footer";
+const Cart = (props) => {
   const { mutate } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
   const [qty, setQty] = useState(1);
-  const [total, setTotal] = useState(0.0);
-
+  // const [total, setTotal] = useState(0.0);
+  const { mutate: createOrder } = useCreateOrder();
   const [alert, setAlert] = useState({});
   const [passwordAlert, setPasswordAlert] = useState({});
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [oldPasword, setOldPassword] = useState("");
 
-  useEffect(() => {
-    setTotal(
-      cart.reduce(
-        (sum, movie) => sum + movie.qty * parseFloat(movie.vote_average),
-        0.0
-      )
-    );
-  }, [cart]);
-
+  const { Content } = Layout;
+  const total = [0];
+  cart?.forEach((item) => total.push(item.qty * item.price));
+  let totali = Math.round(total.reduce((total, num) => total + num)).toFixed(2);
+  const handleOrder = (e) => {
+    e.preventDefault();
+    let orderId = uuidv4();
+    let userId = user.id;
+    createOrder({
+      orderId,
+      userId,
+      totali,
+      cart,
+    });
+  };
   const handleDecQty = (e) => {
     const index = e.target.getAttribute("index");
 
@@ -56,42 +78,33 @@ function Cart() {
     }
   };
   let url = `product?id=${cart?.id}`;
-  // const columns = [
-  //   {
-  //     title: "id",
-  //     dataIndex: "id",
-  //     key: "id",
-  //   },
+  const columns = [
+    {
+      title: "id",
+      dataIndex: "id",
+      key: Math.random(),
+      name: "id",
+    },
 
-  //   {
-  //     title: "name",
-  //     dataIndex: "name",
-  //     key: "name",
-  //     render: (dataIndex) => {
-  //       return (
-  //         <p
-  //           onClick={(e) => {
-  //             console.log(e.target);
-  //           }}
-  //         >
-  //           {dataIndex}
-  //         </p>
-  //       );
-  //     },
-  //   },
+    {
+      title: "name",
+      dataIndex: "name",
+      key: "name",
+    },
 
-  //   {
-  //     title: "qty",
-  //     dataIndex: "qty",
-  //     key: "qty",
-  //   },
-  //   {
-  //     title: "Price",
-  //     dataIndex: "price",
-  //     key: "price",
-  //     render: (dataIndex) => <a>{dataIndex} €</a>,
-  //   },
-  // ];
+    {
+      title: "qty",
+      dataIndex: "qty",
+      key: "qty",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (dataIndex) => <a>{dataIndex} €</a>,
+    },
+  ];
+
   if (!user) {
     return (
       <>
@@ -109,135 +122,84 @@ function Cart() {
       </>
     );
   }
-  let handleUsernameChange = (e) => {
-    e.preventDefault();
-    let id = user.id;
-    if (username.length >= 5) {
-      mutate(
-        {
-          id,
-          username,
-        },
-        {
-          onSuccess: () => {
-            setAlert({
-              message: "Username u ndryshua me sukses!",
-              style: "p-2 text-green-600",
-            });
-          },
-          onError: () => {
-            setAlert({
-              message: "Username nuk mund te ndryshohet!",
-              style: "p-2 text-red-600",
-            });
-          },
-        }
-      );
-    } else
-      setAlert({
-        message: "Username nuk mund te ndryshohet!",
-        style: "p-2 text-red-600",
-      });
-  };
-  let handlePasswordChange = (e) => {
-    e.preventDefault();
-    let id = user.id;
-    if (oldPasword === user.password && password.length >= 5) {
-      mutate(
-        {
-          id,
-          password,
-        },
-        {
-          onSuccess: () => {
-            setPasswordAlert({
-              message: "Password u ndryshua me sukses!",
-              style: "p-2 text-green-600",
-            });
-          },
-        }
-      );
-    } else
-      setPasswordAlert({
-        message: "Passwordi nuk mund te ndryshohet !",
-        style: "p-2 text-red-600",
-      });
-  };
 
   return (
     <>
       <Header />
       <div className="container px-2 mx-auto flex flex-col gap-2 mt-4">
         Your shopping cart:
-        <Table
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (event, rowIndex) => {
-                console.log(event, rowIndex);
-              }, // click row
-              onDoubleClick: (event) => {
-                console.log("double click");
-              }, // double click row
-              onContextMenu: (event) => {
-                console.log("context");
-              }, // right button click row
-              onMouseEnter: (event) => {}, // mouse enter row
-              onMouseLeave: (event) => {}, // mouse leave row
-            };
-          }}
-          dataSource={cart}
-          // columns={columns}
-        />
-        <label htmlFor="username">
-          Username: <span className={alert?.style}>{alert?.message}</span>
-        </label>
-        <input
-          name="username"
-          type="text"
-          className="border p-1"
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-          defaultValue={user?.username}
-        />
-        <button
-          className="border px-3 py-1 rounded bg-purple-500 text-white hover:bg-purple-400"
-          onClick={handleUsernameChange}
-        >
-          Change Username
-        </button>
-        <label htmlFor="oldPassword">Old Password: </label>
-        <input
-          name="oldPassword"
-          type="password"
-          className="border p-1"
-          defaultValue={""}
-          onChange={(e) => {
-            setOldPassword(e.target.value);
-          }}
-        />
-        <label htmlFor="password">New Password: </label>
-        <input
-          name="password"
-          type="password"
-          className="border p-1"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          defaultValue={""}
-        />
-        {<span className={passwordAlert.style}>{passwordAlert.message}</span>}
-        <button
-          className="border px-3 py-1 rounded bg-purple-500 text-white hover:bg-purple-400"
-          onClick={handlePasswordChange}
-        >
-          Change Password
-        </button>
-        <p>Admin: {(user.role = "admin" ? "true" : "false")}</p>
-        <p></p>
+        <Layout>
+          <Content className="site-layout-background">
+            <Row justify="end">
+              <Col>
+                <Button
+                  type="default"
+                  onClick={() => {
+                    setCart([]);
+                  }}
+                  danger
+                >
+                  <DeleteOutlined />
+                  &nbsp;
+                  <span>Delete Cart</span>
+                </Button>
+              </Col>
+            </Row>
+            <h2>
+              Total Items <strong>({cart.length})</strong>
+            </h2>
+            <br></br>
+            <Table columns={columns} dataSource={cart} pagination={false} />
+            <Divider orientation="right">
+              <p>Billing</p>
+            </Divider>
+            <Row justify="end">
+              <Col>
+                <Statistic
+                  title="Total (tax incl)."
+                  value={`$ ${Math.round(
+                    total.reduce((total, num) => total + num)
+                  ).toFixed(2)}`}
+                  precision={2}
+                />
+                <Button
+                  style={{ marginTop: 16 }}
+                  type="primary"
+                  onClick={handleOrder}
+                >
+                  Pay now <CreditCardOutlined />
+                </Button>
+              </Col>
+            </Row>
+            <Row justify="start" className="items-center ml-4">
+              <Col md={12}>
+                <Divider orientation="left">Returns</Divider>
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book.
+                </p>
+              </Col>
+              <Col md={12}>
+                <Divider orientation="left">Warranty Info:</Divider>
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book.
+                </p>
+              </Col>
+            </Row>
+            <br></br>
+          </Content>
+        </Layout>
+        <Footer />
       </div>
     </>
   );
-}
+};
 
 export default Cart;

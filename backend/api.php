@@ -147,6 +147,42 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'orders'
     echo json_encode(['message' => 'You have no orders']);
   }
 }
+
+// Create Order
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'create_order') and ($method === 'POST')) {
+  $orderId = $payload['orderId'];
+  $userId = $payload['userId'];
+  $total =  $payload['totali'];
+  // $product_id = $payload['productId'];
+  // $product_id = $cart['cart']['0']['id'];
+  $status = $payload['status'];
+  // $qty = $cart['cart']['0']['qty'];
+  $cart = $payload['cart']['cart'];
+  // echo json_encode($cart);
+  var_dump($cart);
+  try {
+    $stm = $pdo->prepare("INSERT INTO `orders` (`id`,`user_id`,`total`,`status`) VALUES (?, ?, ?, ?)");
+    $order = $stm->execute([$orderId, $userId, $total, $status]);
+    // json_decode(json_encode($cart), true);
+    foreach ($cart as $cartItem) {
+      $order_line = $pdo->prepare("INSERT INTO `order_line` (`order_id`,`product_id`,`qty`) VALUES (?, ?, ?)");
+      $order_line->execute([$orderId, $cartItem['id'], $cartItem['qty']]);
+    }
+    if (!empty($order)) {
+      echo json_encode(['message' => 'Order was created successfully']);
+    } else {
+      http_response_code(400);
+      json_encode(
+        ['error' => 'error']
+      );
+    }
+  } catch (Exception $error) {
+    echo json_encode([
+      $error->getMessage(),
+    ]);
+  }
+}
+
 // Create Product
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_product') and ($method === 'POST')) {
   $name = $payload['name'];

@@ -515,7 +515,42 @@ export const useDeleteCategory = (id) => {
     },
   });
 };
+// Create Order
+const createOrder = async (cart) => {
+  const { productId, qty, totali, orderId, userId } = cart;
+  console.log(cart.cart.id);
+  // const { productId, qty } = cart.cart;
+  return await apiClient.post("api.php", {
+    endpoint_name: "create_order",
+    orderId,
+    productId,
+    qty,
+    totali,
+    userId,
+    status: "paid",
+    cart,
+  });
+};
+export const useCreateOrder = (cart) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
+  return useMutation({
+    mutationFn: createOrder,
+    mutationKey: ["order"],
+    onSuccess: () => {
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Porosia u krijua me sukses!",
+      });
+    },
+    onSettled: (data) => {
+      let cart = data;
+      console.log(JSON.parse(data.config.data));
+    },
+  });
+};
 // User Fetch Single User
 const fetchSingleUser = async (id) => {
   return await apiClient.get(
