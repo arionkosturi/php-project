@@ -143,7 +143,7 @@ const Orders = () => {
     <>
       <Header />
       <div className="container px-2 mx-auto flex flex-col gap-2 mt-4">
-        Your shopping cart:
+        Order History:
         <Layout>
           <Content className="site-layout-background">
             <Row justify="start" className="flex justify-between">
@@ -197,54 +197,18 @@ const Orders = () => {
                 pagination={false}
               />
             )}
-            {cart.length > 0 ? (
-              <Divider orientation="right">
-                <p>Billing</p>
-              </Divider>
-            ) : (
-              <>
-                <p className="text-center mt-6 text-xl text-slate-600">
-                  test {orderData}
-                </p>
 
-                <div className="flex gap-2 p-2 items-center mt-6 mx-2 justify-evenly">
-                  <a
-                    href="/"
-                    className="text-blue-600 underline hover:underline"
-                  >
-                    Find products
-                  </a>
-                  <a
-                    href="/orders"
-                    className="text-blue-600 underline hover:underline"
-                  >
-                    See your orders
-                  </a>
-                </div>
-              </>
-            )}
-            {cart.length > 0 && (
-              <Row justify="end">
-                <Col>
-                  <Statistic
-                    title="Total (tax incl)."
-                    value={`$ ${Math.round(
-                      total.reduce((total, num) => total + num)
-                    ).toFixed(2)}`}
-                    precision={2}
-                  />
-                  <Button
-                    style={{ marginTop: 16 }}
-                    type="primary"
-                    onClick={handleOrder}
-                  >
-                    Pay now <CreditCardOutlined />
-                  </Button>
-                </Col>
-              </Row>
-            )}
-
-            <br></br>
+            <div className="flex gap-2 p-2 items-center mt-6 mx-2 justify-evenly">
+              <a href="/" className="text-blue-600 underline hover:underline">
+                Find products
+              </a>
+              <a
+                href="/orders"
+                className="text-blue-600 underline hover:underline"
+              >
+                See your orders
+              </a>
+            </div>
           </Content>
         </Layout>
         <Footer />

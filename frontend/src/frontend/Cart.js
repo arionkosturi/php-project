@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import { CgSmileSad } from "react-icons/cg";
 import {
@@ -17,16 +17,21 @@ import {
   Divider,
   Statistic,
   Button,
+  Form,
+  Input,
+  Popconfirm,
 } from "antd";
 import { CreditCardOutlined, DeleteOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
 import Column from "antd/es/table/Column";
 import Footer from "./Footer";
+import { useNavigate } from "react-router-dom";
 const Cart = (props) => {
   const { mutate } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
   const [qty, setQty] = useState(1);
+  const navigate = useNavigate();
   // const [total, setTotal] = useState(0.0);
   const { mutate: createOrder } = useCreateOrder();
   const [alert, setAlert] = useState({});
@@ -57,51 +62,52 @@ const Cart = (props) => {
       }
     );
   };
-  const handleDecQty = (e) => {
-    const index = e.target.getAttribute("index");
 
-    setCart([
-      ...cart.map((item, key) => {
-        return key == index ? { ...item, qty: item.qty - 1 } : item;
-      }),
-    ]);
-  };
-
-  const handleIncQty = (e) => {
-    const index = e.target.getAttribute("index");
-
-    setCart([
-      ...cart.map((item, key) => {
-        return key == index ? { ...item, qty: item.qty + 1 } : item;
-      }),
-    ]);
-  };
-
-  let url = `product?id=${cart?.id}`;
   const columns = [
-    {
-      title: "id",
-      dataIndex: "id",
-      key: Math.random(),
-      name: "id",
-    },
-
     {
       title: "name",
       dataIndex: "name",
-      key: "name",
+      key: "record",
     },
 
     {
       title: "qty",
       dataIndex: "qty",
-      key: "qty",
+      key: "record",
+      render: (dataIndex, item, record, index) => {
+        let handleDecrease = (...e) => {
+          const index = record;
+          if (dataIndex <= 1) return;
+          setCart([
+            ...cart.map((item, key) => {
+              return key == index ? { ...item, qty: item.qty - 1 } : item;
+            }),
+          ]);
+        };
+        let handleIncrease = (...e) => {
+          const index = record;
+
+          setCart([
+            ...cart.map((item, key) => {
+              return key == index ? { ...item, qty: item.qty + 1 } : item;
+            }),
+          ]);
+        };
+
+        return (
+          <div className="flex justify-evenly items-center" key={dataIndex.id}>
+            <Button onClick={handleDecrease}>-</Button>
+            <p className="w-10 inline bg-slate-200 text-center">{dataIndex}</p>
+            <Button onClick={handleIncrease}>+</Button>
+          </div>
+        );
+      },
     },
     {
       title: "Price",
       dataIndex: "price",
-      key: "price",
-      render: (dataIndex) => <a>{dataIndex} €</a>,
+      key: "record",
+      render: (dataIndex) => <p>{dataIndex} €</p>,
     },
   ];
 
@@ -130,6 +136,15 @@ const Cart = (props) => {
         Your shopping cart:
         <Layout>
           <Content className="site-layout-background">
+            <Row justify="start" className="flex gap-2">
+              <Button
+                onClick={() => {
+                  navigate("/orders");
+                }}
+              >
+                Orders History
+              </Button>
+            </Row>
             <Row justify="end">
               <Col>
                 {cart.length > 0 && (
@@ -151,7 +166,16 @@ const Cart = (props) => {
               Total Items <strong>({cart.length})</strong>
             </h2>
             <br></br>
-            <Table columns={columns} dataSource={cart} pagination={false} />
+            <Table
+              rowKey={(record, index) => {
+                return record.index;
+              }}
+              rowClassName={() => "editable-row"}
+              bordered
+              columns={columns}
+              dataSource={cart}
+              pagination={false}
+            />
             {cart.length > 0 ? (
               <Divider orientation="right">
                 <p>Billing</p>

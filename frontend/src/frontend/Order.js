@@ -109,7 +109,7 @@ const Order = () => {
     <>
       <Header />
       <div className="container px-2 mx-auto flex flex-col gap-2 mt-4">
-        Your shopping cart:
+        Order details:
         <Layout>
           <Content className="site-layout-background">
             <Row justify="start" className="flex gap-2">
@@ -165,7 +165,10 @@ const Order = () => {
             {data?.length > 0 && (
               <>
                 <div className="text-center mt-6 text-xl text-slate-600">
-                  <p>Totali: {orderProducts[0]?.total} €</p>
+                  <p>
+                    Totali:{" "}
+                    {orderProducts?.length > 0 && orderProducts[0].total} €
+                  </p>
                   <p>(Tax included)</p>
                 </div>
                 <div className="flex gap-2 p-2 items-center mt-6 mx-2 justify-evenly">
