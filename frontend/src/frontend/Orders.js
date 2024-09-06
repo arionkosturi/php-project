@@ -86,17 +86,16 @@ const Orders = () => {
   let url = `order?id=${cart?.id}`;
   const columns = [
     {
-      title: "id",
+      title: "Order",
       dataIndex: "order_id",
       name: "id",
       render: (dataIndex) => (
         <p className="underline text-blue-600 cursor-pointer">{dataIndex}</p>
       ),
     },
-
     {
-      title: "name",
-      dataIndex: "name",
+      title: "Created Date",
+      dataIndex: "created_at",
       key: "name",
     },
     {
@@ -104,6 +103,11 @@ const Orders = () => {
       dataIndex: "total",
       key: "total",
       render: (dataIndex) => <a>{dataIndex} €</a>,
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "name",
     },
   ];
   let orderItems = data?.map((order) => {

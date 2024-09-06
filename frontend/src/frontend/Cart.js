@@ -96,7 +96,6 @@ const Cart = (props) => {
         };
         let handleDeleteItem = (...e) => {
           const index = record;
-
           setCart([...cart.filter((item, key) => key !== index)]);
         };
 
