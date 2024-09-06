@@ -7,13 +7,11 @@ import { Button } from "../components/ui/button";
 import { FaOpencart, FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { useFetchUsers } from "../components/hooks/useFetch";
 import axios from "axios";
 export default function UserLogin() {
   const [user, saveUser] = useLocalStorage("user", {});
   const navigate = useNavigate();
   const [alert, setAlert] = useState(false, null);
-  const { data: users } = useFetchUsers();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -34,7 +32,6 @@ export default function UserLogin() {
             setAlert(true, {
               message: resp.data,
             });
-            // setError(resp.data)
           } else {
             saveUser({ ...resp.data, isLoggedIn: true });
             navigate("/");
@@ -203,14 +200,6 @@ export default function UserLogin() {
                       "Login"
                     )}
                   </Button>
-                  {/* <Button
-                    onClick={() => {
-                      navigate("/Register");
-                    }}
-                    className="flex bg-green-600 hover:bg-green-500 shadow border py-1 px-2"
-                  >
-                    Register
-                  </Button> */}
                   <Button
                     type="reset"
                     onClick={() => {

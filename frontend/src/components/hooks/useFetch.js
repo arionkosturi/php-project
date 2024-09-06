@@ -631,11 +631,9 @@ export const useMutateUserProfile = (user) => {
 };
 
 // Login
-const fetchUsers = async (username, password) => {
+const fetchUsers = async () => {
   return await apiClient.post(`api.php`, {
-    endpoint_name: "login",
-    username,
-    password,
+    endpoint_name: "all_users",
   });
 };
 // Query All Users

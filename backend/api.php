@@ -125,6 +125,23 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'profile
   }
 }
 
+// All Users
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'all_users') and $method === 'POST') {
+
+  $SQL = "SELECT * FROM `users`";
+  $stm = $pdo->prepare($SQL);
+  $stm->execute();
+
+  $users = $stm->fetchAll(PDO::FETCH_ASSOC);
+  if ($users) {
+    echo json_encode($users);
+  } else {
+    echo json_encode([
+      'message' => 'There are no users'
+    ]);
+  }
+}
+
 // Orders by userID id
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and $method === 'GET') {

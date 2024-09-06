@@ -40,6 +40,7 @@ import {
 } from "../ui/table";
 import LeftPanel from "./LeftPanel";
 import useDebounce from "../../frontend/useDebounce";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 function FetchUsers({ loggedUser, searchTerm }) {
   const { data: users, isPending, error } = useFetchUsers();
@@ -62,8 +63,8 @@ function FetchUsers({ loggedUser, searchTerm }) {
               <Select
                 className="flex justify-end"
                 onValueChange={(value) => {
-                  let userId = user._id;
-                  if (userId !== loggedUser._id) {
+                  let userId = user.id;
+                  if (userId !== loggedUser.id) {
                     mutate({
                       userId,
                       isAdmin: value,
@@ -73,7 +74,7 @@ function FetchUsers({ loggedUser, searchTerm }) {
               >
                 <SelectTrigger
                   className="flex items-center w-[170px] md:w-[280px] max-w-[480px]"
-                  disabled={user._id === loggedUser._id}
+                  disabled={user.id === loggedUser.id}
                 >
                   <SelectValue placeholder={user.isAdmin ? "Admin" : "User"} />
                 </SelectTrigger>
@@ -139,15 +140,15 @@ function FetchUsers({ loggedUser, searchTerm }) {
                 alertTitle={"Po fshin perdoruesin"}
                 alertMessage={`Deshiron ta fshish perdoruesin: "${user.username}" ?`}
                 handleFunction={(e) => {
-                  let userId = user._id;
-                  if (loggedUser._id !== userId) {
+                  let userId = user.id;
+                  if (loggedUser.id !== userId) {
                     remove(userId);
                   }
                 }}
                 alertTriggerButton={
                   <Button
                     variant={"destructive"}
-                    disabled={loggedUser._id === user._id}
+                    disabled={loggedUser.id === user.id}
                   >
                     {" "}
                     Detele{" "}
@@ -161,14 +162,14 @@ function FetchUsers({ loggedUser, searchTerm }) {
     : users &&
         users?.map((user) => {
           return (
-            <TableRow key={user._id}>
+            <TableRow key={user.id}>
               <TableCell className="font-medium">{user.username}</TableCell>
               <TableCell>
                 <Select
                   className="flex justify-end"
                   onValueChange={(value) => {
-                    let userId = user._id;
-                    if (userId !== loggedUser._id) {
+                    let userId = user.id;
+                    if (userId !== loggedUser.id) {
                       mutate({
                         userId,
                         isAdmin: value,
@@ -178,10 +179,10 @@ function FetchUsers({ loggedUser, searchTerm }) {
                 >
                   <SelectTrigger
                     className="flex items-center w-[170px] md:w-[280px] max-w-[480px]"
-                    disabled={user._id === loggedUser._id}
+                    disabled={user.id === loggedUser.id}
                   >
                     <SelectValue
-                      placeholder={user.isAdmin ? "Admin" : "User"}
+                      placeholder={user?.role == "admin" ? "Admin" : "User"}
                     />
                   </SelectTrigger>
                   <SelectContent>
@@ -246,15 +247,15 @@ function FetchUsers({ loggedUser, searchTerm }) {
                   alertTitle={"Po fshin perdoruesin"}
                   alertMessage={`Deshiron ta fshish perdoruesin: "${user.username}" ?`}
                   handleFunction={(e) => {
-                    let userId = user._id;
-                    if (loggedUser._id !== userId) {
+                    let userId = user.id;
+                    if (loggedUser.id !== userId) {
                       remove(userId);
                     }
                   }}
                   alertTriggerButton={
                     <Button
                       variant={"destructive"}
-                      disabled={loggedUser._id === user._id}
+                      disabled={loggedUser.id === user.id}
                     >
                       {" "}
                       Detele{" "}
@@ -268,7 +269,7 @@ function FetchUsers({ loggedUser, searchTerm }) {
 }
 
 function Users() {
-  let { data: loggedUser } = useSingleUser();
+  const [loggedUser, setLoggedUser] = useLocalStorage("user");
   const [searchTerm, setSearchTerm] = useState();
 
   let handleSearch = (e) => {
@@ -276,12 +277,12 @@ function Users() {
     setSearchTerm(e.target.value);
   };
 
-  if (!loggedUser?.isAdmin) {
+  if (loggedUser?.role !== "admin") {
     return <Dashboard />;
   }
 
   return (
-    loggedUser?.isAdmin && (
+    loggedUser?.role == "admin" && (
       <>
         <Header />
         <div className="container mx-auto mb-2">
