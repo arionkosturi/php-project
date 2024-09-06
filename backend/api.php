@@ -125,20 +125,17 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'profile
   }
 }
 
-// Orders by id
+// Orders by userID id
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and $method === 'GET') {
-  // if (!isset($_SESSION['user'])) {
-  //   die(json_encode(['message' => 'You are not logged in']));
-  // }
-  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`,  `order_line`.`qty`, `products`.*
+
+  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,  `products`.*
 FROM `orders` 
 	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
 	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id`
-    
-INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
+  INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
     WHERE
-    `users`.`id` = ?";
+    `users`.`id` = ? GROUP BY `orders`.`id`";
   $stm = $pdo->prepare($SQL);
   $id = $_GET['id'];
   $stm->execute([$_GET['id']]);
@@ -146,6 +143,30 @@ INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
   $orders = $stm->fetchAll(PDO::FETCH_ASSOC);
   if ($orders) {
     echo json_encode($orders);
+  } else {
+    echo json_encode([
+      'message' => 'You have no orders'
+    ]);
+  }
+}
+
+// Orders by id
+
+if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders_by_id') and $method === 'GET') {
+
+  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`, `order_line`.`qty`, `products`.* 
+  FROM `orders` 
+  JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
+  JOIN `products` ON `order_line`.`product_id` = `products`.`id` 
+  INNER JOIN `users` ON `orders`.`user_id` = `users`.`id` 
+  WHERE `order_id` = ?";
+  $stm = $pdo->prepare($SQL);
+  $id = $_GET['id'];
+  $stm->execute([$_GET['id']]);
+
+  $order = $stm->fetchAll(PDO::FETCH_ASSOC);
+  if ($order) {
+    echo json_encode($order);
   } else {
     echo json_encode([
       'message' => 'You have no orders'
@@ -163,11 +184,12 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'create_
   $status = $payload['status'];
   // $qty = $cart['cart']['0']['qty'];
   $cart = $payload['cart']['cart'];
+  $order_details = json_encode($cart);
   // echo json_encode($cart);
-  var_dump($cart);
+  // var_dump($details);
   try {
-    $stm = $pdo->prepare("INSERT INTO `orders` (`id`,`user_id`,`total`,`status`) VALUES (?, ?, ?, ?)");
-    $order = $stm->execute([$orderId, $userId, $total, $status]);
+    $stm = $pdo->prepare("INSERT INTO `orders` (`id`,`user_id`,`total`,`status`,`order_details`) VALUES (?, ?, ?, ?, ?)");
+    $order = $stm->execute([$orderId, $userId, $total, $status, $order_details]);
     // json_decode(json_encode($cart), true);
     foreach ($cart as $cartItem) {
       $order_line = $pdo->prepare("INSERT INTO `order_line` (`order_id`,`product_id`,`qty`) VALUES (?, ?, ?)");

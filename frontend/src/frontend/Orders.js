@@ -6,6 +6,7 @@ import {
   useMutateUserProfile,
   useCreateOrder,
   useFetchOrdersByUser,
+  useFetchOrderProducts,
 } from "../components/hooks/useFetch";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import {
@@ -33,7 +34,7 @@ const Orders = (props) => {
   const [alert, setAlert] = useState({});
   const [passwordAlert, setPasswordAlert] = useState({});
   const { data } = useFetchOrdersByUser(user.id);
-
+  const { data: orderProducts } = useFetchOrderProducts();
   const { Content } = Layout;
   const total = [0];
   cart?.forEach((item) => total.push(item.qty * item.price));
@@ -89,26 +90,28 @@ const Orders = (props) => {
       dataIndex: "name",
       key: "name",
     },
-
-    {
-      title: "qty",
-      dataIndex: "qty",
-      key: "qty",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      render: (dataIndex) => <a>{dataIndex} €</a>,
-    },
     {
       title: "Total",
-      dataIndex: "totali",
+      dataIndex: "total",
       key: "total",
       render: (dataIndex) => <a>{dataIndex} €</a>,
     },
   ];
+  let orderItems = data?.map((order) => {
+    return order.order_details;
+  });
+  let list = [];
 
+  let odetalis = orderItems?.map((order) => {
+    let items = JSON.parse(order);
+    items.map((i) => {
+      list.push([
+        <p>
+          {i.name} - {i.qty} Cope x {i.price} €
+        </p>,
+      ]);
+    });
+  });
   if (!user) {
     return (
       <>
@@ -156,7 +159,23 @@ const Orders = (props) => {
             </h2>
             <br></br>
             {data?.length > 0 && (
-              <Table columns={columns} dataSource={data} pagination={false} />
+              <Table
+                columns={columns}
+                // rowKey={data?.order_id}
+                expandable={{
+                  expandedRowRender: (record) => (
+                    <p
+                      style={{
+                        margin: 0,
+                      }}
+                    >
+                      {list}
+                    </p>
+                  ),
+                }}
+                dataSource={data}
+                pagination={false}
+              />
             )}
             {cart.length > 0 ? (
               <Divider orientation="right">

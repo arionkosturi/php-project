@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 03, 2024 at 04:03 PM
+-- Generation Time: Sep 06, 2024 at 04:06 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -54,19 +54,21 @@ INSERT INTO `categories` (`id`, `name`, `imgUrl`) VALUES
 --
 
 CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
+  `id` varchar(255) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `total` float DEFAULT NULL,
-  `status` enum('paid','proccessing','shipped','delivered','cancelled') DEFAULT NULL
+  `status` enum('paid','proccessing','shipped','delivered','cancelled') DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `order_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `total`, `status`) VALUES
-(1, 2, 100, 'paid'),
-(2, 2, 30, 'paid');
+INSERT INTO `orders` (`id`, `user_id`, `total`, `status`, `created_at`, `order_details`) VALUES
+('7f2a07c8-41d0-4c40-96da-e11626b2b104', 1, 1729, 'paid', '2024-09-06 14:02:17', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":5,\"name\":\"Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow\",\"details\":\"\",\"category\":2,\"cost\":300,\"price\":430,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61bFypVJVyL._AC_SL1500_.jpg\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":7,\"name\":\"Moto G Play 2023 3-Day Battery Unlocked Made for US 3\\/32GB 16MP Camera Navy Blue\",\"details\":\"\",\"category\":2,\"cost\":60,\"price\":99,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61K1Fz5LxvL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":9,\"name\":\"SAMSUNG Galaxy S24 Ultra 512GB\",\"details\":\"\",\"category\":2,\"cost\":900,\"price\":1100,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71WcjsOVOmL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('aa2869b8-c735-4f58-9dcd-99e3ec67778c', 1, 299, 'paid', '2024-09-06 12:27:56', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":null,\"stock\":null,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"qty\":1},{\"id\":7,\"name\":\"Moto G Play 2023 3-Day Battery Unlocked Made for US 3\\/32GB 16MP Camera Navy Blue\",\"details\":\"\",\"category\":2,\"cost\":60,\"price\":99,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61K1Fz5LxvL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]');
 
 -- --------------------------------------------------------
 
@@ -76,7 +78,7 @@ INSERT INTO `orders` (`id`, `user_id`, `total`, `status`) VALUES
 
 CREATE TABLE `order_line` (
   `id` int(11) NOT NULL,
-  `order_id` int(11) DEFAULT NULL,
+  `order_id` varchar(255) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL,
   `qty` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -86,7 +88,13 @@ CREATE TABLE `order_line` (
 --
 
 INSERT INTO `order_line` (`id`, `order_id`, `product_id`, `qty`) VALUES
-(4, 1, 4, 2);
+(18, 'aa2869b8-c735-4f58-9dcd-99e3ec67778c', 49, 1),
+(19, 'aa2869b8-c735-4f58-9dcd-99e3ec67778c', 47, 1),
+(20, 'aa2869b8-c735-4f58-9dcd-99e3ec67778c', 7, 1),
+(23, '7f2a07c8-41d0-4c40-96da-e11626b2b104', 49, 1),
+(24, '7f2a07c8-41d0-4c40-96da-e11626b2b104', 5, 1),
+(25, '7f2a07c8-41d0-4c40-96da-e11626b2b104', 7, 1),
+(26, '7f2a07c8-41d0-4c40-96da-e11626b2b104', 9, 1);
 
 -- --------------------------------------------------------
 
@@ -113,7 +121,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `details`, `category`, `cost`, `price`, `img`, `isHighlighted`, `stock`, `created_at`, `isPublished`) VALUES
-(4, 'OPPO Reno12 5G', 'New Unlocked Android Phone!', 2, 350, 470, 'https://opsg-img-cdn-gl.heytapimg.com/epb/202406/26/IzcVfAu2kdJjoeYS.png', 1, 0, '2024-09-01 13:51:43', 1),
+(4, 'OPPO Reno12 5G', 'New Unlocked Android Phone!', 2, 350, 470, 'https://opsg-img-cdn-gl.heytapimg.com/epb/202406/26/IzcVfAu2kdJjoeYS.png', 1, 0, '2024-09-01 13:51:43', 0),
 (5, 'Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow', '', 2, 300, 430, 'https://m.media-amazon.com/images/I/61bFypVJVyL._AC_SL1500_.jpg', 1, 0, '2024-09-01 13:51:43', 0),
 (6, 'SAMSUNG Galaxy A15 5G, 128GB, US Version', '', 2, 100, 199, 'https://m.media-amazon.com/images/I/41vU1u8DZXL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (7, 'Moto G Play 2023 3-Day Battery Unlocked Made for US 3/32GB 16MP Camera Navy Blue', '', 2, 60, 99, 'https://m.media-amazon.com/images/I/61K1Fz5LxvL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
@@ -139,14 +147,8 @@ INSERT INTO `products` (`id`, `name`, `details`, `category`, `cost`, `price`, `i
 (27, 'JLab JBuds Lux ANC Wireless Headphones', '', 8, 30, 49, 'https://m.media-amazon.com/images/I/41UPaI9VqUL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (28, 'JBL Tune 510BT', '', 8, 15, 29, 'https://m.media-amazon.com/images/I/51EUjPMn6UL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (29, 'Soundcore Anker Life Q20 Hybrid Active Noise Cancelling', '', 8, 28, 49, 'https://m.media-amazon.com/images/I/61O7S27O+jL._AC_SL1468_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
-(42, '123', '123', NULL, 123, 123, NULL, NULL, NULL, '2024-09-02 13:24:11', NULL),
-(43, 'category.id', 'category.id', NULL, 123, 123, NULL, NULL, NULL, '2024-09-02 13:26:57', NULL),
-(44, '1234', '1234', NULL, 1234, 1234, '1234', NULL, NULL, '2024-09-02 13:30:11', 1),
-(45, 'test', 'test', NULL, 123, 123, NULL, NULL, NULL, '2024-09-02 13:31:05', NULL),
-(46, 'arion', 'test', NULL, 100, 100, NULL, NULL, NULL, '2024-09-02 13:32:30', 1),
 (47, 'test 123', 'test', NULL, 100, 100, 'https://th.bing.com/th/id/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7', NULL, NULL, '2024-09-02 13:47:53', 1),
-(48, 'arion', 'arion', NULL, 100, 150, NULL, NULL, NULL, '2024-09-02 13:49:29', 1),
-(49, 'arion11112e', 'Arion Kosturi', 3, 30, 100, 'https://th.bing.com/th/id/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain', 1, NULL, '2024-09-02 13:51:25', 1);
+(49, 'arion11112e', 'Arion Kosturi', 3, 30, 100, 'https://th.bing.com/th/id/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain', 0, NULL, '2024-09-02 13:51:25', 1);
 
 -- --------------------------------------------------------
 
@@ -194,7 +196,11 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `content`, `rating`) VALUES
-(2, 4, 2, 'Nice1!!!!', 4);
+(2, 4, 2, 'Nice1!!!!', 4),
+(7, 49, 1, 'Doesnt work!', 1),
+(8, 49, 205, 'testing', 5),
+(12, 49, 205, 'test', 4),
+(14, 49, 205, 'kot fare', 4);
 
 -- --------------------------------------------------------
 
@@ -207,7 +213,7 @@ CREATE TABLE `users` (
   `email` varchar(45) NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `role` enum('admin','client') DEFAULT NULL
+  `role` enum('admin','client') DEFAULT 'client'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -239,7 +245,8 @@ INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`) VALUES
 (189, 'johnsmith2@gmail.comm', 'johnsmith', '$2y$10$EQWjf3wp7xyhecAw.OGIIOOhNmFxdzYY7jtW8RXJhzgzE66/GynM2', NULL),
 (194, 'johnsmith2@gmail.com', 'johnsmith@gmail.com', '$2y$10$xka9FCIUUirEgIwM0rDuyOQGLrNAZjuHNWDcUsjgM0ZykD70A1hgC', NULL),
 (195, 'johnsmith33@gmail.com', 'johnsmith@gmail.com', '$2y$10$A7F0HntR5jEME3SCmzJvreoD1n3L0/6p0buNkOaa7pA5nKywUTfQa', NULL),
-(204, 'johnsmith333333@gmail.com', 'johnsmith333333@gmail.com', '$2y$10$zgTaL8J17Z4hGbuEmpOOsuu7Vc4NwiTzyK90RFgJZ7sK1HMi4USni', NULL);
+(204, 'johnsmith333333@gmail.com', 'johnsmith333333@gmail.com', '$2y$10$zgTaL8J17Z4hGbuEmpOOsuu7Vc4NwiTzyK90RFgJZ7sK1HMi4USni', NULL),
+(205, 'client1@gmail.com', 'client1', '$2y$10$V1SNJV9rXo7TRjllZJ78deKbAneiBHWuy6.v9ypMFTqkT6DdaKPVC', 'client');
 
 --
 -- Indexes for dumped tables
@@ -305,16 +312,10 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT for table `order_line`
 --
 ALTER TABLE `order_line`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -332,13 +333,13 @@ ALTER TABLE `reklama`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
 
 --
 -- Constraints for dumped tables

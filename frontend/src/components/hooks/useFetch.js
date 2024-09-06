@@ -552,11 +552,11 @@ export const useCreateOrder = (cart) => {
   });
 };
 
-// Fetch Orders By User
+// Fetch Order By UserId
 const fetchOrdersByUser = async (id) => {
   return await apiClient.get(`api.php?endpoint_name=orders&id=${id}`);
 };
-// Fetch Orders By User
+// Fetch Orders By UserId
 export const useFetchOrdersByUser = (id) => {
   return useQuery({
     queryFn: async () => {
@@ -564,6 +564,21 @@ export const useFetchOrdersByUser = (id) => {
       return data;
     },
     queryKey: ["orders", id],
+  });
+};
+
+// Fetch Order Products By Id
+const fetchOrderProducts = async (id) => {
+  return await apiClient.get(`api.php?endpoint_name=orders_by_id&id=${id}`);
+};
+// Fetch Order Products By Id
+export const useFetchOrderProducts = (id) => {
+  return useQuery({
+    queryFn: async () => {
+      const { data } = await fetchOrderProducts(id);
+      return data;
+    },
+    queryKey: ["order products", id],
   });
 };
 
