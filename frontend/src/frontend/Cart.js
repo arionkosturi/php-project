@@ -26,6 +26,7 @@ import { v4 as uuidv4 } from "uuid";
 import Column from "antd/es/table/Column";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
+import { FaTrashAlt } from "react-icons/fa";
 const Cart = (props) => {
   const { mutate } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
@@ -93,12 +94,27 @@ const Cart = (props) => {
             }),
           ]);
         };
+        let handleDeleteItem = (...e) => {
+          const index = record;
+
+          setCart([...cart.filter((item, key) => key !== index)]);
+        };
 
         return (
-          <div className="flex justify-evenly items-center" key={dataIndex.id}>
+          <div
+            className="flex justify-evenly items-center gap-2"
+            key={dataIndex.id}
+          >
             <Button onClick={handleDecrease}>-</Button>
             <p className="w-10 inline bg-slate-200 text-center">{dataIndex}</p>
             <Button onClick={handleIncrease}>+</Button>
+            <Button
+              type="outline"
+              onClick={handleDeleteItem}
+              className="text-red-600 hover:text-red-700"
+            >
+              <FaTrashAlt />
+            </Button>
           </div>
         );
       },
