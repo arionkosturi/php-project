@@ -26,7 +26,7 @@ import {
   useFetchUsers,
   useDeleteUser,
   useSingleUser,
-  useMutateUsers,
+  useMutateUsersRole,
   useFetchSearchedUsers,
 } from "../hooks/useFetch";
 
@@ -45,7 +45,9 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 function FetchUsers({ loggedUser, searchTerm }) {
   const { data: users, isPending, error } = useFetchUsers();
   const { mutate: remove } = useDeleteUser();
-  const { mutate } = useMutateUsers();
+  const { mutate } = useMutateUsersRole();
+  const { mutate: mutateRole } = useMutateUsersRole();
+
   const [newPassword, setNewPassword] = useState();
   const debouncedSearch = useDebounce(searchTerm, 500);
   const { data: searchUsers } = useFetchSearchedUsers(debouncedSearch);
@@ -63,11 +65,11 @@ function FetchUsers({ loggedUser, searchTerm }) {
               <Select
                 className="flex justify-end"
                 onValueChange={(value) => {
-                  let userId = user.id;
-                  if (userId !== loggedUser.id) {
-                    mutate({
-                      userId,
-                      isAdmin: value,
+                  let id = user.id;
+                  if (id !== loggedUser.id) {
+                    mutateRole({
+                      id,
+                      role: value,
                     });
                   }
                 }}
@@ -76,7 +78,9 @@ function FetchUsers({ loggedUser, searchTerm }) {
                   className="flex items-center w-[170px] md:w-[280px] max-w-[480px]"
                   disabled={user.id === loggedUser.id}
                 >
-                  <SelectValue placeholder={user.isAdmin ? "Admin" : "User"} />
+                  <SelectValue
+                    placeholder={user.role == "admin" ? "Admin" : "Client"}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="false">User</SelectItem>
@@ -124,9 +128,9 @@ function FetchUsers({ loggedUser, searchTerm }) {
                     <Button
                       type="button"
                       onClick={() => {
-                        let userId = user._id;
+                        let id = user.id;
                         mutate({
-                          userId,
+                          id,
                           password: newPassword,
                         });
                       }}
@@ -140,9 +144,9 @@ function FetchUsers({ loggedUser, searchTerm }) {
                 alertTitle={"Po fshin perdoruesin"}
                 alertMessage={`Deshiron ta fshish perdoruesin: "${user.username}" ?`}
                 handleFunction={(e) => {
-                  let userId = user.id;
-                  if (loggedUser.id !== userId) {
-                    remove(userId);
+                  let id = user.id;
+                  if (loggedUser.id !== id) {
+                    remove(id);
                   }
                 }}
                 alertTriggerButton={
@@ -168,11 +172,11 @@ function FetchUsers({ loggedUser, searchTerm }) {
                 <Select
                   className="flex justify-end"
                   onValueChange={(value) => {
-                    let userId = user.id;
-                    if (userId !== loggedUser.id) {
-                      mutate({
-                        userId,
-                        isAdmin: value,
+                    let id = user.id;
+                    if (id !== loggedUser.id) {
+                      mutateRole({
+                        id,
+                        role: value,
                       });
                     }
                   }}
@@ -182,12 +186,12 @@ function FetchUsers({ loggedUser, searchTerm }) {
                     disabled={user.id === loggedUser.id}
                   >
                     <SelectValue
-                      placeholder={user?.role == "admin" ? "Admin" : "User"}
+                      placeholder={user?.role == "admin" ? "Admin" : "Client"}
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="false">User</SelectItem>
-                    <SelectItem value="true">Admin</SelectItem>
+                    <SelectItem value="client">Client</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
                   </SelectContent>
                 </Select>
               </TableCell>
@@ -231,9 +235,9 @@ function FetchUsers({ loggedUser, searchTerm }) {
                       <Button
                         type="button"
                         onClick={() => {
-                          let userId = user._id;
+                          let id = user.id;
                           mutate({
-                            userId,
+                            id,
                             password: newPassword,
                           });
                         }}
@@ -247,9 +251,9 @@ function FetchUsers({ loggedUser, searchTerm }) {
                   alertTitle={"Po fshin perdoruesin"}
                   alertMessage={`Deshiron ta fshish perdoruesin: "${user.username}" ?`}
                   handleFunction={(e) => {
-                    let userId = user.id;
-                    if (loggedUser.id !== userId) {
-                      remove(userId);
+                    let id = user.id;
+                    if (loggedUser.id !== id) {
+                      remove(id);
                     }
                   }}
                   alertTriggerButton={

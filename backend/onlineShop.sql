@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 06, 2024 at 04:06 PM
+-- Generation Time: Sep 06, 2024 at 10:21 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -57,7 +57,7 @@ CREATE TABLE `orders` (
   `id` varchar(255) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `total` float DEFAULT NULL,
-  `status` enum('paid','proccessing','shipped','delivered','cancelled') DEFAULT NULL,
+  `status` enum('Paid','Proccessing','Shipped','Delivered','Cancelled') DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `order_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -67,8 +67,12 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `total`, `status`, `created_at`, `order_details`) VALUES
-('7f2a07c8-41d0-4c40-96da-e11626b2b104', 1, 1729, 'paid', '2024-09-06 14:02:17', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":5,\"name\":\"Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow\",\"details\":\"\",\"category\":2,\"cost\":300,\"price\":430,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61bFypVJVyL._AC_SL1500_.jpg\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":7,\"name\":\"Moto G Play 2023 3-Day Battery Unlocked Made for US 3\\/32GB 16MP Camera Navy Blue\",\"details\":\"\",\"category\":2,\"cost\":60,\"price\":99,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61K1Fz5LxvL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":9,\"name\":\"SAMSUNG Galaxy S24 Ultra 512GB\",\"details\":\"\",\"category\":2,\"cost\":900,\"price\":1100,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71WcjsOVOmL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
-('aa2869b8-c735-4f58-9dcd-99e3ec67778c', 1, 299, 'paid', '2024-09-06 12:27:56', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":null,\"stock\":null,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"qty\":1},{\"id\":7,\"name\":\"Moto G Play 2023 3-Day Battery Unlocked Made for US 3\\/32GB 16MP Camera Navy Blue\",\"details\":\"\",\"category\":2,\"cost\":60,\"price\":99,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61K1Fz5LxvL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]');
+('1c55896b-a72b-41f1-b0b4-813723bcb5b5', 1, 1980, 'Paid', '2024-09-06 17:04:39', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":4}]'),
+('2614b8d5-425e-4c74-bbe4-5165f3666cd6', 1, 100, 'Paid', '2024-09-06 14:34:28', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
+('41dc6864-5f04-41e7-a169-b0aaa9eb68e2', 1, 470, 'Paid', '2024-09-06 19:21:14', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('5e59add2-bc6b-4570-bbc6-d7b238c97735', 1, 470, 'Paid', '2024-09-06 14:35:24', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 1, -1440, 'Paid', '2024-09-06 18:59:09', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":-5},{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":-2}]'),
+('c8921b21-f66b-4d27-9a8d-bb62008b172b', 1, 689, 'Paid', '2024-09-06 15:14:42', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":6,\"name\":\"SAMSUNG Galaxy A15 5G, 128GB, US Version\",\"details\":\"\",\"category\":2,\"cost\":100,\"price\":199,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/41vU1u8DZXL._AC_SL1000_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":10,\"name\":\"Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi\",\"details\":\"\",\"category\":3,\"cost\":300,\"price\":390,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61NGnpjoRDL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]');
 
 -- --------------------------------------------------------
 
@@ -88,13 +92,16 @@ CREATE TABLE `order_line` (
 --
 
 INSERT INTO `order_line` (`id`, `order_id`, `product_id`, `qty`) VALUES
-(18, 'aa2869b8-c735-4f58-9dcd-99e3ec67778c', 49, 1),
-(19, 'aa2869b8-c735-4f58-9dcd-99e3ec67778c', 47, 1),
-(20, 'aa2869b8-c735-4f58-9dcd-99e3ec67778c', 7, 1),
-(23, '7f2a07c8-41d0-4c40-96da-e11626b2b104', 49, 1),
-(24, '7f2a07c8-41d0-4c40-96da-e11626b2b104', 5, 1),
-(25, '7f2a07c8-41d0-4c40-96da-e11626b2b104', 7, 1),
-(26, '7f2a07c8-41d0-4c40-96da-e11626b2b104', 9, 1);
+(27, '2614b8d5-425e-4c74-bbe4-5165f3666cd6', 49, 1),
+(28, '5e59add2-bc6b-4570-bbc6-d7b238c97735', 4, 1),
+(29, 'c8921b21-f66b-4d27-9a8d-bb62008b172b', 49, 1),
+(30, 'c8921b21-f66b-4d27-9a8d-bb62008b172b', 6, 1),
+(31, 'c8921b21-f66b-4d27-9a8d-bb62008b172b', 10, 1),
+(32, '1c55896b-a72b-41f1-b0b4-813723bcb5b5', 49, 1),
+(33, '1c55896b-a72b-41f1-b0b4-813723bcb5b5', 4, 4),
+(34, '98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 49, -5),
+(35, '98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 4, -2),
+(36, '41dc6864-5f04-41e7-a169-b0aaa9eb68e2', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -200,7 +207,8 @@ INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `content`, `rating`) VALUE
 (7, 49, 1, 'Doesnt work!', 1),
 (8, 49, 205, 'testing', 5),
 (12, 49, 205, 'test', 4),
-(14, 49, 205, 'kot fare', 4);
+(14, 49, 205, 'kot fare', 4),
+(15, 47, 1, 'test', 4);
 
 -- --------------------------------------------------------
 
@@ -223,12 +231,12 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`) VALUES
 (1, 'arionkosturi@gmail.com', 'arionkosturi', '$2y$10$lHTYapSfulIX4Z9skg7wxe/ZQ096WTImg5HW/LGPzE0T0HwjAB34q', 'admin'),
 (2, 'client@test.com', 'client1', '$2y$10$aVpNgkAMwRAyZFpKTyHw6erM1MpmRX2yMOQNgVq4DTRqFOiqmbn/u', 'client'),
-(94, 'clientqw12132@test.com', 'client', '$2y$10$r3WMiwWN9SPE1tXPazl8W.jnRiJrklrcFMpSZJaRzN0KyemEC.t5.', NULL),
+(94, 'clientqw12132@test.com', 'client', '$2y$10$r3WMiwWN9SPE1tXPazl8W.jnRiJrklrcFMpSZJaRzN0KyemEC.t5.', 'client'),
 (97, 'client132@test.com', 'client', '$2y$10$eevqx5veSY.mIRwLqHiqLOboPErsDD3aryB8x4OrJAb7AvEBTJXI2', NULL),
 (101, 'johnsmith@gmail.com', 'johnsmith', '$2y$10$svCuzUiphr.e1SlzIGBwOu6Co9pRCaJ9k4Ta/hko7XckSHXhmiVPO', NULL),
 (103, 'john@john.com', 'john@john.com', '$2y$10$M2EdwjGCgU1kKP2PkFxbM.ds1yYQK7FBi6CKedgxsaiZMI6loAxQq', NULL),
 (105, 'a@b.com', 'abc', '$2y$10$LSj.CrS.gG5iDuzmwYW1eeKS8EMzcaHyTOLZsNbXral5g8SvK4UVq', NULL),
-(108, 'abc@b.com', 'a@b.com', '$2y$10$rfyivMFFviZZ8KH9X1rrCenuWULr5.lq.Ouqg4.3kyD6ewbCGG5Ee', NULL),
+(108, 'abc@b.com', 'a@b.com', '$2y$10$rfyivMFFviZZ8KH9X1rrCenuWULr5.lq.Ouqg4.3kyD6ewbCGG5Ee', 'client'),
 (111, 'a11@b.com', 'a@b.com', '$2y$10$KgU/8SBY9qD9Gl0lr8aDWuwJJ8.AXE3Bgshu560x7T6BFX/tVIHcm', NULL),
 (120, 'client1312@test.com', 'client', '$2y$10$oof58eYS3rCAHsZe1C1zX.V2VtU9xzapN0Eqie2EVgeAugUxImtti', NULL),
 (129, 'client131112@test.com', 'client', '$2y$10$NYODyfyEgzjr8AwoxD.yYeUr3AWDTagbc6dfuDDVb2uQXRmXZYsQy', NULL),
@@ -315,7 +323,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `order_line`
 --
 ALTER TABLE `order_line`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -333,7 +341,7 @@ ALTER TABLE `reklama`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`

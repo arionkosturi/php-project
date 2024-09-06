@@ -141,6 +141,32 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'all_use
     ]);
   }
 }
+// Update User Role
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_user_role') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'User ID is required!']));
+  }
+  $id = $payload['id'];
+  $role = $payload['role'];
+  $stm = $pdo->prepare("UPDATE `users` SET 
+  `role` = COALESCE(?, `role`)
+  WHERE `id` = ? LIMIT 1");
+  $stm->execute([$role, $id]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
+// Update User Password
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_user_password') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'User ID is required!']));
+  }
+  $password = $payload['password'];
+  $id = $payload['id'];
+  $stm = $pdo->prepare("UPDATE `users` SET 
+  `password` = COALESCE(?, `password`)
+  WHERE `id` = ? LIMIT 1");
+  $stm->execute([$id, $password]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
 
 // Orders by userID id
 

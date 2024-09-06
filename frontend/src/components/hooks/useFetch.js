@@ -605,12 +605,14 @@ export const useSingleUser = () => {
 
 //Mutate User Profile
 const useMutateUser = async (user) => {
-  let { email, password, likedArticles, isAdmin } = user;
-  return await apiClient.patch(`/users/${user.id}`, {
+  let { email, password, role, username, id } = user;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_user",
     email,
     password,
-    likedArticles,
-    isAdmin,
+    username,
+    role,
+    id,
   });
 };
 // Mutate User Profile
@@ -666,25 +668,28 @@ export const useDeleteUser = (id) => {
   });
 };
 //Mutate User
-const useMutateSingleUser = async (user) => {
-  let { username, password, isAdmin } = user;
-  return await apiClient.patch(`/users/${user.userId}`, {
-    username,
-    password,
-    isAdmin,
+const useMutateUserRole = async (user) => {
+  let { id, role } = user;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_user_role",
+    role,
+    id,
   });
 };
 // Mutate User
-export const useMutateUsers = (user) => {
+export const useMutateUsersRole = (user) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["user"],
-    mutationFn: useMutateSingleUser,
+    mutationKey: ["user role"],
+    mutationFn: useMutateUserRole,
     onSuccess: async (id) => {
       return await queryClient.invalidateQueries({
         queryKey: ["single user"],
       });
+    },
+    onSettled: (user) => {
+      console.log(user);
     },
   });
 };
