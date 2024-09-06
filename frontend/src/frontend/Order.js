@@ -4,7 +4,6 @@ import Header from "./Header";
 import { CgSmileSad } from "react-icons/cg";
 import {
   fetchOrderProducts,
-  useMutateUserProfile,
   useCreateOrder,
   useFetchOrdersByUser,
   useFetchOrderProducts,
@@ -27,16 +26,12 @@ import Column from "antd/es/table/Column";
 import Footer from "./Footer";
 import { useQueryClient } from "@tanstack/react-query";
 import { Navigate, useNavigate } from "react-router-dom";
-const Orders = () => {
+const Order = () => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
-  const [qty, setQty] = useState(1);
-  const [orderData, setOrderData] = useState("");
   const navigate = useNavigate();
   // const [total, setTotal] = useState(0.0);
-  const { mutate: createOrder } = useCreateOrder();
   const [alert, setAlert] = useState({});
   const [passwordAlert, setPasswordAlert] = useState({});
   const { data } = useFetchOrdersByUser(user.id);
@@ -45,64 +40,35 @@ const Orders = () => {
   const total = [0];
   cart?.forEach((item) => total.push(item.qty * item.price));
   let totali = Math.round(total.reduce((total, num) => total + num)).toFixed(2);
-  const handleOrder = (e) => {
-    e.preventDefault();
-    let orderId = uuidv4();
-    let userId = user.id;
-    createOrder(
-      {
-        orderId,
-        userId,
-        totali,
-        cart,
-      },
-      {
-        onSuccess: () => {
-          setCart([]);
-        },
-      }
-    );
-  };
-  const handleDecQty = (e) => {
-    const index = e.target.getAttribute("index");
-
-    setCart([
-      ...cart?.map((item, key) => {
-        return key == index ? { ...item, qty: item.qty - 1 } : item;
-      }),
-    ]);
-  };
-
-  const handleIncQty = (e) => {
-    const index = e.target.getAttribute("index");
-
-    setCart([
-      ...cart?.map((item, key) => {
-        return key == index ? { ...item, qty: item.qty + 1 } : item;
-      }),
-    ]);
-  };
 
   let url = `order?id=${cart?.id}`;
   const columns = [
     {
-      title: "id",
-      dataIndex: "order_id",
-      name: "id",
+      title: "Image",
+      dataIndex: "img",
+      name: "img",
       render: (dataIndex) => (
-        <p className="underline text-blue-600 cursor-pointer">{dataIndex}</p>
+        <img
+          src={dataIndex}
+          className="underline text-blue-600 cursor-pointer w-14"
+        />
       ),
     },
-
     {
-      title: "name",
+      title: "Product",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Total",
-      dataIndex: "total",
-      key: "total",
+      title: "Sasia",
+      dataIndex: "qty",
+      key: "qty",
+      render: (dataIndex) => <a>{dataIndex} Cope</a>,
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
       render: (dataIndex) => <a>{dataIndex} €</a>,
     },
   ];
@@ -146,31 +112,25 @@ const Orders = () => {
         Your shopping cart:
         <Layout>
           <Content className="site-layout-background">
-            <Row justify="start" className="flex justify-between">
-              <div className="flex gap-2">
-                {" "}
-                {/* <Button
-                  onClick={() => {
-                    navigate("/orders");
-                  }}
-                >
-                  Orders History
-                </Button> */}
-                <Button
-                  onClick={() => {
-                    navigate("/cart");
-                  }}
-                >
-                  Cart
-                </Button>
-              </div>
-
-              <h2>
-                Total Items <strong>({data?.length})</strong>
-              </h2>
+            <Row justify="start" className="flex gap-2">
+              <Button
+                onClick={() => {
+                  navigate("/orders");
+                }}
+              >
+                Orders History
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate("/cart");
+                }}
+              >
+                Cart
+              </Button>
             </Row>
-            <Row justify="end" className="me-2"></Row>
-
+            <h2 className="text-right p-2 mt-2 items-end">
+              Total Items <strong>({orderItems?.length})</strong>
+            </h2>
             <br></br>
             {data?.length > 0 && (
               <Table
@@ -189,24 +149,25 @@ const Orders = () => {
                           return data;
                         },
                       });
-                    },
+                    }, // click row
+                    onDoubleClick: (event) => {}, // double click row
+                    onContextMenu: (event) => {}, // right button click row
+                    onMouseEnter: (event) => {}, // mouse enter row
+                    onMouseLeave: (event) => {}, // mouse leave row
                   };
                 }}
                 columns={columns}
-                dataSource={data}
+                // rowKey={data?.order_id}
+                dataSource={orderProducts}
                 pagination={false}
               />
             )}
-            {cart.length > 0 ? (
-              <Divider orientation="right">
-                <p>Billing</p>
-              </Divider>
-            ) : (
+            {data?.length > 0 && (
               <>
-                <p className="text-center mt-6 text-xl text-slate-600">
-                  test {orderData}
-                </p>
-
+                <div className="text-center mt-6 text-xl text-slate-600">
+                  <p>Totali: {orderProducts[0]?.total} €</p>
+                  <p>(Tax included)</p>
+                </div>
                 <div className="flex gap-2 p-2 items-center mt-6 mx-2 justify-evenly">
                   <a
                     href="/"
@@ -223,28 +184,6 @@ const Orders = () => {
                 </div>
               </>
             )}
-            {cart.length > 0 && (
-              <Row justify="end">
-                <Col>
-                  <Statistic
-                    title="Total (tax incl)."
-                    value={`$ ${Math.round(
-                      total.reduce((total, num) => total + num)
-                    ).toFixed(2)}`}
-                    precision={2}
-                  />
-                  <Button
-                    style={{ marginTop: 16 }}
-                    type="primary"
-                    onClick={handleOrder}
-                  >
-                    Pay now <CreditCardOutlined />
-                  </Button>
-                </Col>
-              </Row>
-            )}
-
-            <br></br>
           </Content>
         </Layout>
         <Footer />
@@ -253,4 +192,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Order;

@@ -568,11 +568,13 @@ export const useFetchOrdersByUser = (id) => {
 };
 
 // Fetch Order Products By Id
-const fetchOrderProducts = async (id) => {
+export const fetchOrderProducts = async (id) => {
   return await apiClient.get(`api.php?endpoint_name=orders_by_id&id=${id}`);
 };
 // Fetch Order Products By Id
-export const useFetchOrderProducts = (id) => {
+export const useFetchOrderProducts = () => {
+  const [queryParameter] = useSearchParams();
+  let id = queryParameter.get("id");
   return useQuery({
     queryFn: async () => {
       const { data } = await fetchOrderProducts(id);
