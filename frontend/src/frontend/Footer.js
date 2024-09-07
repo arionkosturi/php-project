@@ -1,34 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaOpencart } from "react-icons/fa";
+import { useFetchCategories } from "../components/hooks/useFetch";
 
 function Footer() {
+  const { data: categories } = useFetchCategories();
+
   return (
     <div className="mx-auto py-6 container">
       <div className="lg:flex">
         <div className="w-full lg:w-2/5">
-          <div className="px-4">
-            <a href="/">
-              <i className="mx-1 font-bold text-3xl text-purple-700 fa-newspaper fa-regular">
-                <p>news</p>
-              </i>
-            </a>
+          <div className="px-4 flex justify-between my-4">
+            <div className="gap-2 flex mx-1 font-bold text-3xl text-purple-700 fa-newspaper fa-regular">
+              <FaOpencart />
+              <p>Online Shop</p>
+            </div>
 
             <p className="mt-2 max-w-sm text-gray-500 dark:text-gray-400">
-              Website me i mire per informacion cilesor, te shpejte dhe te
-              pavarur.
+              Website me i mire per blerje online.
             </p>
-
-            {/* <div className="flex mt-4">
-              <a href="">
-                <i className="mr-2 text-gray-600 hover:text-purple-600 dark:hover:text-blue-400 dark:text-gray-300 transition-colors duration-300 fa-brands fa-x-twitter"></i>
-              </a>
-
-              <a href="">
-                <i className="mr-2 text-blue-700 hover:text-purple-500 dark:hover:text-blue-400 dark:text-gray-300 transition-colors duration-300 fa-brands fa-facebook"></i>
-              </a>
-              <a href="">
-                <i className="text-red-600 hover:text-purple-500 dark:hover:text-blue-400 dark:text-gray-300 transition-colors duration-300 fa-brands fa-youtube"></i>
-              </a>
-            </div> */}
           </div>
         </div>
 
@@ -38,53 +27,11 @@ function Footer() {
               <h3 className="font-bold text-purple-700 dark:text-white uppercase">
                 MENU
               </h3>
-              <a href="/" className="block mt-2 hover:text-purple-600">
-                Live Stream
-              </a>
-              <a href="/" className="block mt-2 hover:text-purple-600">
-                Subscribe
+              <a href="/register" className="block mt-2 hover:text-purple-600">
+                Register
               </a>
               <a href="/login" className="block mt-2 hover:text-purple-600">
                 Login
-              </a>
-              <a href="/" className="block mt-2 hover:text-purple-600">
-                Report
-              </a>
-            </div>
-
-            <div>
-              <h3 className="font-bold text-purple-700 dark:text-white uppercase">
-                REGION
-              </h3>
-              <a
-                href="/category/US"
-                className="block mt-2 hover:text-purple-600"
-              >
-                US
-              </a>
-              <a
-                href="/category/EU"
-                className="block mt-2 hover:text-purple-600"
-              >
-                EU
-              </a>
-              <a
-                href="/category/Asia"
-                className="block mt-2 hover:text-purple-600"
-              >
-                Asia
-              </a>
-              <a
-                href="/category/Africa"
-                className="block mt-2 hover:text-purple-600"
-              >
-                Africa
-              </a>
-              <a
-                href="/category/Oceania"
-                className="block mt-2 hover:text-purple-600"
-              >
-                Oceania
               </a>
             </div>
 
@@ -92,36 +39,16 @@ function Footer() {
               <h3 className="font-bold text-purple-700 dark:text-white uppercase">
                 CATEGORIES
               </h3>
-              <a
-                href="/category/Science"
-                className="block mt-2 hover:text-purple-600"
-              >
-                Science
-              </a>
-              <a
-                href="/category/Entertainment"
-                className="block mt-2 hover:text-purple-600"
-              >
-                Entertainment
-              </a>
-              <a
-                href="/category/Finance"
-                className="block mt-2 hover:text-purple-600"
-              >
-                Finance
-              </a>
-              <a
-                href="/category/Sports"
-                className="block mt-2 hover:text-purple-600"
-              >
-                Sports
-              </a>
-              <a
-                href="/category/Politics"
-                className="block mt-2 hover:text-purple-600"
-              >
-                Politics
-              </a>
+              {categories?.map((category) => {
+                return (
+                  <a
+                    href={`/category/${category.name}`}
+                    className="block mt-2 hover:text-purple-600"
+                  >
+                    {category.name}
+                  </a>
+                );
+              })}
             </div>
 
             <div>
@@ -130,7 +57,7 @@ function Footer() {
               </h3>
               <span className="block mt-2">+355 6x xx xx xxx</span>
               <span className="block mt-2 hover:text-purple-600 cursor-pointer">
-                info@news.site
+                info@onlineshop.site
               </span>
             </div>
           </div>
@@ -139,11 +66,12 @@ function Footer() {
 
       <hr className="bg-gray-200 dark:bg-gray-700 my-6 border-none h-px" />
 
-      <div className="text-center dark:text-gray-300">
-        <i className="mx-1 font-bold text-md text-purple-600 fa-newspaper fa-regular">
-          <p>news</p>
-        </i>{" "}
-        2024 - All rights reserved
+      <div className="flex justify-between text-center dark:text-gray-300">
+        <div className="flex gap-2 items-center mx-1 font-bold text-md text-purple-600">
+          <FaOpencart />
+          <p>Online Shop</p>
+        </div>{" "}
+        <p>2024 - All rights reserved</p>
       </div>
     </div>
   );

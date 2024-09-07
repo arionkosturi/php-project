@@ -35,10 +35,7 @@ const Orders = () => {
   const [qty, setQty] = useState(1);
   const [orderData, setOrderData] = useState("");
   const navigate = useNavigate();
-  // const [total, setTotal] = useState(0.0);
   const { mutate: createOrder } = useCreateOrder();
-  const [alert, setAlert] = useState({});
-  const [passwordAlert, setPasswordAlert] = useState({});
   const { data } = useFetchOrdersByUser(user.id);
   const { data: orderProducts } = useFetchOrderProducts();
   const { Content } = Layout;
@@ -95,7 +92,7 @@ const Orders = () => {
     },
     {
       title: "Created Date",
-      dataIndex: "created_at",
+      dataIndex: "created",
       key: "name",
     },
     {
@@ -110,21 +107,23 @@ const Orders = () => {
       key: "name",
     },
   ];
-  let orderItems = data?.map((order) => {
-    return order?.order_details;
-  });
-  let list = [];
-
-  let odetalis = orderItems?.map((order) => {
-    let items = JSON.parse(order);
-    items?.map((i) => {
-      list.push([
-        <p>
-          {i.name} - {i.qty} Cope x {i.price} €
-        </p>,
-      ]);
+  if (data?.length > 0) {
+    let orderItems = data?.map((order) => {
+      return order?.order_details;
     });
-  });
+    let list = [];
+
+    let odetalis = orderItems?.map((order) => {
+      let items = JSON.parse(order);
+      items?.map((i) => {
+        list.push([
+          <p>
+            {i.name} - {i.qty} Cope x {i.price} €
+          </p>,
+        ]);
+      });
+    });
+  }
   if (!user) {
     return (
       <>
@@ -153,13 +152,6 @@ const Orders = () => {
             <Row justify="start" className="flex justify-between">
               <div className="flex gap-2">
                 {" "}
-                {/* <Button
-                  onClick={() => {
-                    navigate("/orders");
-                  }}
-                >
-                  Orders History
-                </Button> */}
                 <Button
                   onClick={() => {
                     navigate("/cart");

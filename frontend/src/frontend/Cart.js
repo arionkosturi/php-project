@@ -27,19 +27,16 @@ import Column from "antd/es/table/Column";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
+import { useToast } from "../components/ui/use-toast";
+import { Toaster } from "../components/ui/toaster";
 const Cart = (props) => {
   const { mutate } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
   const [qty, setQty] = useState(1);
   const navigate = useNavigate();
-  // const [total, setTotal] = useState(0.0);
+  const { toast } = useToast();
   const { mutate: createOrder } = useCreateOrder();
-  const [alert, setAlert] = useState({});
-  const [passwordAlert, setPasswordAlert] = useState({});
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [oldPasword, setOldPassword] = useState("");
 
   const { Content } = Layout;
   const total = [0];
@@ -49,19 +46,12 @@ const Cart = (props) => {
     e.preventDefault();
     let orderId = uuidv4();
     let userId = user.id;
-    createOrder(
-      {
-        orderId,
-        userId,
-        totali,
-        cart,
-      },
-      {
-        onSuccess: () => {
-          setCart([]);
-        },
-      }
-    );
+    createOrder({
+      orderId,
+      userId,
+      totali,
+      cart,
+    });
   };
 
   const columns = [
@@ -104,6 +94,8 @@ const Cart = (props) => {
             className="flex justify-evenly items-center gap-2"
             key={dataIndex.id}
           >
+            {" "}
+            <Toaster />
             <Button onClick={handleDecrease}>-</Button>
             <p className="w-10 inline bg-slate-200 text-center">{dataIndex}</p>
             <Button onClick={handleIncrease}>+</Button>

@@ -3,6 +3,7 @@ import React from "react";
 import { useFetchCategories } from "../components/hooks/useFetch";
 function Categories() {
   const { data: categories } = useFetchCategories();
+
   return (
     <>
       <div className="bg-gray-100 dark:bg-neutral-700 w-full dark:text-gray-200">

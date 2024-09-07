@@ -172,13 +172,13 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and $method === 'GET') {
 
-  $SQL = "SELECT `order_line`.`order_id`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,  `products`.*
+  $SQL = "SELECT `order_line`.`order_id`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
 FROM `orders` 
 	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
 	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id`
   INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
     WHERE
-    `users`.`id` = ? GROUP BY `orders`.`id`";
+    `users`.`id` = ? GROUP BY `orders`.`id` ORDER BY `created` DESC";
   $stm = $pdo->prepare($SQL);
   $id = $_GET['id'];
   $stm->execute([$_GET['id']]);
@@ -197,7 +197,7 @@ FROM `orders`
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders_by_id') and $method === 'GET') {
 
-  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`,`orders`.`total`, `order_line`.`qty`, `products`.* 
+  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`, `orders`.`total`, `order_line`.`qty`, `products`.* 
   FROM `orders` 
   JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
   JOIN `products` ON `order_line`.`product_id` = `products`.`id` 

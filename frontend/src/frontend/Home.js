@@ -6,9 +6,9 @@ import Footer from "./Footer";
 import PublicProducts from "./PublicProducts";
 import HighlitedSection from "./HighlitedSection";
 import Reklama from "./Reklama";
-
-function Home() {
+function Home({ categories }) {
   let [currentPage] = useState("0");
+  const [category, setCategory] = useState();
 
   return (
     <div className="container mx-auto">
@@ -17,7 +17,7 @@ function Home() {
       <Reklama />
       <PublicProducts currentPage={currentPage} />
       <Categories />
-      <Footer />
+      <Footer category={category} />
     </div>
   );
 }

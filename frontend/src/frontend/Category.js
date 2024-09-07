@@ -9,10 +9,20 @@ function PublicCategory() {
     <>
       <Header />
       <div className="container mx-auto mt-6 text-4xl font-bold p-2 text-purple-700">
-        <p className="text-black">Showing products from: </p>
-        {category}
-        {products &&
-          products.map((product) => {
+        <p className="text-black">
+          Showing products from:{" "}
+          <span className="text-purple-600 p-2">{category}</span>
+        </p>
+        <p className="text-xl text-slate-900">
+          {" "}
+          Found
+          <span className="text-purple-600 ml-2">
+            ( {products?.length > 0 ? `${products?.length} ` : `0 `} )
+          </span>{" "}
+          Products{" "}
+        </p>
+        {products?.length > 0 &&
+          products?.map((product) => {
             return (
               <article className="flex items-center justify-around mr-4 bg-white shadow-xl hover:shadow-xl my-3">
                 <div className="flex flex-row w-1/12 ">
