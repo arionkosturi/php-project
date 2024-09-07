@@ -1,44 +1,22 @@
 // @ts-nocheck
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React from "react";
 import Header from "./Header";
-import { CgSmileSad } from "react-icons/cg";
-import {
-  useMutateUserProfile,
-  useCreateOrder,
-} from "../components/hooks/useFetch";
+import { useCreateOrder } from "../components/hooks/useFetch";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import {
-  Layout,
-  Breadcrumb,
-  Row,
-  Col,
-  Table,
-  Space,
-  Divider,
-  Statistic,
-  Button,
-  Form,
-  Input,
-  Popconfirm,
-} from "antd";
+import { Layout, Row, Col, Table, Divider, Statistic, Button } from "antd";
 import { CreditCardOutlined, DeleteOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
-import Column from "antd/es/table/Column";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
-import { useToast } from "../components/ui/use-toast";
 import { Toaster } from "../components/ui/toaster";
 const Cart = (props) => {
-  const { mutate } = useMutateUserProfile();
-  const [user, setUser] = useLocalStorage("user");
+  const [user] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
-  const [qty, setQty] = useState(1);
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { mutate: createOrder } = useCreateOrder();
-
   const { Content } = Layout;
+
   const total = [0];
   cart?.forEach((item) => total.push(item.qty * item.price));
   let totali = Math.round(total.reduce((total, num) => total + num)).toFixed(2);
@@ -71,7 +49,7 @@ const Cart = (props) => {
           if (dataIndex <= 1) return;
           setCart([
             ...cart.map((item, key) => {
-              return key == index ? { ...item, qty: item.qty - 1 } : item;
+              return key === index ? { ...item, qty: item.qty - 1 } : item;
             }),
           ]);
         };
@@ -80,7 +58,7 @@ const Cart = (props) => {
 
           setCart([
             ...cart.map((item, key) => {
-              return key == index ? { ...item, qty: item.qty + 1 } : item;
+              return key === index ? { ...item, qty: item.qty + 1 } : item;
             }),
           ]);
         };

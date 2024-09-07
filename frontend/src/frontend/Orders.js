@@ -1,86 +1,20 @@
 // @ts-nocheck
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Header from "./Header";
-import { CgSmileSad } from "react-icons/cg";
-import {
-  fetchOrderProducts,
-  useMutateUserProfile,
-  useCreateOrder,
-  useFetchOrdersByUser,
-  useFetchOrderProducts,
-} from "../components/hooks/useFetch";
+import { useFetchOrdersByUser } from "../components/hooks/useFetch";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import {
-  Layout,
-  Breadcrumb,
-  Row,
-  Col,
-  Table,
-  Space,
-  Divider,
-  Statistic,
-  Button,
-} from "antd";
-import { CreditCardOutlined, DeleteOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
-import Column from "antd/es/table/Column";
+import { Layout, Row, Table, Button } from "antd";
 import Footer from "./Footer";
-import { useQueryClient } from "@tanstack/react-query";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Orders = () => {
-  const queryClient = useQueryClient();
-  const { mutate } = useMutateUserProfile();
-  const [user, setUser] = useLocalStorage("user");
-  const [cart, setCart] = useLocalStorage("cart", []);
-  const [qty, setQty] = useState(1);
-  const [orderData, setOrderData] = useState("");
+  const [user] = useLocalStorage("user");
+  const [cart] = useLocalStorage("cart", []);
   const navigate = useNavigate();
-  const { mutate: createOrder } = useCreateOrder();
   const { data } = useFetchOrdersByUser(user.id);
-  const { data: orderProducts } = useFetchOrderProducts();
   const { Content } = Layout;
   const total = [0];
   cart?.forEach((item) => total.push(item.qty * item.price));
-  let totali = Math.round(total.reduce((total, num) => total + num)).toFixed(2);
-  const handleOrder = (e) => {
-    e.preventDefault();
-    let orderId = uuidv4();
-    let userId = user.id;
-    createOrder(
-      {
-        orderId,
-        userId,
-        totali,
-        cart,
-      },
-      {
-        onSuccess: () => {
-          setCart([]);
-        },
-      }
-    );
-  };
-  const handleDecQty = (e) => {
-    const index = e.target.getAttribute("index");
 
-    setCart([
-      ...cart?.map((item, key) => {
-        return key == index ? { ...item, qty: item.qty - 1 } : item;
-      }),
-    ]);
-  };
-
-  const handleIncQty = (e) => {
-    const index = e.target.getAttribute("index");
-
-    setCart([
-      ...cart?.map((item, key) => {
-        return key == index ? { ...item, qty: item.qty + 1 } : item;
-      }),
-    ]);
-  };
-
-  let url = `order?id=${cart?.id}`;
   const columns = [
     {
       title: "Order",
@@ -99,7 +33,7 @@ const Orders = () => {
       title: "Total",
       dataIndex: "total",
       key: "total",
-      render: (dataIndex) => <a>{dataIndex} €</a>,
+      render: (dataIndex) => <p>{dataIndex} €</p>,
     },
     {
       title: "Status",
@@ -107,23 +41,6 @@ const Orders = () => {
       key: "name",
     },
   ];
-  if (data?.length > 0) {
-    let orderItems = data?.map((order) => {
-      return order?.order_details;
-    });
-    let list = [];
-
-    let odetalis = orderItems?.map((order) => {
-      let items = JSON.parse(order);
-      items?.map((i) => {
-        list.push([
-          <p>
-            {i.name} - {i.qty} Cope x {i.price} €
-          </p>,
-        ]);
-      });
-    });
-  }
   if (!user) {
     return (
       <>
@@ -173,18 +90,7 @@ const Orders = () => {
                 onRow={(record, rowIndex) => {
                   return {
                     onClick: (event) => {
-                      const prod = queryClient.fetchQuery({
-                        queryKey: ["order products"],
-                        queryFn: async () => {
-                          const { data } = await fetchOrderProducts(
-                            record.order_id
-                          );
-
-                          navigate(`/order?id=${record.order_id}`);
-
-                          return data;
-                        },
-                      });
+                      navigate(`/order?id=${record.order_id}`);
                     },
                   };
                 }}

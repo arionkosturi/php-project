@@ -530,7 +530,7 @@ const createOrder = async (cart) => {
   });
 };
 export const useCreateOrder = (cart) => {
-  const [karta, setCart] = useLocalStorage("cart");
+  const [setCart] = useLocalStorage("cart");
 
   const { toast } = useToast();
   return useMutation({
@@ -589,7 +589,7 @@ const fetchSingleUser = async (id) => {
 };
 // User Fetch Single User
 export const useSingleUser = () => {
-  const [user, setUser] = useLocalStorage("user");
+  const [user] = useLocalStorage("user");
   let id = user?.email || "guest";
   return useQuery({
     queryFn: async () => {

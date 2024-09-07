@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaOpencart } from "react-icons/fa";
 import { useFetchCategories } from "../components/hooks/useFetch";
 

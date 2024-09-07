@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import Reklama from "./Reklama";
 import { Button, Form, Rate } from "antd";
 import {
   useProductCategory,
@@ -10,7 +9,6 @@ import {
   useMutateUserProfile,
   useSingleArticle,
   useFetchSearchedArticles,
-  useMutateProduct,
   useAddReview,
   useDeleteReview,
 } from "../components/hooks/useFetch";
@@ -20,10 +18,6 @@ import {
   FaRegBookmark,
   FaRegHeart,
   FaHeart,
-  FaStar,
-  FaStarHalf,
-  FaTrashAlt,
-  FaTrash,
   FaRegTrashAlt,
   FaCartPlus,
 } from "react-icons/fa";
@@ -33,16 +27,12 @@ import {
   AlertDescription,
   AlertTitle,
 } from "../components/ui/alert";
-import CheckHighlighted from "../components/CheckHighlited";
-import Alert from "../components/Alert";
 import { useSessionStorage, useLocalStorage } from "@uidotdev/usehooks";
 import TextArea from "antd/es/input/TextArea";
-import axios from "axios";
 import { useToast } from "../components/ui/use-toast";
 import { Toaster } from "../components/ui/toaster";
 import { exists } from "../components/helpers/cart";
 function PublicArticle() {
-  const { mutate } = useMutateProduct();
   const { mutate: addReview } = useAddReview();
   const { mutate: delReview } = useDeleteReview();
   const [form] = Form.useForm();
@@ -50,8 +40,7 @@ function PublicArticle() {
   const { mutate: addTo } = useMutateUserProfile();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
-  const [total, setTotal] = useState(0.0);
-  const [qty, setQty] = useState(1);
+  const [qty] = useState(1);
   const { toast } = useToast();
   if (!user) {
     setUser(null);
@@ -91,7 +80,7 @@ function PublicArticle() {
     if (exists(article, cart)) {
       setCart([
         ...cart.map((item) => {
-          return item.id == article.id
+          return item.id === article.id
             ? { ...item, qty: item.qty + parseInt(qty) }
             : article;
         }),
@@ -119,21 +108,6 @@ function PublicArticle() {
     setTimeout(() => {
       window.location.reload();
     }, 2000);
-  };
-
-  let handlePublish = () => {
-    let articleId = article.id;
-    mutate({
-      articleId,
-      isPublished: !article.isPublished,
-    });
-  };
-  let handleHighlighted = () => {
-    let articleId = article.id;
-    mutate({
-      articleId,
-      isHighlighted: !article.isHighlighted,
-    });
   };
   let handleLiked = (user) => {
     let id = user.id;
@@ -374,7 +348,7 @@ function PublicArticle() {
           )}
           {reviews &&
             reviews[0]
-              ?.filter((f) => f.user_id == user?.id)
+              ?.filter((f) => f.user_id === user?.id)
               .map((review) => {
                 return (
                   <div
@@ -389,7 +363,6 @@ function PublicArticle() {
                         <FaRegTrashAlt
                           className="hover:text-red-600 text-red-400 text-xl"
                           onClick={() => {
-                            let id = review.id;
                             delReview(review);
                           }}
                         />
