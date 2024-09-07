@@ -11,6 +11,7 @@ import {
   useFetchSearchedArticles,
   useAddReview,
   useDeleteReview,
+  useFetchRelatedProducts,
 } from "../components/hooks/useFetch";
 import {
   FaInfoCircle,
@@ -35,6 +36,7 @@ import { exists } from "../components/helpers/cart";
 function PublicProduct() {
   const { mutate: addReview } = useAddReview();
   const { mutate: delReview } = useDeleteReview();
+  const [relatedProd, setRelatedProd] = useState([]);
   const [form] = Form.useForm();
   const [rating, setRating] = useState(4);
   const { mutate: addTo } = useMutateUserProfile();
@@ -45,34 +47,27 @@ function PublicProduct() {
   if (!user) {
     setUser(null);
   }
-  let [njoftimIsOpen, setNjoftimIsOpen] = useSessionStorage(
-    "njoftim breaking news",
-    1
-  );
   const [localArticles, saveLocalArticles] = useLocalStorage(
     "savedArticles",
     []
   );
 
   const { data: product, isLoading, error } = useSingleProduct();
-  const { data: related } = useFetchSearchedArticles(product?.category);
   let categId = product?.category;
   const { data: categ } = useProductCategory(categId);
   const { data: reviews } = useFetchReviews();
+  let rel = categ?.name;
+  const { data: related, isSuccess } = useFetchRelatedProducts(rel);
   const [reviewText, setReviewText] = useState();
-  let articlesDate = new Date(product?.createdAt).toLocaleDateString(
-    undefined,
-    {
-      day: "numeric",
-      year: "numeric",
-      month: "long",
-    }
-  );
-  let todaysDate = new Date().toLocaleDateString(undefined, {
-    day: "numeric",
-    year: "numeric",
-    month: "long",
-  });
+  if (!isSuccess) {
+    return "Loading";
+  }
+  if (isSuccess) {
+    console.log(related);
+  }
+  if (related === undefined) {
+    return <>Still loading...</>;
+  }
 
   let addToCart = (e) => {
     e.preventDefault();
@@ -235,39 +230,39 @@ function PublicProduct() {
               </div>
             </div>
           </div>
-          {related?.filter((f) => f._id !== product.id).length > 0 && (
+          {isSuccess && related?.length > 0 && (
             <div className="bg-gray-100 dark:bg-neutral-700 w-full dark:text-gray-200 mt-10">
               <div className="border-t-8 border-red-600 w-2/12"></div>
-              <h1 className="text-2xl p-2">More to read:</h1>
+              <h1 className="text-2xl p-2">Related Products:</h1>
               <div className="border-red-600 border-b-8 w-2/12"></div>
             </div>
           )}
           {/* Related section */}
           <div className="p-2 grid md:grid-cols-2 gap-2 mb-6">
-            {related
-              ?.filter((f) => f._id !== product.id)
-              .slice(0, 10)
-              .map((product) => {
-                return (
-                  <div key={product.id}>
-                    <a
-                      href={`?id=${product.id}`}
-                      className="hover:text-purple-800 "
-                    >
-                      <div className="flex border items-center hover:bg-slate-50">
-                        <img
-                          className="w-32 h-24 p-2"
-                          src={product.imgUrl}
-                          alt={product.title}
-                        />
-                        <div className="flex flex-col gap-2">
-                          <h1 className="text line-clamp-3">{product.title}</h1>
+            {/* {isSuccess &&
+              related
+                ?.filter((f) => f.id !== product?.id)
+                .map((prod) => {
+                  return (
+                    <div key={prod.id}>
+                      <a
+                        href={`?id=${prod.id}`}
+                        className="hover:text-purple-800 "
+                      >
+                        <div className="flex border items-center hover:bg-slate-50">
+                          <img
+                            className="w-32 h-24 p-2"
+                            src={prod.img}
+                            alt={prod.name}
+                          />
+                          <div className="flex flex-col gap-2">
+                            <h1 className="text line-clamp-3">{prod.name}</h1>
+                          </div>
                         </div>
-                      </div>
-                    </a>
-                  </div>
-                );
-              })}
+                      </a>
+                    </div>
+                  );
+                })} */}
           </div>
           <hr />
           <span className="font-bold px-2 py-1 bg-green-600 text-white ">

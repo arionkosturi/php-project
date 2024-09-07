@@ -165,9 +165,8 @@ export const useDeleteReview = (id) => {
     mutationFn: deleteReview,
     onSuccess: (id) => {
       queryClient.invalidateQueries({ queryKey: ["product reviews"] });
-      console.log(id);
+      // console.log(id);
     },
-    onSettled: (id) => {},
   });
 };
 // Fetch Product Reviews
@@ -205,7 +204,7 @@ export const useFetchSearchedArticles = (q) => {
       const { data } = await fetchSearchedArticles(q);
       return data;
     },
-    queryKey: ["searched articles", { q }],
+    queryKey: ["searched product", { q }],
   });
 };
 // Fetch Search All Articles
@@ -264,24 +263,12 @@ export const useAddProduct = () => {
 };
 //Mutate Product
 const mutateSingleProduct = async (product) => {
-  let {
-    name,
-    details,
-    // isHighlighted,
-    category,
-    // isPublished,
-    cost,
-    price,
-    img,
-    stock,
-    id,
-  } = product;
+  let { name, details, category, cost, price, img, stock, id } = product;
   return await apiClient.post(`api.php`, {
     _method: "PATCH",
     endpoint_name: "update_product",
     name,
     details,
-    // isHighlighted,
     category,
     // isPublished,
     cost,
@@ -342,7 +329,28 @@ export const useMutateProductPublish = (product) => {
     },
   });
 };
+// Fetch Related Products
+const fetchRelatedProducts = async (rel) => {
+  // console.log(rel.queryKey[1].rel);
+  let related = rel.queryKey[1].rel;
+  // console.log(related);
 
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "related",
+    related,
+  });
+};
+
+// Fetch Related Products
+export const useFetchRelatedProducts = (rel) => {
+  return useQuery({
+    queryFn: async (rel) => {
+      const { data } = await fetchRelatedProducts(rel);
+      return data;
+    },
+    queryKey: ["related products", { rel }],
+  });
+};
 //Mutate Product Highlightedublished
 const mutateSingleProductHighlight = async (product) => {
   let { isHighlighted, id } = product;
@@ -491,9 +499,6 @@ export const useMutateCategory = (category) => {
         queryKey: ["single category"],
       });
     },
-    onSettled: (category) => {
-      console.log(category.data);
-    },
   });
 };
 
@@ -623,9 +628,6 @@ export const useMutateUserProfile = (user) => {
         queryKey: ["single user"],
       });
     },
-    onSettled: (user) => {
-      console.log(user.data);
-    },
   });
 };
 
@@ -684,9 +686,6 @@ export const useMutateUsersRole = (user) => {
       return await queryClient.invalidateQueries({
         queryKey: ["single user"],
       });
-    },
-    onSettled: (user) => {
-      console.log(user);
     },
   });
 };

@@ -513,6 +513,23 @@ WHERE
   }
   echo json_encode($products);
 }
+// Related Products
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'related') && $method === 'POST') {
+  if (!isset($payload['related']) || empty($payload['related'])) {
+    die(json_encode(['message' => 'Related term is required!']));
+  }
+
+  $stm = $pdo->prepare("SELECT `products`.`name`, `products`.`img`,`products`.`id`, `categories`.`name` as `category_name`
+  FROM `products` 
+	LEFT JOIN `categories` ON `products`.`category` = `categories`.`id`
+  WHERE `categories`.`name` = :relatedCateg");
+  $categ = $payload['related'];
+  $stm->bindValue(':relatedCateg', $categ, PDO::PARAM_STR);
+  $stm->execute();
+  while ($product = $stm->fetchAll(PDO::FETCH_ASSOC)) {
+    echo json_encode($product);
+  }
+}
 // Create Category
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_category') and ($method === 'POST')) {
   $name = $payload['name'];
