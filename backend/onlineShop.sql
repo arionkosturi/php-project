@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 06, 2024 at 10:21 PM
+-- Generation Time: Sep 07, 2024 at 04:17 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -67,12 +67,24 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `total`, `status`, `created_at`, `order_details`) VALUES
+('05da058c-5c76-4871-bcd7-8df98fcd4649', 205, 100, 'Paid', '2024-09-07 14:07:23', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
 ('1c55896b-a72b-41f1-b0b4-813723bcb5b5', 1, 1980, 'Paid', '2024-09-06 17:04:39', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":4}]'),
 ('2614b8d5-425e-4c74-bbe4-5165f3666cd6', 1, 100, 'Paid', '2024-09-06 14:34:28', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
+('2812752e-0342-4066-aef8-d2a82ebaf5c9', 205, 860, 'Paid', '2024-09-07 14:13:57', '[{\"id\":5,\"name\":\"Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow\",\"details\":\"\",\"category\":2,\"cost\":300,\"price\":430,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61bFypVJVyL._AC_SL1500_.jpg\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":2}]'),
+('2bbd4e26-dd54-478d-b4b1-607504c8367d', 1, 199, 'Paid', '2024-09-07 13:36:07', '[{\"id\":6,\"name\":\"SAMSUNG Galaxy A15 5G, 128GB, US Version\",\"details\":\"\",\"category\":2,\"cost\":100,\"price\":199,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/41vU1u8DZXL._AC_SL1000_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
 ('41dc6864-5f04-41e7-a169-b0aaa9eb68e2', 1, 470, 'Paid', '2024-09-06 19:21:14', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
 ('5e59add2-bc6b-4570-bbc6-d7b238c97735', 1, 470, 'Paid', '2024-09-06 14:35:24', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('62876b22-576f-4ec8-b10c-eccdd44a5134', 205, 100, 'Paid', '2024-09-07 14:13:35', '[{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":null,\"stock\":null,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"qty\":1}]'),
+('6476b0c0-b32e-43d7-8f7f-32d7fad4b5c3', 1, 100, 'Paid', '2024-09-07 13:39:30', '[{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":null,\"stock\":null,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"qty\":1}]'),
+('80fe855c-0a9a-4302-a518-d01bbcd29390', 205, 100, 'Paid', '2024-09-07 14:10:20', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
+('8eaffc34-54b5-4380-976b-21a94f482d46', 1, 1100, 'Paid', '2024-09-07 13:38:41', '[{\"id\":9,\"name\":\"SAMSUNG Galaxy S24 Ultra 512GB\",\"details\":\"\",\"category\":2,\"cost\":900,\"price\":1100,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71WcjsOVOmL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('93bc70e5-2a65-4824-98b5-c3e5ff22b306', 205, 100, 'Paid', '2024-09-07 14:10:53', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
 ('98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 1, -1440, 'Paid', '2024-09-06 18:59:09', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":-5},{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":-2}]'),
-('c8921b21-f66b-4d27-9a8d-bb62008b172b', 1, 689, 'Paid', '2024-09-06 15:14:42', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":6,\"name\":\"SAMSUNG Galaxy A15 5G, 128GB, US Version\",\"details\":\"\",\"category\":2,\"cost\":100,\"price\":199,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/41vU1u8DZXL._AC_SL1000_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":10,\"name\":\"Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi\",\"details\":\"\",\"category\":3,\"cost\":300,\"price\":390,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61NGnpjoRDL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]');
+('9f8129f5-f17d-4634-bbbb-da56ae8a6248', 1, 100, 'Paid', '2024-09-07 13:38:59', '[{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":null,\"stock\":null,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"qty\":1}]'),
+('bbcac7bd-5655-44f4-aae5-b213c725e8c5', 1, 1850, 'Paid', '2024-09-07 13:27:35', '[{\"id\":22,\"name\":\"GTPLAYER Gaming Chair, Computer Chair with Footrest and Lumbar Support\",\"details\":\"\",\"category\":7,\"cost\":130,\"price\":180,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71PyDU2N2QL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":2},{\"id\":9,\"name\":\"SAMSUNG Galaxy S24 Ultra 512GB\",\"details\":\"\",\"category\":2,\"cost\":900,\"price\":1100,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71WcjsOVOmL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":10,\"name\":\"Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi\",\"details\":\"\",\"category\":3,\"cost\":300,\"price\":390,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61NGnpjoRDL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('c8921b21-f66b-4d27-9a8d-bb62008b172b', 1, 689, 'Paid', '2024-09-06 15:14:42', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":6,\"name\":\"SAMSUNG Galaxy A15 5G, 128GB, US Version\",\"details\":\"\",\"category\":2,\"cost\":100,\"price\":199,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/41vU1u8DZXL._AC_SL1000_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":10,\"name\":\"Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi\",\"details\":\"\",\"category\":3,\"cost\":300,\"price\":390,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61NGnpjoRDL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('db235c24-298a-4022-9935-aca9c3c71f25', 1, 1640, 'Paid', '2024-09-07 12:25:46', '[{\"id\":5,\"name\":\"Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow\",\"details\":\"\",\"category\":2,\"cost\":300,\"price\":430,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61bFypVJVyL._AC_SL1500_.jpg\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":2},{\"id\":10,\"name\":\"Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi\",\"details\":\"\",\"category\":3,\"cost\":300,\"price\":390,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61NGnpjoRDL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":2}]'),
+('f77fc851-89f7-4c81-b59f-ee4879f1fd1e', 205, 100, 'Paid', '2024-09-07 14:12:58', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]');
 
 -- --------------------------------------------------------
 
@@ -101,7 +113,22 @@ INSERT INTO `order_line` (`id`, `order_id`, `product_id`, `qty`) VALUES
 (33, '1c55896b-a72b-41f1-b0b4-813723bcb5b5', 4, 4),
 (34, '98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 49, -5),
 (35, '98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 4, -2),
-(36, '41dc6864-5f04-41e7-a169-b0aaa9eb68e2', 4, 1);
+(36, '41dc6864-5f04-41e7-a169-b0aaa9eb68e2', 4, 1),
+(37, 'db235c24-298a-4022-9935-aca9c3c71f25', 5, 2),
+(38, 'db235c24-298a-4022-9935-aca9c3c71f25', 10, 2),
+(39, 'bbcac7bd-5655-44f4-aae5-b213c725e8c5', 22, 2),
+(40, 'bbcac7bd-5655-44f4-aae5-b213c725e8c5', 9, 1),
+(41, 'bbcac7bd-5655-44f4-aae5-b213c725e8c5', 10, 1),
+(42, '2bbd4e26-dd54-478d-b4b1-607504c8367d', 6, 1),
+(43, '8eaffc34-54b5-4380-976b-21a94f482d46', 9, 1),
+(44, '9f8129f5-f17d-4634-bbbb-da56ae8a6248', 47, 1),
+(45, '6476b0c0-b32e-43d7-8f7f-32d7fad4b5c3', 47, 1),
+(46, '05da058c-5c76-4871-bcd7-8df98fcd4649', 49, 1),
+(47, '80fe855c-0a9a-4302-a518-d01bbcd29390', 49, 1),
+(48, '93bc70e5-2a65-4824-98b5-c3e5ff22b306', 49, 1),
+(49, 'f77fc851-89f7-4c81-b59f-ee4879f1fd1e', 49, 1),
+(50, '62876b22-576f-4ec8-b10c-eccdd44a5134', 47, 1),
+(51, '2812752e-0342-4066-aef8-d2a82ebaf5c9', 5, 2);
 
 -- --------------------------------------------------------
 
@@ -208,7 +235,8 @@ INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `content`, `rating`) VALUE
 (8, 49, 205, 'testing', 5),
 (12, 49, 205, 'test', 4),
 (14, 49, 205, 'kot fare', 4),
-(15, 47, 1, 'test', 4);
+(15, 47, 1, 'test', 4),
+(16, 8, 1, 'nice product!', 5);
 
 -- --------------------------------------------------------
 
@@ -323,7 +351,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `order_line`
 --
 ALTER TABLE `order_line`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -341,7 +369,7 @@ ALTER TABLE `reklama`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -27,8 +27,6 @@ $payload = json_decode(file_get_contents('php://input'), true);
 
 
 // ENDPOINTS
-
-// AUTH
 // Register
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'register') and ($method === 'POST')) {
   // $role = $payload['role'];
@@ -173,7 +171,7 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and $method === 'GET') {
 
   $SQL = "SELECT `order_line`.`order_id`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
-FROM `orders` 
+  FROM `orders` 
 	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
 	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id`
   INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
@@ -293,9 +291,7 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
 
 
   if ($products) {
-    // foreach ($products as $product) {
     echo json_encode($products);
-    // }
   } else {
     echo json_encode(['message' => 'You have no products']);
   }
@@ -303,9 +299,6 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
 
 // Product BY ID
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'published_products') && $method === 'GET') {
-  // if (!isset($_GET['id']) || empty($_GET['id'])) {
-  //   die(json_encode(['message' => 'Product ID is required!']));
-  // }
 
   $stm = $pdo->prepare("SELECT * FROM `products` WHERE isPublished = 1");
   $stm->execute();
@@ -602,8 +595,6 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'reklama') and
   $stm = $pdo->prepare($SQL);
   $stm->execute();
   $reklama = $stm->fetchAll(PDO::FETCH_ASSOC);
-
-
   if ($reklama) {
     // foreach ($products as $product) {
     echo json_encode($reklama);
