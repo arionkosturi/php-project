@@ -530,7 +530,7 @@ const createOrder = async (cart) => {
   });
 };
 export const useCreateOrder = (cart) => {
-  const [setCart] = useLocalStorage("cart");
+  const [karta, setCart] = useLocalStorage("cart");
 
   const { toast } = useToast();
   return useMutation({
