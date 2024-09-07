@@ -197,7 +197,7 @@ FROM `orders`
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders_by_id') and $method === 'GET') {
 
-  $SQL = "SELECT order_line`.`order_id`, `orders`.`user_id`,,`orders`.`total`, `order_line`.`qty`, `products`.* 
+  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`,`orders`.`total`, `order_line`.`qty`, `products`.* 
   FROM `orders` 
   JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
   JOIN `products` ON `order_line`.`product_id` = `products`.`id` 
