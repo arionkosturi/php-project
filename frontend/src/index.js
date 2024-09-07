@@ -9,13 +9,13 @@ import Categories from "./components/Pages/Categories";
 import Category from "./components/Pages/Category";
 import PublicCategory from "./frontend/Category";
 import NotFoundPage from "./components/Pages/NotFoundPage";
-import ArticleForm from "./components/ProductForm";
-import EditArticle from "./components/Pages/EditArticle";
+import ProductForm from "./components/ProductForm";
+import EditProduct from "./components/Pages/EditProduct";
 import Dashboard from "./components/Pages/Dashboard";
 import Users from "./components/Pages/Users";
 import ProductP from "./components/Pages/Product";
 import Product from "./frontend/Product";
-import PublishedArticles from "./components/Pages/PublishedProducts";
+import PublishedProducts from "./components/Pages/PublishedProducts";
 import Reklama from "./components/Pages/Reklama";
 import Login from "./frontend/Login";
 import Register from "./frontend/Register";
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard/new",
-    element: <ArticleForm />,
+    element: <ProductForm />,
     errorElement: <NotFoundPage />,
   },
   {
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard/edit",
-    element: <EditArticle />,
+    element: <EditProduct />,
     errorElement: <NotFoundPage />,
   },
   {
@@ -100,7 +100,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard/published",
-    element: <PublishedArticles />,
+    element: <PublishedProducts />,
     errorElement: <NotFoundPage />,
   },
   {

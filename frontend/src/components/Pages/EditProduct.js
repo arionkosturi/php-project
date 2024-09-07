@@ -13,7 +13,7 @@ const api = axios.create({
   baseURL: "http://localhost/php-project/backend/",
 });
 
-function EditArticle() {
+function EditProduct() {
   const { data: categories } = useFetchCategories();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -223,4 +223,4 @@ function EditArticle() {
   );
 }
 
-export default EditArticle;
+export default EditProduct;

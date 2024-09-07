@@ -1,11 +1,11 @@
 // @ts-nocheck
 import {
-  useFetchHighlightedArticles,
+  useFetchHighlightedProducts,
   useFetchHighlightedArticle,
 } from "../components/hooks/useFetch";
 import React, { useState } from "react";
 function HighlitedSection() {
-  const { data: articles, status } = useFetchHighlightedArticles();
+  const { data: articles, status } = useFetchHighlightedProducts();
   const { data: firstArt } = useFetchHighlightedArticle();
   let [artikull, setArtikull] = useState({});
   return (
@@ -15,7 +15,9 @@ function HighlitedSection() {
         {status === "success" ? (
           <div className="opacity-95 hover:opacity-100 mr-2">
             <a
-              href={`article?id=${artikull._id || (firstArt && firstArt[0]?._id)}`}
+              href={`article?id=${
+                artikull._id || (firstArt && firstArt[0]?._id)
+              }`}
             >
               <img
                 src={artikull.imgUrl || (firstArt && firstArt[0]?.imgUrl)}

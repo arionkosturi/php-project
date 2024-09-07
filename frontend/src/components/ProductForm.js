@@ -142,7 +142,7 @@ function ProductForm() {
             onClick={handleSubmit}
             className="mx-4 border shadow bg-green-600 text-white w-1/5"
           >
-            {status === "success" ? "Article Created" : "Submit"}
+            {status === "success" ? "Product Created" : "Submit"}
           </Button>
         </form>
       </div>

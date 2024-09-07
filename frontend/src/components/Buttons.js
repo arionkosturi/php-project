@@ -11,7 +11,7 @@ function Buttons({
 }) {
   return (
     <div className="flex flex-row xl:flex-col gap-2 align-bottom justify-items-end">
-      {/* Featured Article Button */}
+      {/* Featured Product Button */}
       {product?.isPublished == 1 && (
         <Alert
           handleFunction={handleHighlighted}

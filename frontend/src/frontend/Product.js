@@ -7,7 +7,7 @@ import {
   useProductCategory,
   useFetchReviews,
   useMutateUserProfile,
-  useSingleArticle,
+  useSingleProduct,
   useFetchSearchedArticles,
   useAddReview,
   useDeleteReview,
@@ -32,7 +32,7 @@ import TextArea from "antd/es/input/TextArea";
 import { useToast } from "../components/ui/use-toast";
 import { Toaster } from "../components/ui/toaster";
 import { exists } from "../components/helpers/cart";
-function PublicArticle() {
+function PublicProduct() {
   const { mutate: addReview } = useAddReview();
   const { mutate: delReview } = useDeleteReview();
   const [form] = Form.useForm();
@@ -54,13 +54,13 @@ function PublicArticle() {
     []
   );
 
-  const { data: article, isLoading, error } = useSingleArticle();
-  const { data: related } = useFetchSearchedArticles(article?.category);
-  let categId = article?.category;
+  const { data: product, isLoading, error } = useSingleProduct();
+  const { data: related } = useFetchSearchedArticles(product?.category);
+  let categId = product?.category;
   const { data: categ } = useProductCategory(categId);
   const { data: reviews } = useFetchReviews();
   const [reviewText, setReviewText] = useState();
-  let articlesDate = new Date(article?.createdAt).toLocaleDateString(
+  let articlesDate = new Date(product?.createdAt).toLocaleDateString(
     undefined,
     {
       day: "numeric",
@@ -77,16 +77,16 @@ function PublicArticle() {
   let addToCart = (e) => {
     e.preventDefault();
 
-    if (exists(article, cart)) {
+    if (exists(product, cart)) {
       setCart([
         ...cart.map((item) => {
-          return item.id === article.id
+          return item.id === product.id
             ? { ...item, qty: item.qty + parseInt(qty) }
-            : article;
+            : product;
         }),
       ]);
     } else {
-      setCart([...cart, { ...article, qty: parseInt(qty) }]);
+      setCart([...cart, { ...product, qty: parseInt(qty) }]);
     }
     toast({
       variant: "success",
@@ -95,7 +95,7 @@ function PublicArticle() {
     });
   };
   let handleReviewSubmit = () => {
-    let productId = article.id;
+    let productId = product.id;
     let userId = user.id;
     addReview({
       productId,
@@ -113,8 +113,8 @@ function PublicArticle() {
     addTo({
       id,
       likedArticles: [
-        ...likedArticles?.filter((liked) => liked._id !== article._id),
-        article,
+        ...likedArticles?.filter((liked) => liked._id !== product.id),
+        product,
       ],
     });
   };
@@ -124,19 +124,19 @@ function PublicArticle() {
     addTo({
       id,
       likedArticles: [
-        ...likedArticles?.filter((liked) => liked._id !== article._id),
+        ...likedArticles?.filter((liked) => liked.id !== product.id),
       ],
     });
   };
   let handleSaveArticle = () => {
     saveLocalArticles([
-      ...localArticles?.filter((saved) => saved._id !== article._id),
-      article,
+      ...localArticles?.filter((saved) => saved.id !== product.id),
+      product,
     ]);
   };
   let handleRemoveSaveArticle = () => {
     saveLocalArticles([
-      ...localArticles?.filter((saved) => saved._id !== article._id),
+      ...localArticles?.filter((saved) => saved.id !== product.id),
     ]);
   };
 
@@ -159,14 +159,14 @@ function PublicArticle() {
           <div className="flex px-2">
             <div className="mt-2 lg:-mx-6">
               <p className="block my-4 text-2xl font-semibold text-slate-800 ">
-                {article.name}
+                {product.name}
               </p>
               <div className="mt-8 flex lg:mt-0 lg:mx-6 ">
-                {article.img ? (
+                {product.img ? (
                   <img
                     className="object-contain w-[70%] lg:mx-6 rounded-xl h-72 text-center"
                     alt="article"
-                    src={article.img}
+                    src={product.img}
                   />
                 ) : (
                   <img
@@ -190,13 +190,13 @@ function PublicArticle() {
                   </p>
 
                   <p className="cursor-pointer block mt-4 text-xl font-semibold text-gray-800 ">
-                    {article.details}
+                    {product.details}
                   </p>
                 </div>
               </div>
               <div className="flex gap-4 items-center">
                 <p className="text-5xl bg-yellow-300 text-red-600 px-4 py-1">
-                  {article.price} €
+                  {product.price} €
                 </p>
                 <FaCartPlus
                   onClick={addToCart}
@@ -205,7 +205,7 @@ function PublicArticle() {
                 {
                   <>
                     {user?.likedArticles?.filter(
-                      (liked) => liked.id === article.id
+                      (liked) => liked.id === product.id
                     ).length === 0 ? (
                       <FaRegHeart
                         className="text-2xl text-purple-500 hover:text-purple-600 hover:scale-110"
@@ -218,7 +218,7 @@ function PublicArticle() {
                       />
                     )}
                     {localArticles.filter(
-                      (savedArticles) => savedArticles.id === article.id
+                      (savedArticles) => savedArticles.id === product.id
                     ).length === 0 ? (
                       <FaRegBookmark
                         className="text-2xl text-purple-500 hover:text-purple-600 hover:scale-110"
@@ -235,7 +235,7 @@ function PublicArticle() {
               </div>
             </div>
           </div>
-          {related?.filter((f) => f._id !== article._id).length > 0 && (
+          {related?.filter((f) => f._id !== product.id).length > 0 && (
             <div className="bg-gray-100 dark:bg-neutral-700 w-full dark:text-gray-200 mt-10">
               <div className="border-t-8 border-red-600 w-2/12"></div>
               <h1 className="text-2xl p-2">More to read:</h1>
@@ -245,23 +245,23 @@ function PublicArticle() {
           {/* Related section */}
           <div className="p-2 grid md:grid-cols-2 gap-2 mb-6">
             {related
-              ?.filter((f) => f._id !== article._id)
+              ?.filter((f) => f._id !== product.id)
               .slice(0, 10)
-              .map((article) => {
+              .map((product) => {
                 return (
-                  <div key={article._id}>
+                  <div key={product.id}>
                     <a
-                      href={`?id=${article._id}`}
+                      href={`?id=${product.id}`}
                       className="hover:text-purple-800 "
                     >
                       <div className="flex border items-center hover:bg-slate-50">
                         <img
                           className="w-32 h-24 p-2"
-                          src={article.imgUrl}
-                          alt={article.title}
+                          src={product.imgUrl}
+                          alt={product.title}
                         />
                         <div className="flex flex-col gap-2">
-                          <h1 className="text line-clamp-3">{article.title}</h1>
+                          <h1 className="text line-clamp-3">{product.title}</h1>
                         </div>
                       </div>
                     </a>
@@ -369,4 +369,4 @@ function PublicArticle() {
   );
 }
 
-export default PublicArticle;
+export default PublicProduct;

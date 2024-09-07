@@ -56,48 +56,48 @@ export const useFetchProductsByCategory = (category) => {
   });
 };
 
-// Fetch Highlighted Articles
-const fetchHighlightedArticles = async () => {
+// Fetch Highlighted Products
+const fetchHighlightedProducts = async () => {
   return await apiClient.get(`news/top`);
 };
 
-// Fetch Highlighted Articles
-export const useFetchHighlightedArticles = () => {
+// Fetch Highlighted Products
+export const useFetchHighlightedProducts = () => {
   return useQuery({
     queryFn: async () => {
-      const { data } = await fetchHighlightedArticles();
+      const { data } = await fetchHighlightedProducts();
       return data;
     },
-    queryKey: ["highlighted articles"],
+    queryKey: ["highlighted products"],
   });
 };
-// Fetch 1 Highlighted Articles
-const fetchHighlightedArticle = async () => {
+// Fetch 1 Highlighted Product
+const fetchHighlightedProduct = async () => {
   return await apiClient.get(`news/top1`);
 };
 
-// Fetch 1 Highlighted Articles
-export const useFetchHighlightedArticle = () => {
+// Fetch 1 Highlighted Product
+export const useFetchHighlightedProduct = () => {
   return useQuery({
     queryFn: async () => {
-      const { data } = await fetchHighlightedArticle();
+      const { data } = await fetchHighlightedProduct();
       return data;
     },
-    queryKey: ["highlighted article"],
+    queryKey: ["highlighted product"],
   });
 };
-// Fetch Single Article
-const fetchSingleArticle = async (id) => {
+// Fetch Single Product
+const fetchSingleProduct = async (id) => {
   return await apiClient.get(`api.php?endpoint_name=products_by_id&id=${id}`);
 };
-// Fetch Single Article
-export const useSingleArticle = () => {
+// Fetch Single Product
+export const useSingleProduct = () => {
   const [queryParameter] = useSearchParams();
   let id = queryParameter.get("id");
 
   return useQuery({
     queryFn: async () => {
-      const { data } = await fetchSingleArticle(id);
+      const { data } = await fetchSingleProduct(id);
       return data;
     },
     queryKey: ["single product", id],

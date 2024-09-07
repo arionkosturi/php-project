@@ -7,7 +7,7 @@ import {
   useMutateProduct,
   useMutateProductPublish,
   useMutateProductHighlighted,
-  useSingleArticle,
+  useSingleProduct,
   useFetchCategories,
   useSingleUser,
 } from "../hooks/useFetch";
@@ -41,7 +41,7 @@ function Product() {
   const { mutate } = useMutateProduct();
   const { mutate: mutatePublish } = useMutateProductPublish();
   const { mutate: mutateHighlight } = useMutateProductHighlighted();
-  const { data: product, isLoading, error } = useSingleArticle();
+  const { data: product, isLoading, error } = useSingleProduct();
   const [user, setUser] = useLocalStorage("user");
   let categId = product?.category;
   const { data: categ } = useProductCategory(categId);
