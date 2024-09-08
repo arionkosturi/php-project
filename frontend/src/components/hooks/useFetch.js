@@ -764,7 +764,9 @@ export const useMutateUsersRole = (user) => {
 const fetchSearchedUsers = async (q) => {
   let query = q.queryKey[1]?.q;
   if (query === undefined) return;
-  return await apiClient.get(`/users/search/${q.queryKey[1].q}`);
+  return await apiClient.get(
+    `api.php?endpoint_name=search_users&q=${q.queryKey[1].q}`
+  );
 };
 
 // Fetch Searched Users

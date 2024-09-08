@@ -9,6 +9,7 @@ import {
   FaCarAlt,
   FaShoppingCart,
 } from "react-icons/fa";
+import { MdHistoryEdu } from "react-icons/md";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -99,6 +100,21 @@ export default function Header({ className }) {
                                     <span className="text-purple-600">
                                       {" "}
                                       Your Profile
+                                    </span>
+                                  </Button>
+                                </NavigationMenuLink>
+                                <NavigationMenuLink>
+                                  {" "}
+                                  <Button
+                                    onClick={() => {
+                                      navigate("/orders");
+                                    }}
+                                    className="flex w-[300px] md:w-[200px] bg-white hover:bg-slate-100"
+                                  >
+                                    <MdHistoryEdu className="text-purple-500 mr-2" />
+                                    <span className="text-purple-600">
+                                      {" "}
+                                      Orders History
                                     </span>
                                   </Button>
                                 </NavigationMenuLink>

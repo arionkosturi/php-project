@@ -56,118 +56,122 @@ function FetchUsers({ loggedUser, searchTerm }) {
 
   if (error) return "An error has occurred: " + error.message;
 
-  return searchTerm
-    ? searchUsers?.map((user) => {
-        return (
-          <TableRow key={user._id}>
-            <TableCell className="font-medium">{user.username}</TableCell>
-            <TableCell>
-              <Select
-                className="flex justify-end"
-                onValueChange={(value) => {
-                  let id = user.id;
-                  if (id !== loggedUser.id) {
-                    mutateRole({
-                      id,
-                      role: value,
-                    });
-                  }
-                }}
-              >
-                <SelectTrigger
-                  className="flex items-center w-[170px] md:w-[280px] max-w-[480px]"
-                  disabled={user.id === loggedUser.id}
+  return searchTerm?.length > 0
+    ? searchUsers &&
+        searchUsers?.map((user) => {
+          return (
+            <TableRow key={user?.id}>
+              <TableCell className="font-medium">{user.username}</TableCell>
+              <TableCell className="font-medium">{user.email}</TableCell>
+              <TableCell>
+                <Select
+                  className="flex justify-end"
+                  onValueChange={(value) => {
+                    let id = user.id;
+                    if (id !== loggedUser.id) {
+                      mutateRole({
+                        id,
+                        role: value,
+                      });
+                    }
+                  }}
                 >
-                  <SelectValue
-                    placeholder={user.role == "admin" ? "Admin" : "Client"}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="false">User</SelectItem>
-                  <SelectItem value="true">Admin</SelectItem>
-                </SelectContent>
-              </Select>
-            </TableCell>
-            <TableCell className="text-right">
-              {" "}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" className="mr-2">
-                    Edit
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Change User Password</DialogTitle>
-                    <DialogDescription>
-                      <div className="mt-2">
-                        Jeni duke ndryshuar passwordin per perdoruesin:{" "}
-                        <span className="text-md text-red-600">
-                          {user.username}
-                        </span>
-                      </div>
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="username" className="text-right">
-                        Password
-                      </Label>
-                      <Input
-                        autoComplete="off"
-                        id="password"
-                        defaultValue=""
-                        onChange={(e) => {
-                          setNewPassword(e.target.value);
-                        }}
-                        className="col-span-3"
-                      />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        let id = user.id;
-                        mutate({
-                          id,
-                          password: newPassword,
-                        });
-                      }}
-                    >
-                      Save changes
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-              <Alert
-                alertTitle={"Po fshin perdoruesin"}
-                alertMessage={`Deshiron ta fshish perdoruesin: "${user.username}" ?`}
-                handleFunction={(e) => {
-                  let id = user.id;
-                  if (loggedUser.id !== id) {
-                    remove(id);
-                  }
-                }}
-                alertTriggerButton={
-                  <Button
-                    variant={"destructive"}
-                    disabled={loggedUser.id === user.id}
+                  <SelectTrigger
+                    className="flex items-center w-[170px] md:w-[280px] max-w-[480px]"
+                    disabled={user.id === loggedUser.id}
                   >
-                    {" "}
-                    Detele{" "}
-                  </Button>
-                }
-              />
-            </TableCell>
-          </TableRow>
-        );
-      })
+                    <SelectValue
+                      placeholder={user.role == "admin" ? "Admin" : "Client"}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="false">User</SelectItem>
+                    <SelectItem value="true">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </TableCell>
+              <TableCell className="text-right">
+                {" "}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="mr-2">
+                      Edit
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Change User Password</DialogTitle>
+                      <DialogDescription>
+                        <div className="mt-2">
+                          Jeni duke ndryshuar passwordin per perdoruesin:{" "}
+                          <span className="text-md text-red-600">
+                            {user.username}
+                          </span>
+                        </div>
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="username" className="text-right">
+                          Password
+                        </Label>
+                        <Input
+                          autoComplete="off"
+                          id="password"
+                          defaultValue=""
+                          onChange={(e) => {
+                            setNewPassword(e.target.value);
+                          }}
+                          className="col-span-3"
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          let id = user.id;
+                          mutate({
+                            id,
+                            password: newPassword,
+                          });
+                        }}
+                      >
+                        Save changes
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <Alert
+                  alertTitle={"Po fshin perdoruesin"}
+                  alertMessage={`Deshiron ta fshish perdoruesin: "${user.username}" ?`}
+                  handleFunction={(e) => {
+                    let id = user.id;
+                    if (loggedUser.id !== id) {
+                      remove(id);
+                    }
+                  }}
+                  alertTriggerButton={
+                    <Button
+                      variant={"destructive"}
+                      disabled={loggedUser.id === user.id}
+                    >
+                      {" "}
+                      Detele{" "}
+                    </Button>
+                  }
+                />
+              </TableCell>
+            </TableRow>
+          );
+        })
     : users &&
         users?.map((user) => {
           return (
             <TableRow key={user.id}>
               <TableCell className="font-medium">{user.username}</TableCell>
+              <TableCell className="font-medium">{user.email}</TableCell>
+
               <TableCell>
                 <Select
                   className="flex justify-end"
@@ -324,7 +328,7 @@ function Users() {
                         </div>
                       </div>
                     </TableHead>
-                    {/* <TableHead className="text-center">Username</TableHead> */}
+                    <TableHead className="text-center">Email</TableHead>
                     <TableHead className="text-center">Role</TableHead>
                     <TableHead className="text-center">Action</TableHead>
                   </TableRow>

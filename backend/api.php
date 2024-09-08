@@ -200,6 +200,28 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   echo json_encode(["success" => "Updated successfully"]);
 }
 
+// Search Users
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search_users') && $method === 'GET') {
+  if (!isset($_GET['q']) || empty($_GET['q'])) {
+    die(json_encode(['message' => 'Search query is required!']));
+  }
+  $stm = $pdo->prepare("SELECT * FROM `users`
+  WHERE
+    `users`.`username` LIKE :phrase");
+  $q = '%' . $_GET['q'] . '%';
+  $stm->bindValue(':phrase', $q, PDO::PARAM_STR);
+  $stm->execute();
+  $users = [];
+
+  while ($user = $stm->fetch(PDO::FETCH_ASSOC)) {
+    $users[] = $user;
+  }
+  echo json_encode($users);
+}
+
+
+
+
 
 // Orders by userID id
 
