@@ -588,14 +588,17 @@ export const useFetchOrderProducts = () => {
 
 // User Fetch Single User
 const fetchSingleUser = async (id) => {
-  return await apiClient.get(
-    `api.php?endpoint_name=profile&email=${id?.email}`
-  );
+  // let { email } = id;
+
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "profile",
+    id,
+  });
 };
 // User Fetch Single User
 export const useSingleUser = () => {
   const [user] = useLocalStorage("user");
-  let id = user?.email || "guest";
+  let id = user?.id;
   return useQuery({
     queryFn: async () => {
       const { data } = await fetchSingleUser(id);
@@ -631,6 +634,74 @@ export const useMutateUserProfile = (user) => {
   });
 };
 
+//Mutate Profile Username
+const useMutateUsername = async (user) => {
+  let { username, id } = user;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_username",
+    username,
+    id,
+  });
+};
+// Mutate Profile Username
+export const useMutateProfileUsername = (user) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["username change"],
+    mutationFn: useMutateUsername,
+    onSuccess: async (id) => {
+      return await queryClient.invalidateQueries({
+        queryKey: ["single user"],
+      });
+    },
+  });
+};
+
+//Mutate Profile Email
+const mutateEmail = async (user) => {
+  let { email, id } = user;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_email",
+    email,
+    id,
+  });
+};
+// Mutate Profile Email
+export const useMutateEmail = (user) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["email change"],
+    mutationFn: mutateEmail,
+    onSuccess: async (id) => {
+      return await queryClient.invalidateQueries({
+        queryKey: ["single user"],
+      });
+    },
+  });
+};
+//Mutate Profile Password
+const mutatePassword = async (user) => {
+  let { password, id, oldPassword } = user;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_user_password",
+    password,
+    oldPassword,
+    id,
+  });
+};
+// Mutate Profile Password
+export const useMutatePassword = (user) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["password change"],
+    mutationFn: mutatePassword,
+    onSuccess: async (user) => {
+      return await queryClient.invalidateQueries({
+        queryKey: ["single user"],
+      });
+    },
+  });
+};
 // Login
 const fetchUsers = async () => {
   return await apiClient.post(`api.php`, {

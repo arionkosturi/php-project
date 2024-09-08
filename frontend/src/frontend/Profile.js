@@ -1,16 +1,26 @@
 // @ts-nocheck
 import React, { useState } from "react";
-import { useMutateUserProfile } from "../components/hooks/useFetch";
+import {
+  useMutateProfileUsername,
+  useMutateEmail,
+  useSingleUser,
+  useMutatePassword,
+} from "../components/hooks/useFetch";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import Header from "./Header";
 function Cart() {
-  const { mutate } = useMutateUserProfile();
+  const { mutate } = useMutateProfileUsername();
+  const { mutate: mutateEmail } = useMutateEmail();
+  const { mutate: mutatePassword, data: passData } = useMutatePassword();
+  const { data } = useSingleUser();
   const [user, setUser] = useLocalStorage("user");
-  const [alert, setAlert] = useState({});
-  const [passwordAlert, setPasswordAlert] = useState({});
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [passwordAlert, setPasswordAlert] = useState({});
+  const [emailAlert, setEmailAlert] = useState({});
   const [password, setPassword] = useState("");
-  const [oldPasword, setOldPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [alert, setAlert] = useState({});
 
   if (!user) {
     return (
@@ -19,6 +29,38 @@ function Cart() {
       </>
     );
   }
+
+  let handleEmailChange = (e) => {
+    e.preventDefault();
+    let id = user.id;
+    if (email.length >= 5) {
+      mutateEmail(
+        {
+          id,
+          email,
+        },
+        {
+          onSuccess: () => {
+            setEmailAlert({
+              message: "Email u ndryshua me sukses!",
+              style: "p-2 text-green-600",
+            });
+          },
+          onError: () => {
+            setEmailAlert({
+              message: "Email nuk mund te ndryshohet!",
+              style: "p-2 text-red-600",
+            });
+          },
+        }
+      );
+    } else
+      setEmailAlert({
+        message: "Email nuk mund te ndryshohet!",
+        style: "p-2 text-red-600",
+      });
+  };
+
   let handleUsernameChange = (e) => {
     e.preventDefault();
     let id = user.id;
@@ -52,21 +94,33 @@ function Cart() {
   let handlePasswordChange = (e) => {
     e.preventDefault();
     let id = user.id;
-    if (oldPasword === user.password && password.length >= 5) {
-      mutate(
+    if (password) {
+      mutatePassword(
         {
           id,
+          oldPassword,
           password,
         },
         {
-          onSuccess: () => {
-            setPasswordAlert({
-              message: "Password u ndryshua me sukses!",
-              style: "p-2 text-green-600",
-            });
+          onSuccess: (passData) => {
+            let error = passData.data.message;
+            console.log(passData);
+
+            if (error) {
+              setPasswordAlert({
+                message: "Passwordi nuk mund te ndryshohet !",
+                style: "p-2 text-red-600",
+              });
+            } else {
+              setPasswordAlert({
+                message: "Password u ndryshua me sukses!",
+                style: "p-2 text-green-600",
+              });
+            }
           },
         }
       );
+      console.log();
     } else
       setPasswordAlert({
         message: "Passwordi nuk mund te ndryshohet !",
@@ -79,7 +133,34 @@ function Cart() {
       <Header />
       <div className="container px-2 mx-auto flex flex-col gap-2">
         Profile
-        <p>Your username: {user?.username}</p>
+        <div className="flex justify-between border">
+          <p>Your email: {data?.email}</p>
+          <p>Your username: {data?.username}</p>
+          <p className="capitalize ">
+            Your role: <span className="text-purple-700">{user?.role}</span>
+          </p>
+        </div>
+        {/* Email */}
+        <label htmlFor="email">
+          Email:{" "}
+          <span className={emailAlert?.style}>{emailAlert?.message}</span>
+        </label>
+        <input
+          name="email"
+          type="email"
+          className="border p-1"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          defaultValue={data?.email}
+        />
+        <button
+          className="border px-3 py-1 rounded bg-purple-500 text-white hover:bg-purple-400"
+          onClick={handleEmailChange}
+        >
+          Change Email
+        </button>
+        {/* Username */}
         <label htmlFor="username">
           Username: <span className={alert?.style}>{alert?.message}</span>
         </label>
@@ -90,7 +171,7 @@ function Cart() {
           onChange={(e) => {
             setUsername(e.target.value);
           }}
-          defaultValue={user?.username}
+          defaultValue={data?.username}
         />
         <button
           className="border px-3 py-1 rounded bg-purple-500 text-white hover:bg-purple-400"
@@ -125,8 +206,6 @@ function Cart() {
         >
           Change Password
         </button>
-        <p>Admin: {(user.role = "admin" ? "true" : "false")}</p>
-        <p></p>
       </div>
     </>
   );

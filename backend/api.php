@@ -79,7 +79,7 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'login')
   $user = $stm->fetch(PDO::FETCH_ASSOC);
   if ($user) {
     if (password_verify($payload['password'], $user['password'])) {
-      $_SESSION['user'] = ["id" => $user['id'], "role" => $user['role'], "email" => $user["email"]];
+      $_SESSION['user'] = ["id" => $user['id'], "username" => $user['username'], "role" => $user['role'], "email" => $user["email"]];
       echo json_encode(
         $_SESSION['user']
       );
@@ -109,16 +109,17 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'logout'
 // Users
 
 // User Profile
-if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'profile') and $method === 'GET') {
-  if (!isset($_SESSION['user'])) {
-    die(json_encode(['message' => 'You are not logged in']));
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'profile') and $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    // print_r($payload);
+    die(json_encode(['message' => 'Id is required!']));
   }
-  $stm = $pdo->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
-  $stm->execute([$_SESSION['user']['email']]);
+  $email = $payload['id'];
+  $stm = $pdo->prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
+  $stm->execute([$email]);
   $user = $stm->fetch(PDO::FETCH_ASSOC);
   if ($user) {
-    unset($user['id']);
-    unset($user['password']);
+    // unset($user['password']);
     echo json_encode($user);
   }
 }
@@ -158,13 +159,47 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
     die(json_encode(['message' => 'User ID is required!']));
   }
   $password = $payload['password'];
+  $oldPassword = $payload['oldPassword'];
   $id = $payload['id'];
+  $user = $pdo->prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
+  $user->execute([$payload['id']]);
+  $userPass = $user->fetchAll();
+  // echo json_encode($userPass);
+  if (password_verify($oldPassword, $userPass[0]['password'])) {
+    $stm = $pdo->prepare("UPDATE `users` SET `password` = ? WHERE `id` = ? LIMIT 1");
+    $stm->execute([password_hash($password, PASSWORD_BCRYPT), $id]);
+    echo json_encode(["success" => "Updated successfully"]);
+  } else {
+    echo json_encode(['message' => 'Invalid Password']);
+  }
+}
+// Update User Username
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_username') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'User ID is required!']));
+  }
+  $id = $payload['id'];
+  $username = $payload['username'];
   $stm = $pdo->prepare("UPDATE `users` SET 
-  `password` = COALESCE(?, `password`)
+  `username` = COALESCE(?, `username`)
   WHERE `id` = ? LIMIT 1");
-  $stm->execute([$id, $password]);
+  $stm->execute([$username, $id]);
   echo json_encode(["success" => "Updated successfully"]);
 }
+// Update User Email
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_email') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'User ID is required!']));
+  }
+  $id = $payload['id'];
+  $email = $payload['email'];
+  $stm = $pdo->prepare("UPDATE `users` SET 
+  `email` = COALESCE(?, `email`)
+  WHERE `id` = ? LIMIT 1");
+  $stm->execute([$email, $id]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
+
 
 // Orders by userID id
 
