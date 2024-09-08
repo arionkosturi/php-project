@@ -121,7 +121,7 @@ const OrdersDashboard = () => {
                 </div>
 
                 <h2 className="p-4">
-                  Total Orders <strong>({data?.length})</strong>
+                  Total Orders <strong>({dataSource?.length})</strong>
                 </h2>
               </Row>
               <Row justify="end" className="me-2"></Row>
