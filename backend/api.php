@@ -300,7 +300,9 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
 // Product BY ID
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'published_products') && $method === 'GET') {
 
-  $stm = $pdo->prepare("SELECT * FROM `products` WHERE isPublished = 1");
+  $stm = $pdo->prepare("SELECT `products`.* , `categories`.`name` as `category_name` FROM `products` 
+  LEFT JOIN `categories` ON `products`.`category` = `categories`.`id`
+  WHERE isPublished = 1");
   $stm->execute();
   $product = $stm->fetchAll(PDO::FETCH_ASSOC);
 
@@ -339,7 +341,9 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_i
     die(json_encode(['message' => 'Product ID is required!']));
   }
 
-  $stm = $pdo->prepare("SELECT * FROM `products` WHERE id = ? LIMIT 1");
+  $stm = $pdo->prepare("SELECT `products`.*, `categories`.`name` as `category_name` FROM `products`
+  LEFT JOIN `categories` ON `products`.`category` = `categories`.`id`
+  WHERE `products`.`id` = ? LIMIT 1");
   $stm->execute([$_GET['id']]);
   $product = $stm->fetch(PDO::FETCH_ASSOC);
 
@@ -522,8 +526,10 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'related
   $stm = $pdo->prepare("SELECT `products`.`name`, `products`.`img`,`products`.`id`, `categories`.`name` as `category_name`
   FROM `products` 
 	LEFT JOIN `categories` ON `products`.`category` = `categories`.`id`
-  WHERE `categories`.`name` = :relatedCateg");
+  WHERE `products`.`name` LIKE :relatedTerm OR`categories`.`name` = :relatedCateg");
+  $term = '%' . $payload['related'] . '%';
   $categ = $payload['related'];
+  $stm->bindValue(':relatedTerm', $term, PDO::PARAM_STR);
   $stm->bindValue(':relatedCateg', $categ, PDO::PARAM_STR);
   $stm->execute();
   while ($product = $stm->fetchAll(PDO::FETCH_ASSOC)) {

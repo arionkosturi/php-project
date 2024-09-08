@@ -4,7 +4,6 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { Button, Form, Rate } from "antd";
 import {
-  useProductCategory,
   useFetchReviews,
   useMutateUserProfile,
   useSingleProduct,
@@ -53,10 +52,8 @@ function PublicProduct() {
   );
 
   const { data: product, isLoading, error } = useSingleProduct();
-  let categId = product?.category;
-  const { data: categ } = useProductCategory(categId);
   const { data: reviews } = useFetchReviews();
-  let rel = categ?.name;
+  let rel = product?.category_name;
   const { data: related, isSuccess } = useFetchRelatedProducts(rel);
   const [reviewText, setReviewText] = useState();
   if (!isSuccess) {
@@ -177,10 +174,10 @@ function PublicProduct() {
                   <p className="flex text-center items-center">
                     Kategoria:
                     <a
-                      href={`/category/${categ?.name}`}
+                      href={`/category/${product.category}`}
                       className="ml-2 cursor-pointer text-lg text-purple-700 font-bold uppercase"
                     >
-                      {categ?.name}
+                      {product?.category_name}
                     </a>
                   </p>
 
@@ -239,7 +236,7 @@ function PublicProduct() {
           )}
           {/* Related section */}
           <div className="p-2 grid md:grid-cols-2 gap-2 mb-6">
-            {/* {isSuccess &&
+            {isSuccess &&
               related
                 ?.filter((f) => f.id !== product?.id)
                 .map((prod) => {
@@ -262,7 +259,7 @@ function PublicProduct() {
                       </a>
                     </div>
                   );
-                })} */}
+                })}
           </div>
           <hr />
           <span className="font-bold px-2 py-1 bg-green-600 text-white ">

@@ -70,7 +70,7 @@ const Cart = (props) => {
         return (
           <div
             className="flex justify-evenly items-center gap-2"
-            key={dataIndex.id}
+            key={dataIndex?.id}
           >
             {" "}
             <Toaster />
