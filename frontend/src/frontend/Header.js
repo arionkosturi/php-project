@@ -102,7 +102,7 @@ export default function Header({ className }) {
                                     </span>
                                   </Button>
                                 </NavigationMenuLink>
-                                <NavigationMenuLink>
+                                {/* <NavigationMenuLink>
                                   {" "}
                                   <Button
                                     onClick={() => {
@@ -116,7 +116,7 @@ export default function Header({ className }) {
                                       Liked Articles
                                     </span>
                                   </Button>
-                                </NavigationMenuLink>
+                                </NavigationMenuLink> */}
                                 <NavigationMenuLink>
                                   {" "}
                                   <Button
@@ -125,10 +125,10 @@ export default function Header({ className }) {
                                     }}
                                     className="flex w-full bg-white hover:bg-slate-100"
                                   >
-                                    <FaBookmark className="text-purple-500 mr-2" />
+                                    <FaHeart className="text-purple-500 mr-2" />
                                     <span className="text-purple-600">
                                       {" "}
-                                      Saved Articles
+                                      Saved Products
                                     </span>
                                   </Button>
                                 </NavigationMenuLink>

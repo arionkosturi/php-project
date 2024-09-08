@@ -20,6 +20,7 @@ import {
   FaHeart,
   FaRegTrashAlt,
   FaCartPlus,
+  FaPencilAlt,
 } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 import {
@@ -32,6 +33,7 @@ import TextArea from "antd/es/input/TextArea";
 import { useToast } from "../components/ui/use-toast";
 import { Toaster } from "../components/ui/toaster";
 import { exists } from "../components/helpers/cart";
+import { useNavigate } from "react-router-dom";
 function PublicProduct() {
   const { mutate: addReview } = useAddReview();
   const { mutate: delReview } = useDeleteReview();
@@ -43,11 +45,12 @@ function PublicProduct() {
   const [cart, setCart] = useLocalStorage("cart", []);
   const [qty] = useState(1);
   const { toast } = useToast();
+  const navigate = useNavigate();
   if (!user) {
     setUser(null);
   }
-  const [localArticles, saveLocalArticles] = useLocalStorage(
-    "savedArticles",
+  const [localProducts, setLocalProducts] = useLocalStorage(
+    "localProducts",
     []
   );
 
@@ -99,17 +102,17 @@ function PublicProduct() {
       window.location.reload();
     }, 2000);
   };
-  let handleLiked = (user) => {
-    let id = user.id;
-    let likedArticles = user.likedArticles;
-    addTo({
-      id,
-      likedArticles: [
-        ...likedArticles?.filter((liked) => liked._id !== product.id),
-        product,
-      ],
-    });
-  };
+  // let handleLiked = (user) => {
+  //   let id = user.id;
+  //   let likedArticles = user.likedArticles;
+  //   addTo({
+  //     id,
+  //     likedArticles: [
+  //       ...likedArticles?.filter((liked) => liked._id !== product.id),
+  //       product,
+  //     ],
+  //   });
+  // };
   let handleRemoveLiked = (user) => {
     let id = user.id;
     let likedArticles = user.likedArticles;
@@ -120,15 +123,15 @@ function PublicProduct() {
       ],
     });
   };
-  let handleSaveArticle = () => {
-    saveLocalArticles([
-      ...localArticles?.filter((saved) => saved.id !== product.id),
+  let handleSaveProduct = () => {
+    setLocalProducts([
+      ...localProducts?.filter((saved) => saved.id !== product.id),
       product,
     ]);
   };
-  let handleRemoveSaveArticle = () => {
-    saveLocalArticles([
-      ...localArticles?.filter((saved) => saved.id !== product.id),
+  let handleRemoveSaveProduct = () => {
+    setLocalProducts([
+      ...localProducts?.filter((saved) => saved.id !== product.id),
     ]);
   };
 
@@ -149,10 +152,21 @@ function PublicProduct() {
       <div>
         <section className="container mx-auto">
           <div className="flex px-2">
-            <div className="mt-2 lg:-mx-6">
-              <p className="block my-4 text-2xl font-semibold text-slate-800 ">
-                {product.name}
-              </p>
+            <div className="mt-2 container">
+              <div className="flex items-center justify-between">
+                <p className="block my-4 text-2xl font-semibold text-slate-800 ">
+                  {product.name}
+                </p>
+                {user?.role === "admin" && (
+                  <p className=" text-slate-500 hover:text-slate-700">
+                    <FaPencilAlt
+                      onClick={() => {
+                        navigate(`../dashboard/edit?id=${product.id}`);
+                      }}
+                    />
+                  </p>
+                )}
+              </div>
               <div className="mt-8 flex lg:mt-0 lg:mx-6 ">
                 {product.img ? (
                   <img
@@ -196,7 +210,7 @@ function PublicProduct() {
                 />
                 {
                   <>
-                    {user?.likedArticles?.filter(
+                    {/* {user?.likedArticles?.filter(
                       (liked) => liked.id === product.id
                     ).length === 0 ? (
                       <FaRegHeart
@@ -208,18 +222,18 @@ function PublicProduct() {
                         className="text-2xl text-purple-500 hover:text-purple-600 hover:scale-110"
                         onClick={handleRemoveLiked}
                       />
-                    )}
-                    {localArticles.filter(
-                      (savedArticles) => savedArticles.id === product.id
+                    )} */}
+                    {localProducts.filter(
+                      (savedProducts) => savedProducts.id === product.id
                     ).length === 0 ? (
-                      <FaRegBookmark
+                      <FaRegHeart
                         className="text-2xl text-purple-500 hover:text-purple-600 hover:scale-110"
-                        onClick={handleSaveArticle}
+                        onClick={handleSaveProduct}
                       />
                     ) : (
-                      <FaBookmark
+                      <FaHeart
                         className="text-2xl text-purple-500 hover:text-purple-600 hover:scale-110"
-                        onClick={handleRemoveSaveArticle}
+                        onClick={handleRemoveSaveProduct}
                       />
                     )}
                   </>
