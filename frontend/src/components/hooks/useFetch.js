@@ -601,6 +601,28 @@ export const useFetchOrderProducts = () => {
   });
 };
 
+// Mutate Order Status
+const mutateOrderStatus = async (order) => {
+  let { status, id } = order;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_status",
+    status,
+    id,
+  });
+};
+// Mutate Order Status
+export const useMutateOrderStatus = (order) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["mutate status"],
+    mutationFn: mutateOrderStatus,
+    onSuccess: async (id) => {
+      return await queryClient.invalidateQueries({
+        queryKey: ["order products"],
+      });
+    },
+  });
+};
 // User Fetch Single User
 const fetchSingleUser = async (id) => {
   // let { email } = id;

@@ -7,6 +7,7 @@ import {
   useCreateOrder,
   useFetchOrdersByUser,
   useFetchOrderProducts,
+  useMutateOrderStatus,
 } from "../../components/hooks/useFetch";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import {
@@ -21,20 +22,16 @@ import {
   Statistic,
   Button,
 } from "antd";
-import { CreditCardOutlined, DeleteOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
 import Column from "antd/es/table/Column";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Label } from "@radix-ui/react-label";
 const OrderDashboard = () => {
   const queryClient = useQueryClient();
+  const { mutate } = useMutateOrderStatus();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
   const navigate = useNavigate();
-  // const [total, setTotal] = useState(0.0);
-  const [alert, setAlert] = useState({});
-  const [passwordAlert, setPasswordAlert] = useState({});
   const { data } = useFetchOrdersByUser(user.id);
   const { data: orderProducts } = useFetchOrderProducts();
   const { Content } = Layout;
@@ -42,7 +39,6 @@ const OrderDashboard = () => {
   cart?.forEach((item) => total.push(item.qty * item.price));
   let totali = Math.round(total.reduce((total, num) => total + num)).toFixed(2);
 
-  let url = `order?id=${cart?.id}`;
   const columns = [
     {
       title: "Image",
@@ -89,6 +85,12 @@ const OrderDashboard = () => {
     });
   });
   const onChange = (value) => {
+    let id = orderProducts[0]?.order_id;
+
+    mutate({
+      id,
+      status: value,
+    });
     console.log(`selected ${value}`);
   };
   if (!user) {
@@ -128,10 +130,32 @@ const OrderDashboard = () => {
             <div className="flex flex-col justify-end items-end gap-2 me-2">
               <p>
                 {/* 'Paid', 'Proccessing', 'Shipped', 'Delivered' */}
-                Order Status
+                Order Status:{" "}
+                <span
+                  className={
+                    (orderProducts &&
+                      orderProducts[0]?.status === "Paid" &&
+                      `font-bold text-xl text-purple-500`) ||
+                    (orderProducts &&
+                      orderProducts[0]?.status === "Proccessing" &&
+                      `font-bold text-xl text-pink-500`) ||
+                    (orderProducts &&
+                      orderProducts[0]?.status === "Shipped" &&
+                      `font-bold text-xl text-blue-500`) ||
+                    (orderProducts &&
+                      orderProducts[0]?.status === "Delivered" &&
+                      `font-bold text-xl text-green-500`) ||
+                    (orderProducts &&
+                      orderProducts[0]?.status === "Cancelled" &&
+                      `font-bold text-xl text-red-500`)
+                  }
+                >
+                  {orderProducts && orderProducts[0]?.status}
+                </span>
               </p>
               <Select
-                placeholder={orderProducts && orderProducts[0]?.status}
+                className="w-34"
+                placeholder="Change Status"
                 onChange={onChange}
                 options={[
                   {
@@ -143,8 +167,16 @@ const OrderDashboard = () => {
                     label: "Proccessing",
                   },
                   {
+                    value: "Shipped",
+                    label: "Shipped",
+                  },
+                  {
                     value: "Delivered",
                     label: "Delivered",
+                  },
+                  {
+                    value: "Cancelled",
+                    label: "Cancelled",
                   },
                 ]}
               />

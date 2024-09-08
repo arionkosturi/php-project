@@ -44,6 +44,21 @@ const OrdersDashboard = () => {
       title: "Status",
       dataIndex: "status",
       key: "name",
+      render: (dataIndex) => (
+        <p
+          className={
+            (dataIndex === "Paid" && `font-bold text-lg text-purple-500`) ||
+            (dataIndex === "Proccessing" &&
+              `font-bold text-lg text-pink-500`) ||
+            (dataIndex === "Shipped" && `font-bold text-lg text-blue-500`) ||
+            (dataIndex === "Delivered" && `font-bold text-lg text-green-500`) ||
+            (dataIndex === "Cancelled" && `font-bold text-lg text-red-500`)
+          }
+        >
+          {dataIndex && dataIndex[0]?.status}
+          {dataIndex}
+        </p>
+      ),
     },
   ];
   if (!user) {

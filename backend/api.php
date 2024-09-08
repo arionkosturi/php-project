@@ -328,6 +328,19 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'create_
     ]);
   }
 }
+// Order Update Status
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_status') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'Order ID is required!']));
+  }
+  $status = $payload['status'];
+  $id = $payload['id'];
+  $publish = $pdo->prepare("UPDATE `orders` 
+  SET `status` = ? 
+  WHERE `orders`.`id` = ?");
+  $publish->execute([$status, $id]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
 
 // Create Product
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_product') and ($method === 'POST')) {
