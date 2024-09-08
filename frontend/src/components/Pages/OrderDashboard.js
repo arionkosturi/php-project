@@ -15,6 +15,7 @@ import {
   Row,
   Col,
   Table,
+  Select,
   Space,
   Divider,
   Statistic,
@@ -25,6 +26,7 @@ import { v4 as uuidv4 } from "uuid";
 import Column from "antd/es/table/Column";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { Label } from "@radix-ui/react-label";
 const OrderDashboard = () => {
   const queryClient = useQueryClient();
   const [user, setUser] = useLocalStorage("user");
@@ -86,6 +88,9 @@ const OrderDashboard = () => {
       ]);
     });
   });
+  const onChange = (value) => {
+    console.log(`selected ${value}`);
+  };
   if (!user) {
     return (
       <>
@@ -120,9 +125,35 @@ const OrderDashboard = () => {
                 Orders History
               </Button>
             </Row>
-            <h2 className="text-right p-2 mt-2 items-end">
-              Total Items <strong>({orderItems?.length})</strong>
-            </h2>
+            <div className="flex flex-col justify-end items-end gap-2 me-2">
+              <p>
+                {/* 'Paid', 'Proccessing', 'Shipped', 'Delivered' */}
+                Order Status
+              </p>
+              <Select
+                placeholder={orderProducts && orderProducts[0]?.status}
+                onChange={onChange}
+                options={[
+                  {
+                    value: "Paid",
+                    label: "Paid",
+                  },
+                  {
+                    value: "Proccessing",
+                    label: "Proccessing",
+                  },
+                  {
+                    value: "Delivered",
+                    label: "Delivered",
+                  },
+                ]}
+              />
+              <h2 className="text-right p-2 mt-2 items-end">
+                Total Items{" "}
+                <strong>({orderProducts && orderProducts?.length})</strong>
+              </h2>
+            </div>
+
             <br></br>
             {data?.length > 0 && (
               <Table
@@ -133,7 +164,7 @@ const OrderDashboard = () => {
                         queryKey: ["order products"],
                         queryFn: async () => {
                           const { data } = await fetchOrderProducts(
-                            record.order_id
+                            record?.order_id
                           );
 
                           navigate(`/dashboard/order?id=${record.order_id}`);
@@ -141,11 +172,7 @@ const OrderDashboard = () => {
                           return data;
                         },
                       });
-                    }, // click row
-                    onDoubleClick: (event) => {}, // double click row
-                    onContextMenu: (event) => {}, // right button click row
-                    onMouseEnter: (event) => {}, // mouse enter row
-                    onMouseLeave: (event) => {}, // mouse leave row
+                    },
                   };
                 }}
                 columns={columns}
@@ -159,7 +186,7 @@ const OrderDashboard = () => {
                 <div className="text-center mt-6 text-xl text-slate-600">
                   <p>
                     Totali:{" "}
-                    {orderProducts?.length > 0 && orderProducts[0].total} €
+                    {orderProducts?.length > 0 && orderProducts[0]?.total} €
                   </p>
                   <p>(Tax included)</p>
                 </div>

@@ -25,6 +25,11 @@ const OrdersDashboard = () => {
       ),
     },
     {
+      title: "Client",
+      dataIndex: "username",
+      key: "name",
+    },
+    {
       title: "Created Date",
       dataIndex: "created",
       key: "name",

@@ -250,7 +250,7 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and 
 
 // All Orders
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'all_orders') and $method === 'GET') {
-  $SQL = "SELECT `order_line`.`order_id`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
+  $SQL = "SELECT `order_line`.`order_id`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,`users`.`username`, `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
   FROM `orders` 
 	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
 	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id`
@@ -273,7 +273,7 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'all_orders') 
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders_by_id') and $method === 'GET') {
 
-  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`, `orders`.`total`, `order_line`.`qty`, `products`.* 
+  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`, `orders`.`total`,`orders`.`status`, `order_line`.`qty`, `products`.* 
   FROM `orders` 
   JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
   JOIN `products` ON `order_line`.`product_id` = `products`.`id` 
