@@ -623,6 +623,29 @@ export const useMutateOrderStatus = (order) => {
     },
   });
 };
+
+// Search Orders
+const searchOrders = async (query) => {
+  console.log(query.queryKey[1].q);
+  let q = query.queryKey[1].q;
+  if (q === undefined) return;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "search_orders",
+    q,
+  });
+};
+
+// Search Orders
+export const useSearchOrders = (q) => {
+  return useQuery({
+    queryFn: async (q) => {
+      const { data } = await searchOrders(q);
+      return data;
+    },
+    queryKey: ["searched orders", { q }],
+  });
+};
+
 // User Fetch Single User
 const fetchSingleUser = async (id) => {
   // let { email } = id;

@@ -328,6 +328,27 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'create_
     ]);
   }
 }
+
+// Search Orders
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'search_orders') && $method === 'POST') {
+  if (!isset($payload['q']) || empty($payload['q'])) {
+    die(json_encode(['message' => 'Term is required!']));
+  }
+  $term = '%' . $payload['q'] . '%';
+  $stm = $pdo->prepare("SELECT `orders`.`id` as `order_id`,`orders`.`created_at`,`orders`.`status` as `status`,`orders`.`total` as `total`, `users`.`username`
+  FROM `orders` 
+	LEFT JOIN `users` ON `orders`.`user_id` = `users`.`id`
+  WHERE `orders`.`id` LIKE :term OR `users`.`username` LIKE :term");
+  $stm->bindValue(':term', $term, PDO::PARAM_STR);
+  // $stm->bindValue(':user', $q, PDO::PARAM_STR);
+  $stm->execute();
+  $order = [];
+  while ($orders = $stm->fetchAll(PDO::FETCH_ASSOC)) {
+    $order[] = $orders;
+  }
+  echo json_encode($order);
+}
+
 // Order Update Status
 if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_status') && $method === 'POST') {
   if (!isset($payload['id']) || empty($payload['id'])) {
@@ -388,7 +409,7 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
   }
 }
 
-// Product BY ID
+// Published Products
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'published_products') && $method === 'GET') {
 
   $stm = $pdo->prepare("SELECT `products`.* , `categories`.`name` as `category_name` FROM `products` 
