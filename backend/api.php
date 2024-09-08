@@ -207,7 +207,7 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search_users'
   }
   $stm = $pdo->prepare("SELECT * FROM `users`
   WHERE
-    `users`.`username` LIKE :phrase");
+    `users`.`username` LIKE :phrase OR `users`.`email` LIKE :phrase");
   $q = '%' . $_GET['q'] . '%';
   $stm->bindValue(':phrase', $q, PDO::PARAM_STR);
   $stm->execute();
@@ -237,6 +237,27 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and 
   $stm = $pdo->prepare($SQL);
   $id = $_GET['id'];
   $stm->execute([$_GET['id']]);
+
+  $orders = $stm->fetchAll(PDO::FETCH_ASSOC);
+  if ($orders) {
+    echo json_encode($orders);
+  } else {
+    echo json_encode([
+      'message' => 'You have no orders'
+    ]);
+  }
+}
+
+// All Orders
+if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'all_orders') and $method === 'GET') {
+  $SQL = "SELECT `order_line`.`order_id`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
+  FROM `orders` 
+	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
+	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id`
+  INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
+  GROUP BY `orders`.`id` ORDER BY `created` DESC";
+  $stm = $pdo->prepare($SQL);
+  $stm->execute();
 
   $orders = $stm->fetchAll(PDO::FETCH_ASSOC);
   if ($orders) {

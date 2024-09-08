@@ -15,12 +15,14 @@ function LeftPanel() {
 
       <div className="md:flex md:mt-10 pt-2 gap-2 md:max-w-40 w-full mr-1 peer-checked:block hidden">
         <div className="flex flex-col">
+          {/* New Product */}
           <Link
             className="hover:bg-slate-100 p-2 text-center sm:text-left"
             to="/dashboard/new"
           >
             New Product
           </Link>
+          {/* All Products */}
           <NavLink
             to="/dashboard/all"
             className={({ isActive }) => {
@@ -31,7 +33,7 @@ function LeftPanel() {
           >
             All Products
           </NavLink>
-
+          {/* Published */}
           <NavLink
             to="/dashboard/published"
             className={({ isActive }) => {
@@ -42,7 +44,18 @@ function LeftPanel() {
           >
             Published
           </NavLink>
-
+          {/* Orders */}
+          <NavLink
+            to="/dashboard/orders"
+            className={({ isActive }) => {
+              return !isActive
+                ? " hover:bg-slate-100 p-2 text-center sm:text-left"
+                : "bg-slate-200 text-purple-500  hover:bg-slate-100 p-2 text-center sm:text-left";
+            }}
+          >
+            Orders
+          </NavLink>
+          {/* Categories */}
           <NavLink
             to="/dashboard/categories"
             className={({ isActive }) => {
@@ -53,6 +66,7 @@ function LeftPanel() {
           >
             Categories
           </NavLink>
+          {/* Reklama */}
           <NavLink
             to="/dashboard/reklama"
             className={({ isActive }) => {
@@ -63,6 +77,7 @@ function LeftPanel() {
           >
             Reklama
           </NavLink>
+          {/* Users */}
           <NavLink
             to="/dashboard/users"
             className={({ isActive }) => {

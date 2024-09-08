@@ -554,6 +554,21 @@ export const useCreateOrder = (cart) => {
   });
 };
 
+// Fetch All Orders
+const fetchAllOrders = async () => {
+  return await apiClient.get(`api.php?endpoint_name=all_orders`);
+};
+// Fetch All Orders
+export const useFetchAllOrders = () => {
+  return useQuery({
+    queryFn: async () => {
+      const { data } = await fetchAllOrders();
+      return data;
+    },
+    queryKey: ["all orders"],
+  });
+};
+
 // Fetch Order By UserId
 const fetchOrdersByUser = async (id) => {
   return await apiClient.get(`api.php?endpoint_name=orders&id=${id}`);

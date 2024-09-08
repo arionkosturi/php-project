@@ -57,7 +57,7 @@ function FetchUsers({ loggedUser, searchTerm }) {
   if (error) return "An error has occurred: " + error.message;
 
   return searchTerm?.length > 0
-    ? searchUsers &&
+    ? searchUsers?.length > 0 &&
         searchUsers?.map((user) => {
           return (
             <TableRow key={user?.id}>
@@ -85,8 +85,8 @@ function FetchUsers({ loggedUser, searchTerm }) {
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="false">User</SelectItem>
-                    <SelectItem value="true">Admin</SelectItem>
+                    <SelectItem value="client">Client</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
                   </SelectContent>
                 </Select>
               </TableCell>
@@ -171,7 +171,6 @@ function FetchUsers({ loggedUser, searchTerm }) {
             <TableRow key={user.id}>
               <TableCell className="font-medium">{user.username}</TableCell>
               <TableCell className="font-medium">{user.email}</TableCell>
-
               <TableCell>
                 <Select
                   className="flex justify-end"
@@ -304,29 +303,28 @@ function Users() {
         <div className="container mx-auto flex gap-4">
           <div className="flex flex-col md:flex-row container mx-auto">
             <LeftPanel />
+
             <section className="container mx-auto">
+              <div className="flex items-center">
+                <div className="flex mx-auto items-center ">
+                  <label htmlFor="search__input" className="w-full">
+                    Search User
+                  </label>
+                  <input
+                    type="search"
+                    id="search__input"
+                    onChange={handleSearch}
+                    className=" border-purple-600 w-full bg-white dark:bg-neutral-900 focus:ring-opacity-70 p-1 border border-opacity-30 focus:outline-none focus:ring focus:ring-purple-600"
+                    placeholder="Username or Email"
+                  />
+                </div>
+              </div>
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>
                       {" "}
-                      <div className="flex items-center">
-                        <label
-                          htmlFor="search__input"
-                          className="hidden md:flex"
-                        >
-                          Username
-                        </label>
-                        <div className="flex mx-auto text-purple-700 dark:text-purple-300 group hover:ring ring-purple-300">
-                          <input
-                            type="search"
-                            id="search__input"
-                            onChange={handleSearch}
-                            className=" border-purple-600 w-full bg-white dark:bg-neutral-900 focus:ring-opacity-70 p-1 border border-opacity-30 focus:outline-none focus:ring focus:ring-purple-600"
-                            placeholder="Username"
-                          />
-                        </div>
-                      </div>
+                      <div className="flex items-center">Username</div>
                     </TableHead>
                     <TableHead className="text-center">Email</TableHead>
                     <TableHead className="text-center">Role</TableHead>

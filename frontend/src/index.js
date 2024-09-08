@@ -25,6 +25,8 @@ import Liked from "./frontend/Liked";
 import Cart from "./frontend/Cart";
 import Orders from "./frontend/Orders";
 import Order from "./frontend/Order";
+import OrdersDashboard from "./components/Pages/OrdersDashboard";
+import OrderDashboard from "./components/Pages/OrderDashboard";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -101,6 +103,16 @@ const router = createBrowserRouter([
   {
     path: "/dashboard/published",
     element: <PublishedProducts />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/dashboard/orders",
+    element: <OrdersDashboard />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/dashboard/orders/order",
+    element: <OrderDashboard />,
     errorElement: <NotFoundPage />,
   },
   {
