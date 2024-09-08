@@ -237,6 +237,7 @@ function PublicProduct() {
           {/* Related section */}
           <div className="p-2 grid md:grid-cols-2 gap-2 mb-6">
             {isSuccess &&
+              related.length > 0 &&
               related
                 ?.filter((f) => f.id !== product?.id)
                 .map((prod) => {
