@@ -26,9 +26,9 @@ function PublicCategory() {
             return (
               <article className="flex relative overflow-hidden items-center justify-around mr-4 bg-white shadow-xl hover:shadow-xl my-3">
                 {product?.isHighlighted ? (
-                  <div class="absolute  top-0 left-0">
-                    <div class="w-32 h-8 absolute top-4 -left-8">
-                      <div class="text-lg h-full w-full bg-red-500 text-white text-center leading-8 font-semibold transform -rotate-45">
+                  <div className="absolute  top-0 left-0">
+                    <div className="w-32 h-8 absolute top-4 -left-8">
+                      <div className="text-lg h-full w-full bg-red-500 text-white text-center leading-8 font-semibold transform -rotate-45">
                         SALE
                       </div>
                     </div>

@@ -42,6 +42,7 @@ function Footer() {
               {categories?.map((category) => {
                 return (
                   <a
+                    key={category.id}
                     href={`/category/${category.name}`}
                     className="block mt-2 hover:text-purple-600"
                   >

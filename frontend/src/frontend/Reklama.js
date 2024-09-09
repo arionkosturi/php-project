@@ -38,7 +38,7 @@ function Reklama() {
 
               if (reklama.isPublished && startsAt <= today && today <= endsAt) {
                 return (
-                  <CarouselItem key={reklama._id}>
+                  <CarouselItem key={reklama.id}>
                     <a
                       href={reklama.targetUrl}
                       target="_blank"

@@ -39,6 +39,25 @@ const Orders = () => {
       title: "Status",
       dataIndex: "status",
       key: "name",
+      render: (dataIndex) => (
+        <p
+          className={
+            (dataIndex === "Paid" &&
+              `bg-purple-100 text-purple-800 text-lg text-center font-medium rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400`) ||
+            (dataIndex === "Proccessing" &&
+              `bg-gray-100 text-gray-800 px-1.5 text-lg text-center font-medium rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500`) ||
+            (dataIndex === "Shipped" &&
+              `bg-blue-100 text-blue-800 text-center text-lg font-medium rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400`) ||
+            (dataIndex === "Delivered" &&
+              `bg-green-100 text-green-800 text-lg font-medium rounded dark:bg-gray-700 dark:text-green-400 border border-green-400 text-center`) ||
+            (dataIndex === "Cancelled" &&
+              `bg-red-100 text-red-800 text-lg text-center font-medium px-1 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400`)
+          }
+        >
+          {dataIndex && dataIndex[0]?.status}
+          {dataIndex}
+        </p>
+      ),
     },
   ];
   if (!user) {
@@ -79,7 +98,7 @@ const Orders = () => {
               </div>
 
               <h2>
-                Total Items <strong>({data?.length})</strong>
+                Total Orders: <strong>({data?.length})</strong>
               </h2>
             </Row>
             <Row justify="end" className="me-2"></Row>

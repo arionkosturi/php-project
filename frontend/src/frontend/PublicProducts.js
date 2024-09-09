@@ -22,9 +22,9 @@ function PublicProducts() {
             >
               <div className="flex flex-row w-1/2 ">
                 {product?.isHighlighted ? (
-                  <div class="absolute  ">
-                    <div class="w-32 h-8 absolute top-4 -left-10">
-                      <div class="h-full w-full bg-red-500 text-white text-center leading-8 font-semibold transform -rotate-45">
+                  <div className="absolute  ">
+                    <div className="w-32 h-8 absolute top-4 -left-10">
+                      <div className="h-full w-full bg-red-500 text-white text-center leading-8 font-semibold transform -rotate-45">
                         SALE
                       </div>
                     </div>
