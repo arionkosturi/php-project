@@ -117,6 +117,8 @@ const addAddress = async (add) => {
 //Add Address
 export const useAddAddress = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: addAddress,
     mutationKey: ["add address"],
@@ -124,6 +126,9 @@ export const useAddAddress = () => {
       queryClient.invalidateQueries({
         queryKey: ["user address"],
       });
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     },
   });
 };
@@ -158,12 +163,16 @@ const updateAddress = async (userAddress) => {
 // Update Address
 export const useUpdateAddress = (id) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationKey: ["update address"],
     mutationFn: updateAddress,
     onSuccess: (id) => {
       queryClient.invalidateQueries({ queryKey: ["address", id] });
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     },
   });
 };
