@@ -234,7 +234,18 @@ export default function Header({ className }) {
                 key={result.id}
                 className="flex w-[95%] ml-4 bg-white shadow-xl hover:shadow-xl my-3"
               >
-                <div className="flex flex-row w-1/3">
+                <div className="flex relative overflow-hidden flex-row w-1/3">
+                  {result?.isHighlighted ? (
+                    <div class="absolute  ">
+                      <div class="w-32 h-8 absolute top-4 -left-10">
+                        <div class="h-full w-full bg-red-500 text-white text-center leading-8 font-semibold transform -rotate-45">
+                          SALE
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                   <a href={`/product/?id=${result.id}`} className="flex">
                     {result.img ? (
                       <img

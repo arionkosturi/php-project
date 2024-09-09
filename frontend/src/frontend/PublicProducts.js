@@ -20,7 +20,7 @@ function PublicProducts() {
               key={product.id}
               className="flex relative overflow-hidden bg-white shadow-xl hover:shadow-xl my-3"
             >
-              <div className="flex flex-row w-1/2 overflow-hidden">
+              <div className="flex flex-row w-1/2 ">
                 {product?.isHighlighted ? (
                   <div class="absolute  ">
                     <div class="w-32 h-8 absolute top-4 -left-10">
@@ -59,13 +59,19 @@ function PublicProducts() {
               </div>
 
               <div className="flex flex-col justify-between w-1/2">
-                <div className="border-gray-900/10 border-s p-2 sm:p-4 sm:border-l-transparent">
+                <div className="border-gray-900/10 border-s p-2 sm:p-4 sm:border-l-transparent gap-6 flex flex-col">
                   <a href={`product?id=${product.id}`}>
                     <h3 className="line-clamp-2 sm:line-clamp-3 font-bold text-gray-900 dark:text-white uppercase">
                       {product.name}
                     </h3>
                   </a>
-                  <p className="mt-4 text-blue-600"> {product.category_name}</p>
+                  <a
+                    href={`/category/${product.category_name}`}
+                    className=" text-blue-600"
+                  >
+                    {" "}
+                    {product.category_name}
+                  </a>
 
                   <p className="line-clamp-3 mt-4 dark:text-gray-50">
                     {" "}
