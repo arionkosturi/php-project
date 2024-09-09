@@ -173,6 +173,17 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
     echo json_encode(['message' => 'Invalid Password']);
   }
 }
+// Admin Change Users Password
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_user_password_by_admin') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'User ID is required!']));
+  }
+  $password = $payload['password'];
+  $id = $payload['id'];
+  $stm = $pdo->prepare("UPDATE `users` SET `password` = ? WHERE `id` = ? LIMIT 1");
+  $stm->execute([password_hash($password, PASSWORD_BCRYPT), $id]);
+  echo json_encode(["success" => "Updated successfully"]);
+}
 // Update User Username
 if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_username') && $method === 'POST') {
   if (!isset($payload['id']) || empty($payload['id'])) {
@@ -200,6 +211,18 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   echo json_encode(["success" => "Updated successfully"]);
 }
 
+// Delete User
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'delete_user') && $method === 'DELETE') {
+  if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die(json_encode(['message' => 'User ID is required!']));
+  }
+  $id = $_GET['id'];
+  $stm = $pdo->prepare("DELETE FROM users 
+  WHERE `users`.`id` = ? LIMIT 1");
+  $stm->execute([$id]);
+  echo json_encode(["success" => "Deleted successfully"]);
+}
+
 // Search Users
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search_users') && $method === 'GET') {
   if (!isset($_GET['q']) || empty($_GET['q'])) {
@@ -218,10 +241,6 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search_users'
   }
   echo json_encode($users);
 }
-
-
-
-
 
 // Orders by userID id
 

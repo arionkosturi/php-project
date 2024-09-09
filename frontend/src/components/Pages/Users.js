@@ -28,6 +28,7 @@ import {
   useSingleUser,
   useMutateUsersRole,
   useFetchSearchedUsers,
+  useMutatePasswordByAdmin,
 } from "../hooks/useFetch";
 
 import {
@@ -47,7 +48,7 @@ function FetchUsers({ loggedUser, searchTerm }) {
   const { mutate: remove } = useDeleteUser();
   const { mutate } = useMutateUsersRole();
   const { mutate: mutateRole } = useMutateUsersRole();
-
+  const { mutate: mutatePassword } = useMutatePasswordByAdmin();
   const [newPassword, setNewPassword] = useState();
   const debouncedSearch = useDebounce(searchTerm, 500);
   const { data: searchUsers } = useFetchSearchedUsers(debouncedSearch);
@@ -131,7 +132,7 @@ function FetchUsers({ loggedUser, searchTerm }) {
                         type="button"
                         onClick={() => {
                           let id = user.id;
-                          mutate({
+                          mutatePassword({
                             id,
                             password: newPassword,
                           });
@@ -239,7 +240,7 @@ function FetchUsers({ loggedUser, searchTerm }) {
                         type="button"
                         onClick={() => {
                           let id = user.id;
-                          mutate({
+                          mutatePassword({
                             id,
                             password: newPassword,
                           });

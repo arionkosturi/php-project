@@ -762,6 +762,29 @@ export const useMutatePassword = (user) => {
     },
   });
 };
+
+// Mutate User Password
+const mutatePasswordByAdmin = async (user) => {
+  let { password, id } = user;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_user_password_by_admin",
+    password,
+    id,
+  });
+};
+// Mutate User Password
+export const useMutatePasswordByAdmin = (user) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["password change"],
+    mutationFn: mutatePasswordByAdmin,
+    onSuccess: async (user) => {
+      return await queryClient.invalidateQueries({
+        queryKey: ["single user"],
+      });
+    },
+  });
+};
 // Login
 const fetchUsers = async () => {
   return await apiClient.post(`api.php`, {
@@ -780,7 +803,7 @@ export const useFetchUsers = () => {
 };
 //Delete User
 const deleteSingleUser = async (id) => {
-  return await apiClient.delete(`/users/${id}`);
+  return await apiClient.delete(`api.php?endpoint_name=delete_user&id=${id}`);
 };
 // Delete User
 export const useDeleteUser = (id) => {
