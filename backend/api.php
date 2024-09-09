@@ -404,9 +404,10 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
   $SQL = "SELECT `products`.*, `categories`.`name` as `category_name`
   FROM `products` 
 	LEFT JOIN `categories` ON `products`.`category` = `categories`.`id`
-  ORDER BY `products`.`created_at` DESC LIMIT $pageNumber, 9";
+  ORDER BY `products`.`created_at` DESC LIMIT 9 OFFSET :offset";
 
   $stm = $pdo->prepare($SQL);
+  $stm->bindValue(':offset', $pageNumber * 9, PDO::PARAM_INT);
   $stm->execute();
   $products = $stm->fetchAll(PDO::FETCH_ASSOC);
 
