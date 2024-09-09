@@ -18,9 +18,21 @@ function PublicProducts() {
           return (
             <article
               key={product.id}
-              className="flex bg-white shadow-xl hover:shadow-xl my-3"
+              className="flex relative overflow-hidden bg-white shadow-xl hover:shadow-xl my-3"
             >
-              <div className="flex flex-row w-1/2">
+              <div className="flex flex-row w-1/2 overflow-hidden">
+                {product?.isHighlighted ? (
+                  <div class="absolute  ">
+                    <div class="w-32 h-8 absolute top-4 -left-10">
+                      <div class="h-full w-full bg-red-500 text-white text-center leading-8 font-semibold transform -rotate-45">
+                        SALE
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <a href={`product?id=${product.id}`}>
                   {product.img ? (
                     <img
