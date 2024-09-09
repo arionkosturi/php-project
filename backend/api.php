@@ -311,8 +311,17 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'create_
     $order = $stm->execute([$orderId, $userId, $total, $status, $order_details]);
     // json_decode(json_encode($cart), true);
     foreach ($cart as $cartItem) {
-      $order_line = $pdo->prepare("INSERT INTO `order_line` (`order_id`,`product_id`,`qty`) VALUES (?, ?, ?)");
+      $order_line = $pdo->prepare("INSERT INTO 
+      `order_line` (`order_id`,`product_id`,`qty`) 
+      VALUES (?, ?, ?)
+      ");
       $order_line->execute([$orderId, $cartItem['id'], $cartItem['qty']]);
+      $product_qty = $pdo->prepare("UPDATE 
+      `products`
+      SET `stock` =  (`stock` - ?) 
+      WHERE `products`.`id` = ?
+      ");
+      $product_qty->execute([$cartItem['qty'], $cartItem['id']]);
     }
     if (!empty($order)) {
       echo json_encode(['message' => 'Order was created successfully']);
