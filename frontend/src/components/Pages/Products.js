@@ -308,6 +308,10 @@ function Products() {
                 <p className="text-sm mx-4 my-2 text-slate-600">
                   {product.details}
                 </p>
+                <p className="text-sm mx-4 my-2 text-slate-600">
+                  Sasia ne stock:{" "}
+                  <span className="font-bold">{product?.stock} Cope</span>
+                </p>
                 <div className="text-sm mx-4 my-2 text-slate-700">
                   <div className="flex gap-2 items-center">
                     <p className="text-sm my-2 text-black">

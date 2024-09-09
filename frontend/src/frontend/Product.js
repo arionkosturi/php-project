@@ -21,6 +21,7 @@ import {
   FaRegTrashAlt,
   FaCartPlus,
   FaPencilAlt,
+  FaCartArrowDown,
 } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 import {
@@ -200,14 +201,28 @@ function PublicProduct() {
                   </p>
                 </div>
               </div>
+              {product?.stock > 0 && product?.stock <= 10 && (
+                <p className="text-xl mb-2 text-red-600 px-4 py-1">
+                  Hurry Up! Only {product?.stock} left!
+                </p>
+              )}
+              {product?.stock <= 0 && (
+                <p className="text-xl mb-2 text-red-600 px-4 py-1">
+                  Out of stock!
+                </p>
+              )}
               <div className="flex gap-4 items-center">
                 <p className="text-5xl bg-yellow-300 text-red-600 px-4 py-1">
                   {product.price} €
                 </p>
-                <FaCartPlus
-                  onClick={addToCart}
-                  className="text-3xl text-purple-600 hover:text-purple-500 hover:scale-110"
-                />
+                {product?.stock <= 0 ? (
+                  <FaCartPlus className="text-3xl text-purple-300 hover:text-purple-500 hover:scale-110" />
+                ) : (
+                  <FaCartPlus
+                    onClick={addToCart}
+                    className="text-3xl text-purple-600 hover:text-purple-500 hover:scale-110"
+                  />
+                )}
                 {
                   <>
                     {/* {user?.likedArticles?.filter(
