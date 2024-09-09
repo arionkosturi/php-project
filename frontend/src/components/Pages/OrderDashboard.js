@@ -26,6 +26,7 @@ import Column from "antd/es/table/Column";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Label } from "@radix-ui/react-label";
+import { FaPencilAlt } from "react-icons/fa";
 const OrderDashboard = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutateOrderStatus();
@@ -33,6 +34,7 @@ const OrderDashboard = () => {
   const [cart, setCart] = useLocalStorage("cart", []);
   const navigate = useNavigate();
   const { data } = useFetchOrdersByUser(user.id);
+
   const { data: orderProducts } = useFetchOrderProducts();
   const { Content } = Layout;
   const total = [0];
@@ -126,6 +128,38 @@ const OrderDashboard = () => {
               >
                 Orders History
               </Button>
+            </Row>
+            <Row justify="center">
+              <div className="flex items-center ">
+                <div className="flex flex-col gap-1 p-1 items-center">
+                  <p className="font-bold">Adresa e klientit:</p>
+
+                  <p>
+                    Emri:{" "}
+                    <span className="text-xl">
+                      {orderProducts && orderProducts[0]?.username}
+                    </span>
+                  </p>
+                  <p>
+                    Kontakt:{" "}
+                    <span className="text-xl">
+                      {orderProducts && orderProducts[0]?.email}
+                    </span>
+                  </p>
+                  <p>
+                    Rruga/Qyteti:{" "}
+                    <span className="text-xl">
+                      {orderProducts && orderProducts[0]?.address}
+                    </span>
+                  </p>
+                  <p>
+                    Shteti:{" "}
+                    <span className="text-xl text-purple-700">
+                      {orderProducts && orderProducts[0]?.shteti}
+                    </span>
+                  </p>
+                </div>
+              </div>
             </Row>
             <div className="flex flex-col justify-end items-end gap-2 me-2">
               <p>

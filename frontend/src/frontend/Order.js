@@ -26,12 +26,12 @@ import Column from "antd/es/table/Column";
 import Footer from "./Footer";
 import { useQueryClient } from "@tanstack/react-query";
 import { Navigate, useNavigate } from "react-router-dom";
+import { FaPencilAlt } from "react-icons/fa";
 const Order = () => {
   const queryClient = useQueryClient();
   const [user, setUser] = useLocalStorage("user");
   const [cart, setCart] = useLocalStorage("cart", []);
   const navigate = useNavigate();
-  // const [total, setTotal] = useState(0.0);
   const [alert, setAlert] = useState({});
   const [passwordAlert, setPasswordAlert] = useState({});
   const { data } = useFetchOrdersByUser(user.id);
@@ -178,6 +178,19 @@ const Order = () => {
                   >
                     Find products
                   </a>
+                  <div className="flex items-center ">
+                    <div className="flex flex-col gap-1 p-1 items-center">
+                      <p className="font-bold">Adresa juaj:</p>
+                      <p>Rruga/Qyteti: {data[0]?.address}</p>
+                      <p>Shteti: {data[0]?.shteti}</p>
+                    </div>
+                    <FaPencilAlt
+                      className="relative -top-6 text-slate-500 hover:text-slate-800"
+                      onClick={() => {
+                        navigate("/address");
+                      }}
+                    />
+                  </div>
                   <a
                     href="/orders"
                     className="text-blue-600 underline hover:underline"

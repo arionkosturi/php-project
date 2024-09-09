@@ -83,6 +83,12 @@ function Address() {
           >
             Update Address
           </button>
+          <a
+            href="/orders"
+            className="mt-10 text-blue-600 underline hover:underline hover:text-blue-400"
+          >
+            See your orders
+          </a>
         </div>
       ) : (
         <div className="container px-2 mx-auto flex flex-col gap-2">

@@ -246,12 +246,13 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search_users'
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and $method === 'GET') {
 
-  $SQL = "SELECT `order_line`.`order_id`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
+  $SQL = "SELECT `order_line`.`order_id`,`addresses`.`address`,`addresses`.`shteti`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
   FROM `orders` 
 	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
-	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id`
-  INNER JOIN `users` ON `orders`.`user_id` = `users`.`id`
-    WHERE
+	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id` 
+	LEFT JOIN `users` ON `orders`.`user_id` = `users`.`id` 
+	LEFT JOIN `addresses` ON `addresses`.`user_id` = `users`.`id`
+  WHERE
     `users`.`id` = ? GROUP BY `orders`.`id` ORDER BY `created` DESC";
   $stm = $pdo->prepare($SQL);
   $id = $_GET['id'];
@@ -291,15 +292,21 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'all_orders') 
 // Orders by id
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders_by_id') and $method === 'GET') {
-
-  $SQL = "SELECT `order_line`.`order_id`, `orders`.`user_id`, `orders`.`total`,`orders`.`status`, `order_line`.`qty`, `products`.* 
-  FROM `orders` 
-  JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
-  JOIN `products` ON `order_line`.`product_id` = `products`.`id` 
-  INNER JOIN `users` ON `orders`.`user_id` = `users`.`id` 
-  WHERE `order_id` = ?";
-  $stm = $pdo->prepare($SQL);
   $id = $_GET['id'];
+  // $user_id = "SELECT `users`.`id`, `orders`.`user_id` 
+  // FROM user
+  // INNER JOIN orders ON `orders`.`id` = `users`.`id`
+  // WHERE `orders`.`id` = ?";
+  // $user = $pdo->prepare($user_id);
+  // $user->execute([$_GET['id']]);
+  $SQL = "SELECT `order_line`.`order_id`,`addresses`.*, `orders`.`user_id`, `orders`.`total`,`orders`.`status`, `order_line`.`qty`, `products`.*, `users`.`username`, `users`.`email`
+  FROM `orders` 
+	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
+	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id` 
+	LEFT JOIN `users` ON `orders`.`user_id` = `users`.`id` 
+	LEFT JOIN `addresses` ON `addresses`.`user_id` = `users`.`id`
+  WHERE `orders`.`id` = ? GROUP BY `orders`.`id`";
+  $stm = $pdo->prepare($SQL);
   $stm->execute([$_GET['id']]);
 
   $order = $stm->fetchAll(PDO::FETCH_ASSOC);
