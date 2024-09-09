@@ -29,7 +29,7 @@ import OrdersDashboard from "./components/Pages/OrdersDashboard";
 import OrderDashboard from "./components/Pages/OrderDashboard";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
+import Address from "./frontend/Address";
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -42,6 +42,11 @@ const router = createBrowserRouter([
   {
     path: "/product",
     element: <Product />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/address",
+    element: <Address />,
     errorElement: <NotFoundPage />,
   },
   {

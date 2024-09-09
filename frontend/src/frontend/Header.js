@@ -8,6 +8,7 @@ import {
   FaHeart,
   FaCarAlt,
   FaShoppingCart,
+  FaRegAddressCard,
 } from "react-icons/fa";
 import { MdHistoryEdu } from "react-icons/md";
 import {
@@ -107,6 +108,21 @@ export default function Header({ className }) {
                                   {" "}
                                   <Button
                                     onClick={() => {
+                                      navigate("/address");
+                                    }}
+                                    className="flex w-full bg-white hover:bg-slate-100"
+                                  >
+                                    <FaRegAddressCard className="text-purple-500 mr-2" />
+                                    <span className="text-purple-600">
+                                      {" "}
+                                      Your Address
+                                    </span>
+                                  </Button>
+                                </NavigationMenuLink>
+                                <NavigationMenuLink>
+                                  {" "}
+                                  <Button
+                                    onClick={() => {
                                       navigate("/orders");
                                     }}
                                     className="flex w-[300px] md:w-[200px] bg-white hover:bg-slate-100"
@@ -118,21 +134,6 @@ export default function Header({ className }) {
                                     </span>
                                   </Button>
                                 </NavigationMenuLink>
-                                {/* <NavigationMenuLink>
-                                  {" "}
-                                  <Button
-                                    onClick={() => {
-                                      navigate("/liked");
-                                    }}
-                                    className="flex w-full bg-white hover:bg-slate-100"
-                                  >
-                                    <FaHeart className="text-purple-500 mr-2" />
-                                    <span className="text-purple-600">
-                                      {" "}
-                                      Liked Articles
-                                    </span>
-                                  </Button>
-                                </NavigationMenuLink> */}
                                 <NavigationMenuLink>
                                   {" "}
                                   <Button

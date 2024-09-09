@@ -104,6 +104,70 @@ export const useSingleProduct = () => {
   });
 };
 
+//Add Address
+const addAddress = async (add) => {
+  const { userId, address, shteti } = add;
+  return await apiClient.post("api.php", {
+    endpoint_name: "add_address",
+    userId,
+    address,
+    shteti,
+  });
+};
+//Add Address
+export const useAddAddress = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addAddress,
+    mutationKey: ["add address"],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user address"],
+      });
+    },
+  });
+};
+
+// Get Address
+const getAddress = async (id) => {
+  return await apiClient.get(`api.php?endpoint_name=get_address&id=${id}`);
+};
+// Get Address
+export const useGetAddress = (id) => {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryFn: async () => {
+      const { data } = await getAddress(id);
+      return data;
+    },
+    queryKey: ["address", id],
+  });
+};
+
+// Update Address
+const updateAddress = async (userAddress) => {
+  let { id, address, shteti } = userAddress;
+  return await apiClient.post(`api.php`, {
+    endpoint_name: "update_address",
+    id,
+    address,
+    shteti,
+  });
+};
+// Update Address
+export const useUpdateAddress = (id) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["update address"],
+    mutationFn: updateAddress,
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: ["address", id] });
+    },
+  });
+};
+
 //Add Reviews
 const addReview = async (rev) => {
   const { productId, userId, reviewText, rating } = rev;
@@ -785,13 +849,13 @@ export const useMutatePasswordByAdmin = (user) => {
     },
   });
 };
-// Login
+// All Users
 const fetchUsers = async () => {
   return await apiClient.post(`api.php`, {
     endpoint_name: "all_users",
   });
 };
-// Query All Users
+// All Users
 export const useFetchUsers = () => {
   return useQuery({
     queryFn: async () => {

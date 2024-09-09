@@ -8,7 +8,7 @@ import {
 } from "../components/hooks/useFetch";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import Header from "./Header";
-function Cart() {
+function Profile() {
   const { mutate } = useMutateProfileUsername();
   const { mutate: mutateEmail } = useMutateEmail();
   const { mutate: mutatePassword, data: passData } = useMutatePassword();
@@ -127,7 +127,6 @@ function Cart() {
         style: "p-2 text-red-600",
       });
   };
-
   return (
     <>
       <Header />
@@ -211,4 +210,4 @@ function Cart() {
   );
 }
 
-export default Cart;
+export default Profile;

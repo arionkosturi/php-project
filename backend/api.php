@@ -562,6 +562,54 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   echo json_encode(["success" => "Updated successfully"]);
 }
 
+
+
+// Create Address
+if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_address') and ($method === 'POST')) {
+  $user_id = $payload['userId'];
+  $shteti = $payload['shteti'];
+  $address = $payload['address'];
+  try {
+    $stm = $pdo->prepare("INSERT INTO `addresses` (`user_id`,`address`,`shteti`) VALUES (?, ?, ?)");
+    $user = $stm->execute([$user_id, $address, $shteti]);
+
+    echo json_encode(['message' => 'Address was created successfully']);
+  } catch (Exception $error) {
+    echo json_encode([
+      $error->getMessage(),
+    ]);
+  }
+}
+// Get Address
+if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'get_address') && $method === 'GET') {
+  if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die(json_encode(['message' => 'ID is required!']));
+  }
+  $stm = $pdo->prepare("SELECT * FROM `addresses` WHERE `user_id` = ? LIMIT 1");
+  $stm->execute([$_GET['id']]);
+  $addresses = $stm->fetch(PDO::FETCH_ASSOC);
+  echo json_encode($addresses);
+}
+
+// Update Address
+if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_address') && $method === 'POST') {
+  if (!isset($payload['id']) || empty($payload['id'])) {
+    die(json_encode(['message' => 'User ID is required!']));
+  }
+  $address = $payload['address'];
+  $shteti = $payload['shteti'];
+
+  $id = $payload['id'];
+  $stm = $pdo->prepare("UPDATE `addresses` SET 
+  `address` = COALESCE(?, `address`),
+  `shteti` = COALESCE(?, `shteti`)
+  WHERE `user_id` = ? LIMIT 1");
+
+  $stm->execute([$address, $shteti, $id]);
+
+  echo json_encode(["success" => "Address Updated successfully"]);
+}
+
 // Create Reviews
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_review') and ($method === 'POST')) {
   $product_id = $payload['productId'];
