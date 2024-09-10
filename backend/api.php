@@ -563,7 +563,7 @@ if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_add
   $shteti = $payload['shteti'];
   $address = $payload['address'];
   try {
-    $stm = $pdo->prepare("INSERT INTO `addresses` (`user_id`,`tel`,`address`,`shteti`) VALUES (?, ?, ?)");
+    $stm = $pdo->prepare("INSERT INTO `addresses` (`user_id`,`tel`,`address`,`shteti`) VALUES (?, ?, ?,?)");
     $user = $stm->execute([$user_id, $tel, $address, $shteti]);
 
     echo json_encode(['message' => 'Address was created successfully']);
