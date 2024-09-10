@@ -141,7 +141,7 @@ function Product() {
         <section className={" container mx-auto   "}>
           <div className="container mx-auto ">
             {/* Banner when not published */}
-            {!product.isPublished && (
+            {!product.isPublished ? (
               <div className="bg-amber-300 flex text-neutral-600   p-4  justify-center items-center  h-16  container mx-auto gap-4 ">
                 <FaInfoCircle className="text-3xl" />
                 <p className="text-md font-semibold">
@@ -158,9 +158,7 @@ function Product() {
                   alertMessage="Deshiron ta Publikosh produktin?"
                 />
               </div>
-            )}
-            {/* Banner when is published */}
-            {product.isPublished && (
+            ) : (
               <div className="flex flex-col">
                 <div className="bg-green-300 flex text-neutral-600 justify-center items-center  h-16  container gap-2">
                   <FaInfoCircle className="text-3xl" />
@@ -205,7 +203,8 @@ function Product() {
                 </div>
               </div>
             )}
-            {njoftimIsOpen === 1 ? (
+
+            {/* {njoftimIsOpen === 1 ? (
               <Njoftim className=" mt-2 flex justify-between p-4" variant="">
                 <FaInfoCircle className="h-4 w-4 text-xl text-white" />
                 <div className="ml-2">
@@ -228,7 +227,7 @@ function Product() {
               </Njoftim>
             ) : (
               ""
-            )}
+            )} */}
             {!isEditingTitle ? (
               <p
                 onDoubleClick={() => {
@@ -384,14 +383,15 @@ function Product() {
                       Editing Details. You can click outside the field. Autosave
                       is enabled!
                     </Badge>
-                    <input
+                    <textarea
                       autoFocus
                       type="text"
                       id="description"
                       placeholder="Enter Description"
                       name="description"
                       className="w-full block mt-4 text-xl font-semibold text-gray-800"
-                      rows="4"
+                      cols="250"
+                      rows="6"
                       defaultValue={product.details}
                       onChange={editDetails}
                       onBlur={() => {
@@ -405,58 +405,6 @@ function Product() {
                   {product.price} EURO
                 </p>
                 <p className="my-8 text-lg text-gray-500 md:text-md content-3"></p>
-                {!isEditingSource ? (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="flex">
-                        {" "}
-                        <a
-                          href={product?.sourceUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="finline-block mt-2 text-blue-500 underline hover:text-blue-400"
-                        >
-                          Source
-                        </a>{" "}
-                        <p className="text-neutral-400 ml-4 mt-2 flex">
-                          - Hover to show edit button
-                        </p>{" "}
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p
-                          className="cursor-pointer"
-                          onClick={handleEditSource}
-                        >
-                          Edit Source
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ) : (
-                  <div>
-                    <Badge
-                      className="w-full mt-2  justify-center"
-                      variant="destructive"
-                    >
-                      Editing Source. You can click outside the field. Autosave
-                      is enabled!
-                    </Badge>
-                    <textarea
-                      autoFocus
-                      type="text"
-                      id="sourceUrl"
-                      placeholder="Enter Source Url"
-                      name="sourceUrl"
-                      className="w-full block mt-4 text-xl font-semibold text-gray-800"
-                      rows="4"
-                      value={product.sourceUrl}
-                      onChange={editSourceUrl}
-                      onBlur={() => {
-                        setIsEditingSource(false);
-                      }}
-                    />
-                  </div>
-                )}
               </div>
             </div>
           </div>

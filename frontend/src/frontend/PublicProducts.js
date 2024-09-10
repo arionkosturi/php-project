@@ -1,10 +1,10 @@
 // @ts-nocheck
 import React, { useState } from "react";
-import { useFetchProducts } from "../components/hooks/useFetch";
+import { useFetchPublishedProducts } from "../components/hooks/useFetch";
 import Paginate from "./Paginate";
 function PublicProducts() {
   const [pageNumber, setPageNumber] = useState(0);
-  const { data: products } = useFetchProducts(pageNumber);
+  const { data: products } = useFetchPublishedProducts(pageNumber);
 
   return (
     <>
@@ -84,7 +84,7 @@ function PublicProducts() {
                     href={`product?id=${product.id}`}
                     className="block bg-green-500 hover:bg-green-400 mx-2 px-5 py-3 font-bold text-center text-gray-100 text-xs uppercase transition"
                   >
-                    Lexo me shume...
+                    Shiko Produktin
                   </a>
                 </div>
               </div>

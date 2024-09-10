@@ -16,7 +16,7 @@ function Reklama() {
       <Carousel
         plugins={[
           Autoplay({
-            delay: 10000,
+            delay: 5000,
           }),
         ]}
       >
@@ -44,16 +44,16 @@ function Reklama() {
                       target="_blank"
                       className="flex flex-col items-center"
                     >
-                      <div className="flex flex-col items-center w-full h-[500px] cursor-pointer p-1">
+                      <div className="flex flex-col items-center w-full cursor-pointer p-1 shadow-lg">
                         <img
                           src={reklama.imgUrl}
                           alt={reklama.title}
-                          className="w-full h-2/3 object-contain"
+                          className="w-full object-contain"
                         />
-                        <div className="w-1/3 bg-red-500 hover:bg-red-400 px-1 py-3 font-bold text-center text-gray-100 text-xs uppercase transition hover:scale-110">
+                        <div className="-mt-4 w-1/3 bg-red-500 hover:bg-red-400 px-1 py-4 font-bold text-center text-gray-100 text-xs uppercase transition hover:scale-110">
                           {reklama.buttonMessage?.length > 1
                             ? reklama.buttonMessage
-                            : "Shop Now!"}
+                            : "Order Now!"}
                         </div>
                       </div>
                     </a>

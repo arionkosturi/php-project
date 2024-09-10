@@ -440,10 +440,13 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
 }
 // Published Products
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'published_products') && $method === 'GET') {
-
+  $pageNumber = $_GET['pageNumber'];
   $stm = $pdo->prepare("SELECT `products`.* , `categories`.`name` as `category_name` FROM `products` 
   LEFT JOIN `categories` ON `products`.`category` = `categories`.`id`
-  WHERE isPublished = 1");
+  WHERE isPublished = 1 
+  ORDER BY `products`.`created_at` DESC 
+  LIMIT 9 OFFSET :offset");
+  $stm->bindValue(':offset', $pageNumber * 9, PDO::PARAM_INT);
   $stm->execute();
   $product = $stm->fetchAll(PDO::FETCH_ASSOC);
 

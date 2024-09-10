@@ -23,18 +23,20 @@ export const useFetchProducts = (pageNumber) => {
   });
 };
 // Fetch Published Products
-const fetchPublishedProducts = async () => {
-  return await apiClient.get(`api.php?endpoint_name=published_products`);
+const fetchPublishedProducts = async (pageNumber) => {
+  return await apiClient.get(
+    `api.php?endpoint_name=published_products&pageNumber=${pageNumber}`
+  );
 };
 // Fetch Published Products
-export const useFetchPublishedProducts = () => {
+export const useFetchPublishedProducts = (pageNumber) => {
   return useQuery({
     queryFn: async () => {
-      const { data } = await fetchPublishedProducts();
+      const { data } = await fetchPublishedProducts(pageNumber);
 
       return data;
     },
-    queryKey: ["published products"],
+    queryKey: ["published products", pageNumber],
   });
 };
 

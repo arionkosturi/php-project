@@ -60,7 +60,7 @@ function PublicCategory() {
                       href={`/product?id=${product.id}`}
                       className="block bg-purple-500 hover:bg-purple-400 mx-2 px-5 py-3 font-bold text-center text-gray-100 text-xs uppercase transition"
                     >
-                      Lexo me shume
+                      Shiko Produktin
                     </a>
                   </div>
                 </div>

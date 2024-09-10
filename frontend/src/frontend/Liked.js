@@ -61,7 +61,7 @@ function Liked() {
 
                       <div className="sm:flex sm:justify-end sm:items-end">
                         <p className="block bg-purple-500 hover:bg-purple-400 mx-2 px-5 py-3 font-bold text-center text-gray-100 text-xs uppercase transition">
-                          Lexo me shume
+                          Shiko Produktin
                         </p>
                       </div>
                     </div>
