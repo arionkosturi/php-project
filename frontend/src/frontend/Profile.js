@@ -21,7 +21,6 @@ function Profile() {
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [alert, setAlert] = useState({});
-
   if (!user) {
     return (
       <>
@@ -60,7 +59,6 @@ function Profile() {
         style: "p-2 text-red-600",
       });
   };
-
   let handleUsernameChange = (e) => {
     e.preventDefault();
     let id = user.id;

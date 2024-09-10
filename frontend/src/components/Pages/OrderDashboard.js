@@ -129,38 +129,48 @@ const OrderDashboard = () => {
                 Orders History
               </Button>
             </Row>
-            <Row justify="center">
-              <div className="flex items-center ">
-                <div className="flex flex-col gap-1 p-1 items-center">
-                  <p className="font-bold">Adresa e klientit:</p>
+            {orderProducts && (
+              <Row justify="center">
+                <div className="flex items-center ">
+                  <div className="flex flex-col gap-1 p-1 items-center">
+                    <p className="font-bold">Adresa e klientit:</p>
 
-                  <p>
-                    Emri:{" "}
-                    <span className="text-xl">
-                      {orderProducts && orderProducts[0]?.username}
-                    </span>
-                  </p>
-                  <p>
-                    Kontakt:{" "}
-                    <span className="text-xl">
-                      {orderProducts && orderProducts[0]?.email}
-                    </span>
-                  </p>
-                  <p>
-                    Rruga/Qyteti:{" "}
-                    <span className="text-xl">
-                      {orderProducts && orderProducts[0]?.address}
-                    </span>
-                  </p>
-                  <p>
-                    Shteti:{" "}
-                    <span className="text-xl text-purple-700">
-                      {orderProducts && orderProducts[0]?.shteti}
-                    </span>
-                  </p>
+                    {orderProducts[0]?.username && (
+                      <p>
+                        Emri:{" "}
+                        <span className="text-xl">
+                          {orderProducts[0]?.username}{" "}
+                        </span>
+                      </p>
+                    )}
+
+                    {orderProducts[0]?.tel && (
+                      <p className="text-xl">Tel: {orderProducts[0]?.tel}</p>
+                    )}
+                    {orderProducts[0]?.email && (
+                      <p>
+                        Email:{" "}
+                        <span className="font-bold">
+                          {orderProducts[0]?.email}
+                        </span>
+                      </p>
+                    )}
+                    <p>
+                      Rruga/Qyteti:{" "}
+                      <span className="text-xl">
+                        {orderProducts && orderProducts[0]?.address}
+                      </span>
+                    </p>
+                    <p>
+                      Shteti:{" "}
+                      <span className="text-xl text-purple-700">
+                        {orderProducts && orderProducts[0]?.shteti}
+                      </span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Row>
+              </Row>
+            )}
             <div className="flex flex-col justify-end items-end gap-2 me-2">
               <p>
                 {/* 'Paid', 'Proccessing', 'Shipped', 'Delivered' */}
@@ -249,12 +259,31 @@ const OrderDashboard = () => {
             )}
             {data?.length > 0 && (
               <>
-                <div className="text-center mt-6 text-xl text-slate-600">
+                <div className="text-right p-4 mt-6  text-slate-600">
                   <p>
-                    Totali:{" "}
-                    {orderProducts?.length > 0 && orderProducts[0]?.total} €
+                    Subtotal:{" "}
+                    {orderProducts &&
+                      orderProducts?.length > 0 &&
+                      (orderProducts[0]?.total / 1.2).toFixed(2)}{" "}
+                    €
                   </p>
-                  <p>(Tax included)</p>
+                  <p>
+                    TAX:{" "}
+                    {orderProducts &&
+                      orderProducts?.length > 0 &&
+                      (
+                        orderProducts[0]?.total -
+                        orderProducts[0]?.total / 1.2
+                      ).toFixed(2)}{" "}
+                    €
+                  </p>
+                  <p className="text-xl">
+                    Total:{" "}
+                    {orderProducts &&
+                      orderProducts?.length > 0 &&
+                      orderProducts[0]?.total.toFixed(2)}{" "}
+                    €
+                  </p>
                 </div>
               </>
             )}

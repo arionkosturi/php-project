@@ -246,7 +246,7 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'search_users'
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders') and $method === 'GET') {
 
-  $SQL = "SELECT `order_line`.`order_id`,`addresses`.`address`,`addresses`.`shteti`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
+  $SQL = "SELECT `order_line`.`order_id`,`addresses`.`address`,`addresses`.`shteti`,`addresses`.`tel`,`orders`.`status`, `orders`.`user_id`,`orders`.`total`,  `order_line`.`qty`,`order_details`,`orders`.`created_at` as `created`,  `products`.*
   FROM `orders` 
 	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
 	LEFT JOIN `products` ON `order_line`.`product_id` = `products`.`id` 
@@ -293,12 +293,6 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'all_orders') 
 
 if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'orders_by_id') and $method === 'GET') {
   $id = $_GET['id'];
-  // $user_id = "SELECT `users`.`id`, `orders`.`user_id` 
-  // FROM user
-  // INNER JOIN orders ON `orders`.`id` = `users`.`id`
-  // WHERE `orders`.`id` = ?";
-  // $user = $pdo->prepare($user_id);
-  // $user->execute([$_GET['id']]);
   $SQL = "SELECT `order_line`.`order_id`,`addresses`.*, `orders`.`user_id`, `orders`.`total`,`orders`.`status`, `order_line`.`qty`, `products`.*, `users`.`username`, `users`.`email`
   FROM `orders` 
 	LEFT JOIN `order_line` ON `order_line`.`order_id` = `orders`.`id` 
@@ -444,7 +438,6 @@ if (isset($_GET['endpoint_name']) and ($_GET['endpoint_name'] === 'products') an
     echo json_encode(['message' => 'You have no products']);
   }
 }
-
 // Published Products
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'published_products') && $method === 'GET') {
 
@@ -460,8 +453,6 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'published_pro
     echo json_encode([]);
   }
 }
-
-
 // Product BY Category
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_category') && $method === 'GET') {
   if (!isset($_GET['category']) || empty($_GET['category'])) {
@@ -482,7 +473,6 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_c
     echo json_encode(["message" => 'No products with category']);
   }
 }
-
 // Product BY ID
 if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_id') && $method === 'GET') {
   if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -501,7 +491,6 @@ if (isset($_GET['endpoint_name']) &&  ($_GET['endpoint_name'] === 'products_by_i
     echo json_encode([]);
   }
 }
-
 // Update Product
 if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_product') && $method === 'POST') {
   if (!isset($payload['id']) || empty($payload['id'])) {
@@ -548,7 +537,6 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   $publish->execute([$isPublished, $id]);
   echo json_encode(["success" => "Updated successfully"]);
 }
-
 // Product Update Highlighted
 if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_highlighted_product') && $method === 'POST') {
   if (!isset($payload['id']) || empty($payload['id'])) {
@@ -568,17 +556,15 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   $highlight->execute([$isHighlighted, $id]);
   echo json_encode(["success" => "Updated successfully"]);
 }
-
-
-
 // Create Address
 if (isset($payload['endpoint_name']) and ($payload['endpoint_name'] === 'add_address') and ($method === 'POST')) {
   $user_id = $payload['userId'];
+  $tel = $payload['tel'];
   $shteti = $payload['shteti'];
   $address = $payload['address'];
   try {
-    $stm = $pdo->prepare("INSERT INTO `addresses` (`user_id`,`address`,`shteti`) VALUES (?, ?, ?)");
-    $user = $stm->execute([$user_id, $address, $shteti]);
+    $stm = $pdo->prepare("INSERT INTO `addresses` (`user_id`,`tel`,`address`,`shteti`) VALUES (?, ?, ?)");
+    $user = $stm->execute([$user_id, $tel, $address, $shteti]);
 
     echo json_encode(['message' => 'Address was created successfully']);
   } catch (Exception $error) {
@@ -603,16 +589,17 @@ if (isset($payload['endpoint_name']) &&  ($payload['endpoint_name'] === 'update_
   if (!isset($payload['id']) || empty($payload['id'])) {
     die(json_encode(['message' => 'User ID is required!']));
   }
+  $tel = $payload['tel'];
   $address = $payload['address'];
   $shteti = $payload['shteti'];
-
   $id = $payload['id'];
   $stm = $pdo->prepare("UPDATE `addresses` SET 
+  `tel` = COALESCE(?, `tel`),
   `address` = COALESCE(?, `address`),
   `shteti` = COALESCE(?, `shteti`)
   WHERE `user_id` = ? LIMIT 1");
 
-  $stm->execute([$address, $shteti, $id]);
+  $stm->execute([$tel, $address, $shteti, $id]);
 
   echo json_encode(["success" => "Address Updated successfully"]);
 }

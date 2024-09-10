@@ -106,10 +106,11 @@ export const useSingleProduct = () => {
 
 //Add Address
 const addAddress = async (add) => {
-  const { userId, address, shteti } = add;
+  const { userId, tel, address, shteti } = add;
   return await apiClient.post("api.php", {
     endpoint_name: "add_address",
     userId,
+    tel,
     address,
     shteti,
   });
@@ -152,10 +153,11 @@ export const useGetAddress = (id) => {
 
 // Update Address
 const updateAddress = async (userAddress) => {
-  let { id, address, shteti } = userAddress;
+  let { id, tel, address, shteti } = userAddress;
   return await apiClient.post(`api.php`, {
     endpoint_name: "update_address",
     id,
+    tel,
     address,
     shteti,
   });

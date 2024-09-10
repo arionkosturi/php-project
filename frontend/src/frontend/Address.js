@@ -17,6 +17,7 @@ function Address() {
   const { data: userAddress } = useGetAddress(userId);
   const [address, setAddress] = useState();
   const [shteti, setShteti] = useState("Shqiperi");
+  const [tel, setTel] = useState();
 
   if (!user) {
     return (
@@ -30,6 +31,7 @@ function Address() {
     let userId = user.id;
     addAddress({
       userId,
+      tel,
       address,
       shteti,
     });
@@ -39,6 +41,7 @@ function Address() {
 
     mutateAddress({
       id,
+      tel,
       address,
       shteti,
     });
@@ -50,6 +53,17 @@ function Address() {
       {userAddress ? (
         <div className="container px-2 mx-auto flex flex-col gap-2">
           <p className="mt-6 text-center text-xl">Modifikoni adresen</p>
+          {/* Tel */}
+          <label htmlFor="tel">Tel: </label>
+          <input
+            name="tel"
+            type="text"
+            className="border p-1"
+            defaultValue={userAddress?.tel}
+            onChange={(e) => {
+              setTel(e.target.value);
+            }}
+          />
           {/* Address */}
           <label htmlFor="address">Address: </label>
           <input
@@ -93,6 +107,16 @@ function Address() {
       ) : (
         <div className="container px-2 mx-auto flex flex-col gap-2">
           Ju lutem vendosni adresen tuaj
+          {/* Tel */}
+          <label htmlFor="tel">Tel: </label>
+          <input
+            name="tel"
+            type="text"
+            className="border p-1"
+            onChange={(e) => {
+              setTel(e.target.value);
+            }}
+          />
           {/* Address */}
           <label htmlFor="address">Address: </label>
           <input

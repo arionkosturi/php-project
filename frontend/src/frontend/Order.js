@@ -164,12 +164,28 @@ const Order = () => {
             )}
             {data?.length > 0 && (
               <>
-                <div className="text-center mt-6 text-xl text-slate-600">
+                <div className="text-right p-4 mt-6  text-slate-600">
                   <p>
-                    Totali:{" "}
-                    {orderProducts?.length > 0 && orderProducts[0].total} €
+                    Subtotal:{" "}
+                    {orderProducts?.length > 0 &&
+                      (orderProducts[0]?.total / 1.2).toFixed(2)}{" "}
+                    €
                   </p>
-                  <p>(Tax included)</p>
+                  <p>
+                    TAX:{" "}
+                    {orderProducts?.length > 0 &&
+                      (
+                        orderProducts[0]?.total -
+                        orderProducts[0]?.total / 1.2
+                      ).toFixed(2)}{" "}
+                    €
+                  </p>
+                  <p className="text-xl">
+                    Total:{" "}
+                    {orderProducts?.length > 0 &&
+                      orderProducts[0]?.total.toFixed(2)}{" "}
+                    €
+                  </p>
                 </div>
                 <div className="flex gap-2 p-2 items-center mt-6 mx-2 justify-evenly">
                   <a
@@ -181,8 +197,17 @@ const Order = () => {
                   <div className="flex items-center ">
                     <div className="flex flex-col gap-1 p-1 items-center">
                       <p className="font-bold">Adresa juaj:</p>
-                      <p>Rruga/Qyteti: {data[0]?.address}</p>
-                      <p>Shteti: {data[0]?.shteti}</p>
+                      <p>
+                        Tel: <span className="font-bold">{data[0]?.tel}</span>
+                      </p>
+                      <p>
+                        Rruga/Qyteti:{" "}
+                        <span className="font-bold">{data[0]?.address}</span>
+                      </p>
+                      <p>
+                        Shteti:{" "}
+                        <span className="font-bold">{data[0]?.shteti}</span>
+                      </p>
                     </div>
                     <FaPencilAlt
                       className="relative -top-6 text-slate-500 hover:text-slate-800"
