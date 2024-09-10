@@ -26,8 +26,8 @@ function Paginate({ pageNumber, setPageNumber, isPreviousData, products }) {
             <PaginationNext
               className="text-purple-800 hover:text-purple-500"
               onClick={() => {
-                console.log("click");
                 if (products.length < 8) return;
+
                 setPageNumber((prevPage) => +prevPage + 1);
               }}
             />
