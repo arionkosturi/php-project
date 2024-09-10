@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 07, 2024 at 04:17 PM
+-- Generation Time: Sep 10, 2024 at 07:43 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `onlineShop`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `addresses`
+--
+
+CREATE TABLE `addresses` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `shteti` enum('Shqiperi','Maqedoni','Kosove','') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`id`, `user_id`, `address`, `shteti`) VALUES
+(14, 206, '123 TR', 'Shqiperi'),
+(17, 1, 'Tirane 1001 Liqeni', 'Shqiperi');
 
 -- --------------------------------------------------------
 
@@ -45,7 +66,8 @@ INSERT INTO `categories` (`id`, `name`, `imgUrl`) VALUES
 (5, 'XBOX', 'https://assets.xboxservices.com/assets/fc/28/fc283911-f016-42d5-8e51-0dfca7ab5ce1.jpg?n=Shop-Consoles_Content-Placement_Hub_294958693_788x444.jpg'),
 (6, 'Keyboards', 'https://media.wired.com/photos/65b0438c22aa647640de5c75/master/pass/Mechanical-Keyboard-Guide-Gear-GettyImages-1313504623.jpg'),
 (7, 'Chairs', 'https://i0.wp.com/www.kidzmotion.co.uk/wp-content/uploads/2023/11/IMG_2917-scaled.jpg?fit=1024%2C683&ssl=1'),
-(8, 'Headphones', 'https://cdn.thewirecutter.com/wp-content/media/2023/07/bluetoothheadphones-2048px-0876.jpg');
+(8, 'Headphones', 'https://cdn.thewirecutter.com/wp-content/media/2023/07/bluetoothheadphones-2048px-0876.jpg'),
+(19, 'Toys', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.1X9tRLg1b3T2FDL4tbv9UQHaEH%26pid%3DApi&f=1&ipt=cafe2c2d079969318250c93eda3084ecee11ba0308d0f6e488a40a5e37b07208&ipo=images');
 
 -- --------------------------------------------------------
 
@@ -67,24 +89,20 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `total`, `status`, `created_at`, `order_details`) VALUES
-('05da058c-5c76-4871-bcd7-8df98fcd4649', 205, 100, 'Paid', '2024-09-07 14:07:23', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
-('1c55896b-a72b-41f1-b0b4-813723bcb5b5', 1, 1980, 'Paid', '2024-09-06 17:04:39', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":4}]'),
+('0169eee2-dde4-44a7-ac8a-fa168f881dd9', 1, 470, 'Delivered', '2024-09-07 16:43:34', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('128e2316-a528-43d4-a544-e5adfb79848f', 206, 9, 'Paid', '2024-09-09 20:48:41', '[{\"id\":52,\"name\":\"Hasbro Gaming Monopoly Deal Card Game\",\"details\":\"Hasbro Gaming Monopoly Deal Card Game, Quick-Playing Card Game for 2-5 Players, Game for Families and Kids, Ages 8 and Up.\\n\\n    New Monopoly Deal card game that is moving through Family Game Nights everywhere\\n    Collect 3 complete property sets but beware of the Debt Collectors, Forced Deals and Deal Breakers\\n    If you are looking for a fun family\\/friend game, this is it\\n    Now only plays up to five players which takes apprx 45 min to play w\\/5 people, apprx 35 min w\\/4, apprx 15-25 minutes w\\/3 people and apprx 5-15 minutes w\\/2 people\\n    Fun, fast dealing\\u2026every card counts\\n\",\"category\":19,\"cost\":6,\"price\":9,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/81SQgE435+L._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":21,\"created_at\":\"2024-09-09 18:27:32\",\"isPublished\":0,\"category_name\":\"Toys\",\"qty\":1}]'),
+('1c55896b-a72b-41f1-b0b4-813723bcb5b5', 1, 1980, 'Shipped', '2024-09-06 17:04:39', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":4}]'),
 ('2614b8d5-425e-4c74-bbe4-5165f3666cd6', 1, 100, 'Paid', '2024-09-06 14:34:28', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
-('2812752e-0342-4066-aef8-d2a82ebaf5c9', 205, 860, 'Paid', '2024-09-07 14:13:57', '[{\"id\":5,\"name\":\"Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow\",\"details\":\"\",\"category\":2,\"cost\":300,\"price\":430,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61bFypVJVyL._AC_SL1500_.jpg\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":2}]'),
-('2bbd4e26-dd54-478d-b4b1-607504c8367d', 1, 199, 'Paid', '2024-09-07 13:36:07', '[{\"id\":6,\"name\":\"SAMSUNG Galaxy A15 5G, 128GB, US Version\",\"details\":\"\",\"category\":2,\"cost\":100,\"price\":199,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/41vU1u8DZXL._AC_SL1000_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
-('41dc6864-5f04-41e7-a169-b0aaa9eb68e2', 1, 470, 'Paid', '2024-09-06 19:21:14', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('2722ca3e-918a-45ca-abd4-128cf84b509e', 206, 15, 'Paid', '2024-09-09 20:51:02', '[{\"id\":51,\"name\":\"Hot Wheels Toy Cars & Trucks 10-Pack\",\"details\":\"Hot Wheels Toy Cars & Trucks 10-Pack, Set of 10 1:64 Scale Vehicles, Includes Race Cars, Semi, Rescue or Construction Trucks (Styles May Vary).\\n+ It\'s an instant collection with a Hot Wheels 10-Car pack of vehicles.\\n+ Each vehicle in the pack is designed in 1:64 scale with authentic styling and eye-catching decos\",\"category\":19,\"cost\":11,\"price\":15,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/717vmR2p1OL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":9,\"created_at\":\"2024-09-09 18:25:58\",\"isPublished\":0,\"category_name\":\"Toys\",\"qty\":1}]'),
+('41dc6864-5f04-41e7-a169-b0aaa9eb68e2', 1, 470, 'Delivered', '2024-09-06 19:21:14', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('476cc35d-5dc5-4a69-ba09-879b280d0485', 1, 430, 'Paid', '2024-09-09 20:05:46', '[{\"id\":5,\"name\":\"Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow\",\"details\":\"\",\"category\":2,\"cost\":300,\"price\":430,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61bFypVJVyL._AC_SL1500_.jpg\",\"isHighlighted\":1,\"stock\":30,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":1,\"category_name\":\"Smartphones\",\"qty\":1}]'),
 ('5e59add2-bc6b-4570-bbc6-d7b238c97735', 1, 470, 'Paid', '2024-09-06 14:35:24', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
-('62876b22-576f-4ec8-b10c-eccdd44a5134', 205, 100, 'Paid', '2024-09-07 14:13:35', '[{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":null,\"stock\":null,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"qty\":1}]'),
-('6476b0c0-b32e-43d7-8f7f-32d7fad4b5c3', 1, 100, 'Paid', '2024-09-07 13:39:30', '[{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":null,\"stock\":null,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"qty\":1}]'),
-('80fe855c-0a9a-4302-a518-d01bbcd29390', 205, 100, 'Paid', '2024-09-07 14:10:20', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
-('8eaffc34-54b5-4380-976b-21a94f482d46', 1, 1100, 'Paid', '2024-09-07 13:38:41', '[{\"id\":9,\"name\":\"SAMSUNG Galaxy S24 Ultra 512GB\",\"details\":\"\",\"category\":2,\"cost\":900,\"price\":1100,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71WcjsOVOmL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
-('93bc70e5-2a65-4824-98b5-c3e5ff22b306', 205, 100, 'Paid', '2024-09-07 14:10:53', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]'),
-('98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 1, -1440, 'Paid', '2024-09-06 18:59:09', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":-5},{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":-2}]'),
-('9f8129f5-f17d-4634-bbbb-da56ae8a6248', 1, 100, 'Paid', '2024-09-07 13:38:59', '[{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":null,\"stock\":null,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"qty\":1}]'),
-('bbcac7bd-5655-44f4-aae5-b213c725e8c5', 1, 1850, 'Paid', '2024-09-07 13:27:35', '[{\"id\":22,\"name\":\"GTPLAYER Gaming Chair, Computer Chair with Footrest and Lumbar Support\",\"details\":\"\",\"category\":7,\"cost\":130,\"price\":180,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71PyDU2N2QL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":2},{\"id\":9,\"name\":\"SAMSUNG Galaxy S24 Ultra 512GB\",\"details\":\"\",\"category\":2,\"cost\":900,\"price\":1100,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71WcjsOVOmL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":10,\"name\":\"Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi\",\"details\":\"\",\"category\":3,\"cost\":300,\"price\":390,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61NGnpjoRDL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
+('9aad75a8-c590-4123-a317-4267e23e4136', 206, 2449, 'Shipped', '2024-09-08 15:29:51', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":1,\"category_name\":\"Smartphones\",\"qty\":1},{\"id\":5,\"name\":\"Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow\",\"details\":\"\",\"category\":2,\"cost\":300,\"price\":430,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61bFypVJVyL._AC_SL1500_.jpg\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":1,\"category_name\":\"Smartphones\",\"qty\":1},{\"id\":8,\"name\":\"OnePlus 12R, 8GB RAM+128GB, Dual-Sim, 50MP Camera, 80W Fast Charging\",\"details\":\"\",\"category\":2,\"cost\":380,\"price\":449,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71xMs88FYbL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"category_name\":\"Smartphones\",\"qty\":1},{\"id\":9,\"name\":\"SAMSUNG Galaxy S24 Ultra 512GB\",\"details\":\"\",\"category\":2,\"cost\":900,\"price\":1100,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/71WcjsOVOmL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"category_name\":\"Smartphones\",\"qty\":1}]'),
+('b4744f60-8fc5-4cf6-9edf-4dc247a6b4a4', 1, 100, 'Paid', '2024-09-09 15:55:18', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":30,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"category_name\":\"Tablets\",\"qty\":1}]'),
+('b6fc2185-ac86-46df-8566-637f109fa529', 1, 100, 'Paid', '2024-09-09 16:13:39', '[{\"id\":47,\"name\":\"test 123\",\"details\":\"test\",\"category\":null,\"cost\":100,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7\",\"isHighlighted\":1,\"stock\":3,\"created_at\":\"2024-09-02 13:47:53\",\"isPublished\":1,\"category_name\":null,\"qty\":1}]'),
+('bd056369-a62d-4ef3-ac79-2daa3684959c', 1, 470, 'Shipped', '2024-09-07 16:44:23', '[{\"id\":4,\"name\":\"OPPO Reno12 5G\",\"details\":\"New Unlocked Android Phone!\",\"category\":2,\"cost\":350,\"price\":470,\"img\":\"https:\\/\\/opsg-img-cdn-gl.heytapimg.com\\/epb\\/202406\\/26\\/IzcVfAu2kdJjoeYS.png\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
 ('c8921b21-f66b-4d27-9a8d-bb62008b172b', 1, 689, 'Paid', '2024-09-06 15:14:42', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1},{\"id\":6,\"name\":\"SAMSUNG Galaxy A15 5G, 128GB, US Version\",\"details\":\"\",\"category\":2,\"cost\":100,\"price\":199,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/41vU1u8DZXL._AC_SL1000_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1},{\"id\":10,\"name\":\"Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi\",\"details\":\"\",\"category\":3,\"cost\":300,\"price\":390,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61NGnpjoRDL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":1}]'),
-('db235c24-298a-4022-9935-aca9c3c71f25', 1, 1640, 'Paid', '2024-09-07 12:25:46', '[{\"id\":5,\"name\":\"Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow\",\"details\":\"\",\"category\":2,\"cost\":300,\"price\":430,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61bFypVJVyL._AC_SL1500_.jpg\",\"isHighlighted\":1,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":2},{\"id\":10,\"name\":\"Apple iPad (9th Generation): with A13 Bionic chip, 10.2-inch Retina Display, 256GB, Wi-Fi\",\"details\":\"\",\"category\":3,\"cost\":300,\"price\":390,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/61NGnpjoRDL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":0,\"created_at\":\"2024-09-01 13:51:43\",\"isPublished\":0,\"qty\":2}]'),
-('f77fc851-89f7-4c81-b59f-ee4879f1fd1e', 205, 100, 'Paid', '2024-09-07 14:12:58', '[{\"id\":49,\"name\":\"arion11112e\",\"details\":\"Arion Kosturi\",\"category\":3,\"cost\":30,\"price\":100,\"img\":\"https:\\/\\/th.bing.com\\/th\\/id\\/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain\",\"isHighlighted\":0,\"stock\":null,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":1,\"qty\":1}]');
+('fcfefdd0-4450-4525-b804-07d480b190ee', 206, 16, 'Paid', '2024-09-09 20:59:58', '[{\"id\":49,\"name\":\"Hasbro Gaming Jenga Wooden Blocks\",\"details\":\"Hasbro Gaming Jenga Wooden Blocks Stacking Tumbling Tower, Kids Game Ages 6 and Up\\n+ GREAT PARTY GAME: Liven up a party by bringing out the Jenga game; This classic block stacking game is simple, easy to learn, and makes a great birthday or holiday gift for adults and kids\\n+ GREAT PARTY GAME: Liven up a party by bringing out the Jenga game! This classic block stacking game is simple, easy to learn, and makes a great birthday or holiday gift for adults and kids\\n+ THE ORIGINAL WOOD BLOCK GAME: The Jenga game is the original wood block game that families have loved for generations\\n    Who will make the tower fall? Great for Family Game night\\n\",\"category\":19,\"cost\":10,\"price\":16,\"img\":\"https:\\/\\/m.media-amazon.com\\/images\\/I\\/815ZoU2clxL._AC_SL1500_.jpg\",\"isHighlighted\":0,\"stock\":15,\"created_at\":\"2024-09-02 13:51:25\",\"isPublished\":0,\"category_name\":\"Toys\",\"qty\":1}]');
 
 -- --------------------------------------------------------
 
@@ -111,24 +129,19 @@ INSERT INTO `order_line` (`id`, `order_id`, `product_id`, `qty`) VALUES
 (31, 'c8921b21-f66b-4d27-9a8d-bb62008b172b', 10, 1),
 (32, '1c55896b-a72b-41f1-b0b4-813723bcb5b5', 49, 1),
 (33, '1c55896b-a72b-41f1-b0b4-813723bcb5b5', 4, 4),
-(34, '98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 49, -5),
-(35, '98ad39b9-2d30-403d-bac0-a5f66e4a26c9', 4, -2),
 (36, '41dc6864-5f04-41e7-a169-b0aaa9eb68e2', 4, 1),
-(37, 'db235c24-298a-4022-9935-aca9c3c71f25', 5, 2),
-(38, 'db235c24-298a-4022-9935-aca9c3c71f25', 10, 2),
-(39, 'bbcac7bd-5655-44f4-aae5-b213c725e8c5', 22, 2),
-(40, 'bbcac7bd-5655-44f4-aae5-b213c725e8c5', 9, 1),
-(41, 'bbcac7bd-5655-44f4-aae5-b213c725e8c5', 10, 1),
-(42, '2bbd4e26-dd54-478d-b4b1-607504c8367d', 6, 1),
-(43, '8eaffc34-54b5-4380-976b-21a94f482d46', 9, 1),
-(44, '9f8129f5-f17d-4634-bbbb-da56ae8a6248', 47, 1),
-(45, '6476b0c0-b32e-43d7-8f7f-32d7fad4b5c3', 47, 1),
-(46, '05da058c-5c76-4871-bcd7-8df98fcd4649', 49, 1),
-(47, '80fe855c-0a9a-4302-a518-d01bbcd29390', 49, 1),
-(48, '93bc70e5-2a65-4824-98b5-c3e5ff22b306', 49, 1),
-(49, 'f77fc851-89f7-4c81-b59f-ee4879f1fd1e', 49, 1),
-(50, '62876b22-576f-4ec8-b10c-eccdd44a5134', 47, 1),
-(51, '2812752e-0342-4066-aef8-d2a82ebaf5c9', 5, 2);
+(37, '0169eee2-dde4-44a7-ac8a-fa168f881dd9', 4, 1),
+(38, 'bd056369-a62d-4ef3-ac79-2daa3684959c', 4, 1),
+(39, '9aad75a8-c590-4123-a317-4267e23e4136', 4, 1),
+(40, '9aad75a8-c590-4123-a317-4267e23e4136', 5, 1),
+(41, '9aad75a8-c590-4123-a317-4267e23e4136', 8, 1),
+(42, '9aad75a8-c590-4123-a317-4267e23e4136', 9, 1),
+(45, 'b4744f60-8fc5-4cf6-9edf-4dc247a6b4a4', 49, 1),
+(46, 'b6fc2185-ac86-46df-8566-637f109fa529', 47, 1),
+(47, '476cc35d-5dc5-4a69-ba09-879b280d0485', 5, 1),
+(48, '128e2316-a528-43d4-a544-e5adfb79848f', 52, 1),
+(49, '2722ca3e-918a-45ca-abd4-128cf84b509e', 51, 1),
+(50, 'fcfefdd0-4450-4525-b804-07d480b190ee', 49, 1);
 
 -- --------------------------------------------------------
 
@@ -155,9 +168,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `details`, `category`, `cost`, `price`, `img`, `isHighlighted`, `stock`, `created_at`, `isPublished`) VALUES
-(4, 'OPPO Reno12 5G', 'New Unlocked Android Phone!', 2, 350, 470, 'https://opsg-img-cdn-gl.heytapimg.com/epb/202406/26/IzcVfAu2kdJjoeYS.png', 1, 0, '2024-09-01 13:51:43', 0),
-(5, 'Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow', '', 2, 300, 430, 'https://m.media-amazon.com/images/I/61bFypVJVyL._AC_SL1500_.jpg', 1, 0, '2024-09-01 13:51:43', 0),
-(6, 'SAMSUNG Galaxy A15 5G, 128GB, US Version', '', 2, 100, 199, 'https://m.media-amazon.com/images/I/41vU1u8DZXL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
+(4, 'OPPO Reno12 5G', 'New Unlocked Android Phone!', 2, 350, 470, 'https://opsg-img-cdn-gl.heytapimg.com/epb/202406/26/IzcVfAu2kdJjoeYS.png', 1, 12, '2024-09-01 13:51:43', 1),
+(5, 'Google Pixel 7 Pro - 5G Android Phone - Unlocked Smartphone with Telephoto , Wide Angle Lens, and 24-Hour Battery - 128GB - Snow', '', 2, 300, 430, 'https://m.media-amazon.com/images/I/61bFypVJVyL._AC_SL1500_.jpg', 1, 29, '2024-09-01 13:51:43', 1),
+(6, 'SAMSUNG Galaxy A15 5G, 128GB, US Version', '', 2, 100, 199, 'https://m.media-amazon.com/images/I/41vU1u8DZXL._AC_SL1000_.jpg', 0, 6, '2024-09-01 13:51:43', 1),
 (7, 'Moto G Play 2023 3-Day Battery Unlocked Made for US 3/32GB 16MP Camera Navy Blue', '', 2, 60, 99, 'https://m.media-amazon.com/images/I/61K1Fz5LxvL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (8, 'OnePlus 12R, 8GB RAM+128GB, Dual-Sim, 50MP Camera, 80W Fast Charging', '', 2, 380, 449, 'https://m.media-amazon.com/images/I/71xMs88FYbL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (9, 'SAMSUNG Galaxy S24 Ultra 512GB', '', 2, 900, 1100, 'https://m.media-amazon.com/images/I/71WcjsOVOmL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
@@ -181,8 +194,10 @@ INSERT INTO `products` (`id`, `name`, `details`, `category`, `cost`, `price`, `i
 (27, 'JLab JBuds Lux ANC Wireless Headphones', '', 8, 30, 49, 'https://m.media-amazon.com/images/I/41UPaI9VqUL._AC_SL1000_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (28, 'JBL Tune 510BT', '', 8, 15, 29, 'https://m.media-amazon.com/images/I/51EUjPMn6UL._AC_SL1500_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
 (29, 'Soundcore Anker Life Q20 Hybrid Active Noise Cancelling', '', 8, 28, 49, 'https://m.media-amazon.com/images/I/61O7S27O+jL._AC_SL1468_.jpg', 0, 0, '2024-09-01 13:51:43', 0),
-(47, 'test 123', 'test', NULL, 100, 100, 'https://th.bing.com/th/id/OIP.3MxqaJv2Z5QsG7wIXzizjAHaEo?w=295&h=180&c=7&r=0&o=5&pid=1.7', NULL, NULL, '2024-09-02 13:47:53', 1),
-(49, 'arion11112e', 'Arion Kosturi', 3, 30, 100, 'https://th.bing.com/th/id/OIP.vggFhcDaZAZ0BLI1MKgUzgHaD-?rs=1&pid=ImgDetMain', 0, NULL, '2024-09-02 13:51:25', 1);
+(47, 'Mattel Games UNO Card Game', 'Mattel Games UNO Card Game for Family Night, \nTravel Game & Gift for Kids in a Collectible Storage Tin for 2-10 Players', 19, 7, 10, 'https://m.media-amazon.com/images/I/813J6ld2EJL._AC_SL1500_.jpg', 1, 5, '2024-09-02 13:47:53', 1),
+(49, 'Hasbro Gaming Jenga Wooden Blocks', 'Hasbro Gaming Jenga Wooden Blocks Stacking Tumbling Tower, Kids Game Ages 6 and Up\n+ GREAT PARTY GAME: Liven up a party by bringing out the Jenga game; This classic block stacking game is simple, easy to learn, and makes a great birthday or holiday gift for adults and kids\n+ GREAT PARTY GAME: Liven up a party by bringing out the Jenga game! This classic block stacking game is simple, easy to learn, and makes a great birthday or holiday gift for adults and kids\n+ THE ORIGINAL WOOD BLOCK GAME: The Jenga game is the original wood block game that families have loved for generations\n    Who will make the tower fall? Great for Family Game night\n', 19, 10, 16, 'https://m.media-amazon.com/images/I/815ZoU2clxL._AC_SL1500_.jpg', 0, 14, '2024-09-02 13:51:25', 0),
+(51, 'Hot Wheels Toy Cars & Trucks 10-Pack', 'Hot Wheels Toy Cars & Trucks 10-Pack, Set of 10 1:64 Scale Vehicles, Includes Race Cars, Semi, Rescue or Construction Trucks (Styles May Vary).\n+ It\'s an instant collection with a Hot Wheels 10-Car pack of vehicles.\n+ Each vehicle in the pack is designed in 1:64 scale with authentic styling and eye-catching decos', 19, 11, 15, 'https://m.media-amazon.com/images/I/717vmR2p1OL._AC_SL1500_.jpg', 0, 8, '2024-09-09 18:25:58', 0),
+(52, 'Hasbro Gaming Monopoly Deal Card Game', 'Hasbro Gaming Monopoly Deal Card Game, Quick-Playing Card Game for 2-5 Players, Game for Families and Kids, Ages 8 and Up.\n\n    New Monopoly Deal card game that is moving through Family Game Nights everywhere\n    Collect 3 complete property sets but beware of the Debt Collectors, Forced Deals and Deal Breakers\n    If you are looking for a fun family/friend game, this is it\n    Now only plays up to five players which takes apprx 45 min to play w/5 people, apprx 35 min w/4, apprx 15-25 minutes w/3 people and apprx 5-15 minutes w/2 people\n    Fun, fast dealing…every card counts\n', 19, 6, 9, 'https://m.media-amazon.com/images/I/81SQgE435+L._AC_SL1500_.jpg', 0, 20, '2024-09-09 18:27:32', 0);
 
 -- --------------------------------------------------------
 
@@ -236,7 +251,7 @@ INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `content`, `rating`) VALUE
 (12, 49, 205, 'test', 4),
 (14, 49, 205, 'kot fare', 4),
 (15, 47, 1, 'test', 4),
-(16, 8, 1, 'nice product!', 5);
+(16, 8, 1, 'nice cellphone !', 4);
 
 -- --------------------------------------------------------
 
@@ -258,15 +273,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`) VALUES
 (1, 'arionkosturi@gmail.com', 'arionkosturi', '$2y$10$lHTYapSfulIX4Z9skg7wxe/ZQ096WTImg5HW/LGPzE0T0HwjAB34q', 'admin'),
-(2, 'client@test.com', 'client1', '$2y$10$aVpNgkAMwRAyZFpKTyHw6erM1MpmRX2yMOQNgVq4DTRqFOiqmbn/u', 'client'),
-(94, 'clientqw12132@test.com', 'client', '$2y$10$r3WMiwWN9SPE1tXPazl8W.jnRiJrklrcFMpSZJaRzN0KyemEC.t5.', 'client'),
-(97, 'client132@test.com', 'client', '$2y$10$eevqx5veSY.mIRwLqHiqLOboPErsDD3aryB8x4OrJAb7AvEBTJXI2', NULL),
-(101, 'johnsmith@gmail.com', 'johnsmith', '$2y$10$svCuzUiphr.e1SlzIGBwOu6Co9pRCaJ9k4Ta/hko7XckSHXhmiVPO', NULL),
+(2, 'client@test.com', 'client1', '$2y$10$5ecTR3cQI2M9/t/Y6WzfWON.gl1oDuzfikqse8FRIK2Poxis1Edai', 'client'),
+(101, 'johnsmith@gmail.com', 'johnsmith', '$2y$10$svCuzUiphr.e1SlzIGBwOu6Co9pRCaJ9k4Ta/hko7XckSHXhmiVPO', 'client'),
 (103, 'john@john.com', 'john@john.com', '$2y$10$M2EdwjGCgU1kKP2PkFxbM.ds1yYQK7FBi6CKedgxsaiZMI6loAxQq', NULL),
-(105, 'a@b.com', 'abc', '$2y$10$LSj.CrS.gG5iDuzmwYW1eeKS8EMzcaHyTOLZsNbXral5g8SvK4UVq', NULL),
 (108, 'abc@b.com', 'a@b.com', '$2y$10$rfyivMFFviZZ8KH9X1rrCenuWULr5.lq.Ouqg4.3kyD6ewbCGG5Ee', 'client'),
-(111, 'a11@b.com', 'a@b.com', '$2y$10$KgU/8SBY9qD9Gl0lr8aDWuwJJ8.AXE3Bgshu560x7T6BFX/tVIHcm', NULL),
-(120, 'client1312@test.com', 'client', '$2y$10$oof58eYS3rCAHsZe1C1zX.V2VtU9xzapN0Eqie2EVgeAugUxImtti', NULL),
 (129, 'client131112@test.com', 'client', '$2y$10$NYODyfyEgzjr8AwoxD.yYeUr3AWDTagbc6dfuDDVb2uQXRmXZYsQy', NULL),
 (133, 'client13111212@test.com', 'client', '$2y$10$XLUFLThkPHiXSSr1rXRTGeqAP1HlvLkp15l4BCAemTdwQxYVTo.Tm', NULL),
 (137, 'client131111212@test.com', 'client', '$2y$10$v08zImi9pqyHAAS0Tg9lmemY7bOe98TjaricyxzcmuyQiqPBQTzvu', NULL),
@@ -282,11 +292,19 @@ INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`) VALUES
 (194, 'johnsmith2@gmail.com', 'johnsmith@gmail.com', '$2y$10$xka9FCIUUirEgIwM0rDuyOQGLrNAZjuHNWDcUsjgM0ZykD70A1hgC', NULL),
 (195, 'johnsmith33@gmail.com', 'johnsmith@gmail.com', '$2y$10$A7F0HntR5jEME3SCmzJvreoD1n3L0/6p0buNkOaa7pA5nKywUTfQa', NULL),
 (204, 'johnsmith333333@gmail.com', 'johnsmith333333@gmail.com', '$2y$10$zgTaL8J17Z4hGbuEmpOOsuu7Vc4NwiTzyK90RFgJZ7sK1HMi4USni', NULL),
-(205, 'client1@gmail.com', 'client1', '$2y$10$V1SNJV9rXo7TRjllZJ78deKbAneiBHWuy6.v9ypMFTqkT6DdaKPVC', 'client');
+(205, 'client1@gmail.com', 'client1', '$2y$10$V1SNJV9rXo7TRjllZJ78deKbAneiBHWuy6.v9ypMFTqkT6DdaKPVC', 'client'),
+(206, 'client@gmail.com', 'client', '$2y$10$K25HtO/Kmg044jU5koy5rOkZXKuTNYTt6LupvOk2UzWeKUbLZM6NO', 'client');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_addresses_user_id` (`user_id`);
 
 --
 -- Indexes for table `categories`
@@ -342,22 +360,28 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `addresses`
+--
+ALTER TABLE `addresses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `order_line`
 --
 ALTER TABLE `order_line`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `reklama`
@@ -375,11 +399,17 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD CONSTRAINT `fk_addresses_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
